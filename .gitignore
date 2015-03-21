@@ -7,6 +7,9 @@
 /deployment.xml
 
 
+# ingnore mysql schema builder bak file
+*.bak
+
 # Octocat's Idea's on what to ignore
 # Compiled source #
 ###################
