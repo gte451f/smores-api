@@ -10,8 +10,8 @@ return call_user_func(function ()
     
     // VERSION NUMBER SHOULD BE FIRST URL PARAMETER, ALWAYS
     // setHandler MUST be a string in order to support lazy loading
-    $routes->setPrefix('/v1/users')
-        ->setHandler('\PhalconRest\Controllers\UserController')
+    $routes->setPrefix('/v1/programs')
+        ->setHandler('\PhalconRest\Controllers\ProgramController')
         ->setLazy(true);
     
     $routes->options('/', 'optionsBase');
