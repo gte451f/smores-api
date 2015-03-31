@@ -10,6 +10,9 @@
 # ingnore mysql schema builder bak file
 *.bak
 
+# ignore gedit temp files
+*.*~
+
 # Octocat's Idea's on what to ignore
 # Compiled source #
 ###################
