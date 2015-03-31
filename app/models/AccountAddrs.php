@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
-class Events extends \PhalconRest\API\BaseModel
+class AccountAddrs extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -14,53 +14,53 @@ class Events extends \PhalconRest\API\BaseModel
      *
      * @var integer
      */
-    public $program_id;
+    public $account_id;
 
     /**
      *
      * @var integer
      */
-    public $location_id;
+    public $billing;
+
+    /**
+     *
+     * @var integer
+     */
+    public $mailing;
 
     /**
      *
      * @var string
      */
-    public $start;
+    public $addr_1;
 
     /**
      *
      * @var string
      */
-    public $end;
-
-    /**
-     *
-     * @var integer
-     */
-    public $min_age;
-
-    /**
-     *
-     * @var integer
-     */
-    public $max_age;
+    public $addr_2;
 
     /**
      *
      * @var string
      */
-    public $gender;
+    public $city;
 
     /**
      *
-     * @var integer
+     * @var string
      */
-    public $capacity;
+    public $state;
 
     /**
      *
-     * @var double
+     * @var string
      */
-    public $cost;
+    public $country;
+
+    /**
+     *
+     * @var string
+     */
+    public $zip;
 }

@@ -57,23 +57,4 @@ class Locations extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $description;
-
-    /**
-     * Independent Column Mapping.
-     */
-    public function columnMap()
-    {
-        return array(
-            'id' => 'id', 
-            'addr_1' => 'addr_1', 
-            'addr_2' => 'addr_2', 
-            'city' => 'city', 
-            'state' => 'state', 
-            'country' => 'country', 
-            'zip' => 'zip', 
-            'name' => 'name', 
-            'description' => 'description'
-        );
-    }
-
 }

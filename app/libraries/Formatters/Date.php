@@ -4,8 +4,6 @@ namespace PhalconRest\Libraries\Formatters;
 /**
  * port former helpers from CI
  * pretty inflexible, built for mysql based timestamps
- *
- *        
  */
 class Date
 {

@@ -16,8 +16,7 @@ $app->setDI($di);
  * Returning false stops any route from executing.
  */
 
-$app->before(function () use($app, $di)
-{
+$app->before(function () use($app, $di) {
     // TODO
     // set standard CORS headers before routing just incase no valid route is found
     // hard coded until we can figure out a better way to calculate this
@@ -44,8 +43,7 @@ foreach ($di->get('collections') as $collection) {
  * This is not strictly REST compliant, but it helps to base API documentation off of.
  * By calling this, you can quickly see a list of all routes and their methods.
  */
-$app->get('/', function () use($app)
-{
+$app->get('/', function () use($app) {
     $routes = $app->getRouter()
         ->getRoutes();
     $routeDefinitions = array(
@@ -72,8 +70,7 @@ $app->get('/', function () use($app)
  * However, by parsing the request querystring's 'type' paramter, it is easy to install
  * different response type handlers.
  */
-$app->after(function () use($app)
-{
+$app->after(function () use($app) {
     $method = $app->request->getMethod();
     
     switch ($method) {
@@ -145,8 +142,7 @@ $app->after(function () use($app)
  * The notFound service is the default handler function that runs when no route was matched.
  * We set a 404 here unless there's a suppress error codes.
  */
-$app->notFound(function () use($app)
-{
+$app->notFound(function () use($app) {
     throw new \PhalconRest\Exceptions\HTTPException('Not Found.', 404, array(
         'dev' => 'That route was not found on the server.',
         'internalCode' => '4',
@@ -160,8 +156,7 @@ $app->notFound(function () use($app)
  * TODO: Improve this.
  * TODO: Kept here due to dependency on $app
  */
-set_exception_handler(function ($exception) use($app)
-{
+set_exception_handler(function ($exception) use($app) {
     // HTTPException's send method provides the correct response headers and body
     if (is_a($exception, 'PhalconRest\\Exceptions\\HTTPException')) {
         $exception->send();

@@ -4,8 +4,7 @@
  * Standard routes for resource
  * Refer to routes/collections/example.php for further details
  */
-return call_user_func(function ()
-{
+return call_user_func(function () {
     $routes = new \Phalcon\Mvc\Micro\Collection();
     
     // VERSION NUMBER SHOULD BE FIRST URL PARAMETER, ALWAYS

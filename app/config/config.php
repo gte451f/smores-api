@@ -39,8 +39,9 @@ $config = [
         'entities' => "PhalconRest\\Entities\\"
     ],
     'fileStorage' => [
-        'basePath' => '/tmp/',     // uses as a system wide prefix to all file storage paths     
-    ]
+        'basePath' => '/tmp/'
+    ] // uses as a system wide prefix to all file storage paths
+
 ];
 
 // override production config by enviroment config

@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
-class Programs extends \PhalconRest\API\BaseModel
+class Accounts extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -14,17 +14,17 @@ class Programs extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $name;
+    public $user_name;
 
     /**
      *
      * @var string
      */
-    public $description;
+    public $password;
 
     /**
      *
-     * @var double
+     * @var string
      */
-    public $cost;
+    public $salt;
 }

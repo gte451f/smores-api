@@ -13,6 +13,7 @@ class MessageBag
 
     /**
      * store all error messages here
+     * 
      * @var array
      */
     private $messageList = array();
@@ -20,8 +21,8 @@ class MessageBag
     private $glue = '</br> - ';
 
     /**
-     * 
-     * @param string $message
+     *
+     * @param string $message            
      */
     public function set($message)
     {
@@ -29,7 +30,7 @@ class MessageBag
     }
 
     /**
-     * 
+     *
      * @return multitype:
      */
     public function get()
@@ -38,7 +39,7 @@ class MessageBag
     }
 
     /**
-     * 
+     *
      * @return string
      */
     public function getString()
