@@ -129,7 +129,7 @@ $app->after(function () use($app) {
             break;
         
         default:
-            throw new \PhalconRest\Exceptions\HTTPException('Could not return results in specified format', 403, array(
+            throw new \PhalconRest\Util\HTTPException('Could not return results in specified format', 403, array(
                 'dev' => 'Could not understand type specified by type paramter in query string.',
                 'internalCode' => '3',
                 'more' => 'Type may not be implemented. Choose either "csv" or "json"'
@@ -143,7 +143,7 @@ $app->after(function () use($app) {
  * We set a 404 here unless there's a suppress error codes.
  */
 $app->notFound(function () use($app) {
-    throw new \PhalconRest\Exceptions\HTTPException('Not Found.', 404, array(
+    throw new \PhalconRest\Util\HTTPException('Not Found.', 404, array(
         'dev' => 'That route was not found on the server.',
         'internalCode' => '4',
         'more' => 'Check route for mispellings.'
@@ -158,7 +158,7 @@ $app->notFound(function () use($app) {
  */
 set_exception_handler(function ($exception) use($app) {
     // HTTPException's send method provides the correct response headers and body
-    if (is_a($exception, 'PhalconRest\\Exceptions\\HTTPException')) {
+    if (is_a($exception, 'PhalconRest\\Util\\HTTPException')) {
         $exception->send();
     }
     error_log($exception);

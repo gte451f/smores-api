@@ -27,4 +27,19 @@ class Attendees extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $school_grade;
+    
+    /**
+     * define custom model relationships
+     * 
+     * (non-PHPdoc)
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
+            'alias' => 'Users'
+        ));
+
+    }
 }
