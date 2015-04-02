@@ -41,5 +41,9 @@ class Attendees extends \PhalconRest\API\BaseModel
             'alias' => 'Users'
         ));
 
+        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
+            'alias' => 'Accounts'
+        ));
+        
     }
 }
