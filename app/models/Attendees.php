@@ -27,11 +27,12 @@ class Attendees extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $school_grade;
-    
+
     /**
      * define custom model relationships
-     * 
+     *
      * (non-PHPdoc)
+     * 
      * @see extends \PhalconRest\API\BaseModel::initialize()
      */
     public function initialize()
@@ -40,10 +41,19 @@ class Attendees extends \PhalconRest\API\BaseModel
         $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
             'alias' => 'Users'
         ));
-
+        
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
-        
+    }
+
+    /**
+     * (non-PHPdoc)
+     * 
+     * @see \PhalconRest\API\BaseModel::getParentModel()
+     */
+    public function getParentModel()
+    {
+        return 'Users';
     }
 }

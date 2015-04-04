@@ -33,11 +33,12 @@ class Employees extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $salt;
-    
+
     /**
      * define custom model relationships
      *
      * (non-PHPdoc)
+     * 
      * @see extends \PhalconRest\API\BaseModel::initialize()
      */
     public function initialize()
@@ -46,6 +47,14 @@ class Employees extends \PhalconRest\API\BaseModel
         $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
             'alias' => 'Users'
         ));
+    }
     
+    /**
+     * (non-PHPdoc)
+     * @see \PhalconRest\API\BaseModel::getParentModel()
+     */
+    public function getParentModel()
+    {
+        return 'Users';
     }
 }
