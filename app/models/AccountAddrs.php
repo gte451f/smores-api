@@ -63,4 +63,20 @@ class AccountAddrs extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $zip;
+    
+    /**
+     * define custom model relationships
+     *
+     * (non-PHPdoc)
+     *
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+    
+        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
+            'alias' => 'Accounts'
+        ));
+    }
 }
