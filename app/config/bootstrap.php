@@ -158,9 +158,10 @@ $app->notFound(function () use($app) {
  */
 set_exception_handler(function ($exception) use($app) {
     // HTTPException's send method provides the correct response headers and body
-    if (is_a($exception, 'PhalconRest\\Util\\HTTPException')) {
+    if (is_a($exception, 'PhalconRest\\Util\\HTTPException') or is_a($exception, 'PhalconRest\\Util\\ValidationException')) {
         $exception->send();
     }
+    
     error_log($exception);
     error_log($exception->getTraceAsString());
 });

@@ -63,4 +63,24 @@ class Events extends \PhalconRest\API\BaseModel
      * @var double
      */
     public $cost;
+    
+    /**
+     * define custom model relationships
+     *
+     * (non-PHPdoc)
+     *
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+    
+        $this->belongsTo('location_id', 'PhalconRest\Models\Locations', 'id', array(
+            'alias' => 'Locations'
+        ));
+        
+        $this->belongsTo('program_id', 'PhalconRest\Models\Programs', 'id', array(
+            'alias' => 'Programs'
+        ));
+    }
 }

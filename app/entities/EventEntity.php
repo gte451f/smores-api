@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class OwnerNumberEntity extends \PhalconRest\API\Entity
+class EventEntity extends \PhalconRest\API\Entity
 {
 }

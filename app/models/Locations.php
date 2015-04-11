@@ -57,4 +57,20 @@ class Locations extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $description;
+
+    /**
+     * define custom model relationships
+     *
+     * (non-PHPdoc)
+     *
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        
+        $this->hasMany("id", "PhalconRest\Models\Events", "program_id", array(
+            'alias' => 'Events'
+        ));
+    }
 }
