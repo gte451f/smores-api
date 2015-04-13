@@ -32,7 +32,7 @@ class Attendees extends \PhalconRest\API\BaseModel
      * define custom model relationships
      *
      * (non-PHPdoc)
-     * 
+     *
      * @see extends \PhalconRest\API\BaseModel::initialize()
      */
     public function initialize()
@@ -45,11 +45,15 @@ class Attendees extends \PhalconRest\API\BaseModel
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
+        
+        $this->hasMany("user_id", "PhalconRest\Models\Registrations", "user_id", array(
+            'alias' => 'Registrations'
+        ));
     }
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \PhalconRest\API\BaseModel::getParentModel()
      */
     public function getParentModel()
