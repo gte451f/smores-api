@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class EventEntity extends \PhalconRest\API\Entity
+class RequestEntity extends \PhalconRest\API\Entity
 {
 }

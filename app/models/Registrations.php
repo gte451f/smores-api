@@ -25,6 +25,9 @@ class Registrations extends \PhalconRest\API\BaseModel
     public $notes;
 
     /**
+     * (non-PHPdoc)
+     * 
+     * @see \PhalconRest\API\BaseModel::initialize()
      */
     public function initialize()
     {

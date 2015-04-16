@@ -54,7 +54,7 @@ class Requests extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->belongsTo('registration_id', 'PhalconRest\Models\Registration', 'id', array(
+        $this->belongsTo('registration_id', 'PhalconRest\Models\Registrations', 'id', array(
             'alias' => 'Registrations'
         ));
         
