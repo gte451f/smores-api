@@ -1,8 +1,6 @@
 <?php
 namespace PhalconRest\Models;
 
-
-
 class Requests extends \PhalconRest\API\BaseModel
 {
 
@@ -32,7 +30,7 @@ class Requests extends \PhalconRest\API\BaseModel
 
     /**
      * should this request count against capacity?
-     * 
+     *
      * @var integer
      */
     public $attending;
@@ -61,5 +59,13 @@ class Requests extends \PhalconRest\API\BaseModel
         $this->belongsTo('event_id', 'PhalconRest\Models\Events', 'id', array(
             'alias' => 'Events'
         ));
+    }
+
+    public function beforeValidationOnCreate()
+    {
+        // auto populate the attending boolean
+        // will probably push this to a full auto detecting function
+        $this->attending = 0;
+        $this->submit_status = 'New';
     }
 }

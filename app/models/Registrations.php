@@ -25,8 +25,20 @@ class Registrations extends \PhalconRest\API\BaseModel
     public $notes;
 
     /**
+     *
+     * @var string
+     */
+    public $created_on;
+
+    /**
+     *
+     * @var string
+     */
+    public $updated_on;
+
+    /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \PhalconRest\API\BaseModel::initialize()
      */
     public function initialize()
@@ -41,17 +53,31 @@ class Registrations extends \PhalconRest\API\BaseModel
         ));
         
         $this->addBehavior(new Timestampable(array(
-            'beforeCreate' => array(
+            'beforeValidationOnCreate' => array(
                 'field' => 'created_on',
-                'format' => 'Y-m-d'
+                'format' => 'Y-m-d H:i:s'
             )
         )));
         
         $this->addBehavior(new Timestampable(array(
             'beforeUpdate' => array(
                 'field' => 'updated_on',
-                'format' => 'Y-m-d'
+                'format' => 'Y-m-d H:i:s'
             )
         )));
+    }
+
+    /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+            'id' => 'id',
+            'user_id' => 'attendee_id',
+            'notes' => 'notes',
+            'created_on' => 'created_on',
+            'updated_on' => 'updated_on',
+        );
     }
 }
