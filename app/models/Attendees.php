@@ -46,7 +46,7 @@ class Attendees extends \PhalconRest\API\BaseModel
             'alias' => 'Accounts'
         ));
         
-        $this->hasMany("user_id", "PhalconRest\Models\Registrations", "user_id", array(
+        $this->hasMany("user_id", "PhalconRest\Models\Registrations", "attendee_id", array(
             'alias' => 'Registrations'
         ));
     }
