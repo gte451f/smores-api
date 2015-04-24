@@ -15,4 +15,10 @@ class Settings extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $value;
+
+    /**
+     *
+     * @var string
+     */
+    public $help;
 }
