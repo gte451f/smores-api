@@ -13,7 +13,7 @@ class MessageBag
 
     /**
      * store all error messages here
-     * 
+     *
      * @var array
      */
     private $messageList = array();

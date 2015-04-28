@@ -25,7 +25,7 @@ class Owners extends \PhalconRest\API\BaseModel
      */
     public function initialize()
     {
-        parent::initialize();        
+        parent::initialize();
         $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
             'alias' => 'Users'
         ));
@@ -36,6 +36,7 @@ class Owners extends \PhalconRest\API\BaseModel
 
     /**
      * (non-PHPdoc)
+     * 
      * @see \PhalconRest\API\BaseModel::getParentModel()
      */
     public function getParentModel()

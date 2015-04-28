@@ -30,7 +30,6 @@ class Accounts extends \PhalconRest\API\BaseModel
      */
     public $salt;
 
-
     /**
      *
      * @var string
@@ -46,13 +45,13 @@ class Accounts extends \PhalconRest\API\BaseModel
     /**
      */
     public function initialize()
-    {        
+    {
         $this->hasMany("id", "PhalconRest\Models\Owners", "account_id", array(
             'alias' => 'Owners'
-        ));        
+        ));
         $this->hasMany("id", "PhalconRest\Models\Attendees", "account_id", array(
             'alias' => 'Attendees'
-        ));        
+        ));
         $this->hasMany("id", "PhalconRest\Models\AccountAddrs", "account_id", array(
             'alias' => 'AccountAddrs'
         ));

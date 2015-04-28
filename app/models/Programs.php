@@ -30,7 +30,7 @@ class Programs extends \PhalconRest\API\BaseModel
      * @var double
      */
     public $cost;
-    
+
     /**
      * define custom model relationships
      *
@@ -41,7 +41,7 @@ class Programs extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
+        
         $this->hasMany("id", "PhalconRest\Models\Events", "program_id", array(
             'alias' => 'Events'
         ));

@@ -74,10 +74,10 @@ class Registrations extends \PhalconRest\API\BaseModel
     {
         return array(
             'id' => 'id',
-            'user_id' => 'attendee_id',
+            'user_id' => 'user_id',
             'notes' => 'notes',
             'created_on' => 'created_on',
-            'updated_on' => 'updated_on',
+            'updated_on' => 'updated_on'
         );
     }
 }

@@ -5,7 +5,7 @@ $staging = [
     'application' => [
         'debugApp' => true
     ],
-    //enable security?
+    // enable security?
     'security' => true
 ];
 

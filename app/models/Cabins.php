@@ -16,7 +16,6 @@ class Cabins extends \PhalconRest\API\BaseModel
      */
     public $name;
 
-
     /**
      *
      * @var integer
@@ -40,7 +39,6 @@ class Cabins extends \PhalconRest\API\BaseModel
      * @var integer
      */
     public $capacity;
-
 
     /**
      * define custom model relationships

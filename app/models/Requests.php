@@ -42,6 +42,12 @@ class Requests extends \PhalconRest\API\BaseModel
     public $submit_status;
 
     /**
+     *
+     * @var string
+     */
+    public $note;
+
+    /**
      * define custom model relationships
      *
      * (non-PHPdoc)
