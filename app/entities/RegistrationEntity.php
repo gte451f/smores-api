@@ -15,21 +15,18 @@ class RegistrationEntity extends \PhalconRest\API\Entity
     {
         $query = parent::queryBuilder($count);
         
-        // skip when counting records
-        if (! $count) {
-            $config = $this->getDI()->get('config');
-            $nameSpace = $config['namespaces']['models'];
-            
-            $modelNameSpace = $nameSpace . $this->model->getModelName();            
-            $refModelNameSpace = $nameSpace . 'Attendees';
-            
-            $query->join($refModelNameSpace);
-            $columns = array(
-                "$modelNameSpace.*",
-                "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
-            );
-            $query->columns($columns);
-        }
+        $config = $this->getDI()->get('config');
+        $nameSpace = $config['namespaces']['models'];
+        
+        $modelNameSpace = $nameSpace . $this->model->getModelName();
+        $refModelNameSpace = $nameSpace . 'Attendees';
+        
+        $query->join($refModelNameSpace);
+        $columns = array(
+            "$modelNameSpace.*",
+            "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
+        );
+        $query->columns($columns);
         
         return $query;
     }

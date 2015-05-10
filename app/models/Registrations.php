@@ -52,6 +52,10 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Attendees'
         ));
         
+        $this->belongsTo("user_id", "PhalconRest\Models\Users", "id", array(
+            'alias' => 'Users'
+        ));
+        
         $this->addBehavior(new Timestampable(array(
             'beforeValidationOnCreate' => array(
                 'field' => 'created_on',
