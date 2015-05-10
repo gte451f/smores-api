@@ -35,6 +35,13 @@ class Users extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $dob;
+    
+    /**
+     * employee|attendee|owner
+     * @var string
+     */
+    public $user_type;
+    
 
     /**
      * Validations and business logic
@@ -48,5 +55,18 @@ class Users extends \PhalconRest\API\BaseModel
         if ($this->validationHasFailed() == true) {
             return false;
         }
+    }
+    
+    /**
+     * define custom model relationships
+     *
+     * (non-PHPdoc)
+     *
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
     }
 }
