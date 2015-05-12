@@ -37,10 +37,16 @@ class Users extends \PhalconRest\API\BaseModel
     public $dob;
     
     /**
-     * employee|attendee|owner
+     * Employee|Attendee|Owner
      * @var string
      */
     public $user_type;
+    
+    /**
+     * Male|Female
+     * @var string
+     */
+    public $gender;
     
 
     /**
