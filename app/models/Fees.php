@@ -4,7 +4,7 @@ namespace PhalconRest\Models;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
 
-class Programs extends \PhalconRest\API\BaseModel
+class Fees extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -29,36 +29,30 @@ class Programs extends \PhalconRest\API\BaseModel
      *
      * @var double
      */
-    public $fee;
+    public $amount;
 
     /**
-     * define custom model relationships
      *
-     * (non-PHPdoc)
-     *
-     * @see extends \PhalconRest\API\BaseModel::initialize()
+     * @var string
      */
-    public function initialize()
-    {
-        parent::initialize();
-        
-        $this->hasMany("id", "PhalconRest\Models\Events", "program_id", array(
-            'alias' => 'Events'
-        ));
-    }
+    public $basis;
+
+    /**
+     *
+     * @var string
+     */
+    public $payment_schedule;
 
     public function validation()
     {
         $this->validate(new NumericalityValidator(array(
-            'field' => 'fee'
+            'field' => 'amount'
         )));
         
         $this->validate(new Uniqueness(array(
             "field" => "name",
-            "message" => "The program name must be unique"
+            "message" => "The fee name must be unique"
         )));
-        
-        // $result = $this->validationHasFailed();
         
         if ($this->validationHasFailed() == true) {
             return false;
