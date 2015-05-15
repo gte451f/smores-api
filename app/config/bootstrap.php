@@ -162,6 +162,9 @@ set_exception_handler(function ($exception) use($app) {
         $exception->send();
     }
     
-    error_log($exception);
-    error_log($exception->getTraceAsString());
+    // Also log error details to a temp file
+    $errorMessage = date('Y-m-d H:i:s') . " Message: " . $exception->getMessage() . PHP_EOL;
+    $errorMessage .= "->File: " . $exception->getFile() . " at line: " . $exception->getLine() . PHP_EOL;
+    $errorMessage .= "->Trace: " . $exception->getTraceAsString() . PHP_EOL;
+    error_log($errorMessage, 3, "/tmp/error.log");
 });

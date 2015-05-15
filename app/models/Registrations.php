@@ -56,32 +56,23 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Users'
         ));
         
-        $this->addBehavior(new Timestampable(array(
-            'beforeValidationOnCreate' => array(
-                'field' => 'created_on',
-                'format' => 'Y-m-d H:i:s'
-            )
-        )));
+        // $this->addBehavior(new Timestampable(array(
+        // 'beforeValidationOnCreate' => array(
+        // 'field' => 'created_on',
+        // 'format' => 'Y-m-d H:i:s'
+        // )
+        // )));
         
-        $this->addBehavior(new Timestampable(array(
-            'beforeUpdate' => array(
-                'field' => 'updated_on',
-                'format' => 'Y-m-d H:i:s'
-            )
-        )));
+        // $this->addBehavior(new Timestampable(array(
+        // 'beforeUpdate' => array(
+        // 'field' => 'updated_on',
+        // 'format' => 'Y-m-d H:i:s'
+        // )
+        // )));
     }
 
-    /**
-     * Independent Column Mapping.
-     */
-    public function columnMap()
+    public function beforeValidationOnCreate()
     {
-        return array(
-            'id' => 'id',
-            'user_id' => 'user_id',
-            'notes' => 'notes',
-            'created_on' => 'created_on',
-            'updated_on' => 'updated_on'
-        );
+        $this->created_on = date('Y-m-d H:i:s');
     }
 }
