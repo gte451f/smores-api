@@ -49,7 +49,7 @@ class RegistrationEntity extends \PhalconRest\API\Entity
     {
         
         // only apply system wide fees on insert
-        if ($this->saveMode == 'insert') {
+        if ($this->saveMode == 'update') {
             return;
         }
         
@@ -58,7 +58,6 @@ class RegistrationEntity extends \PhalconRest\API\Entity
             "basis = 'Registration'"
         ));
         
-        $reg = $this->model;
         $attendee = \PhalconRest\Models\Attendees::findFirst($object->user_id);
         
         if ($attendee) {
@@ -73,7 +72,7 @@ class RegistrationEntity extends \PhalconRest\API\Entity
                 if ($charge->create() == false) {
                     throw new ValidationException("Internal error creating a registration.  This error has been logged.", array(
                         'internalCode' => '34534657',
-                        'dev' => 'Error while processing RegistratinoEntity->afterSave().  Could not create Charge record.'
+                        'dev' => 'Error while processing RegistrationEntity->afterSave().  Could not create Charge record.'
                     ), $charge->getMessages());
                 }
             }
@@ -82,6 +81,6 @@ class RegistrationEntity extends \PhalconRest\API\Entity
                 'internalCode' => '4562456786',
                 'dev' => 'Error while processing RegistratinoEntity->afterSave(). Could not find a valid attendee record.'
             ), $charge->getMessages());
-        }
+        }        
     }
 }

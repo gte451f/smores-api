@@ -51,7 +51,7 @@ class Employees extends \PhalconRest\API\BaseModel
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \PhalconRest\API\BaseModel::getParentModel()
      */
     public function getParentModel()

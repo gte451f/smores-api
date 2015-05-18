@@ -55,18 +55,27 @@ class Accounts extends \PhalconRest\API\BaseModel
         $this->hasMany("id", "PhalconRest\Models\AccountAddrs", "account_id", array(
             'alias' => 'AccountAddrs'
         ));
-        $this->addBehavior(new Timestampable(array(
-            'beforeCreate' => array(
-                'field' => 'created_on',
-                'format' => 'Y-m-d'
-            )
-        )));
-        
-        $this->addBehavior(new Timestampable(array(
-            'beforeUpdate' => array(
-                'field' => 'updated_on',
-                'format' => 'Y-m-d'
-            )
-        )));
+        $this->hasMany("id", "PhalconRest\Models\Checks", "account_id", array(
+            'alias' => 'Checks'
+        ));
+        $this->hasMany("id", "PhalconRest\Models\Cards", "account_id", array(
+            'alias' => 'Cards'
+        ));
+        $this->hasMany("id", "PhalconRest\Models\Payments", "account_id", array(
+            'alias' => 'Payments'
+        ));
+        $this->hasMany("id", "PhalconRest\Models\Charges", "account_id", array(
+            'alias' => 'Charges'
+        ));
+    }
+
+    public function beforeValidationOnCreate()
+    {
+        $this->created_on = date('Y-m-d');
+    }
+
+    public function beforeValidationOnUpdate()
+    {
+        $this->updated_on = date('Y-m-d');
     }
 }

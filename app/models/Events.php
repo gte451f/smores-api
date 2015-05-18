@@ -69,12 +69,12 @@ class Events extends \PhalconRest\API\BaseModel
      * @var double
      */
     public $fee;
-    
+
     /**
      *
      * @var string
      */
-    public $fee_description;    
+    public $fee_description;
 
     /**
      * define custom model relationships

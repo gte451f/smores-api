@@ -35,19 +35,20 @@ class Users extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $dob;
-    
+
     /**
      * Employee|Attendee|Owner
+     * 
      * @var string
      */
     public $user_type;
-    
+
     /**
      * Male|Female
+     * 
      * @var string
      */
     public $gender;
-    
 
     /**
      * Validations and business logic
@@ -62,7 +63,7 @@ class Users extends \PhalconRest\API\BaseModel
             return false;
         }
     }
-    
+
     /**
      * define custom model relationships
      *
@@ -73,6 +74,5 @@ class Users extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
     }
 }

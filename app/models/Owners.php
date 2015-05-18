@@ -36,7 +36,7 @@ class Owners extends \PhalconRest\API\BaseModel
 
     /**
      * (non-PHPdoc)
-     * 
+     *
      * @see \PhalconRest\API\BaseModel::getParentModel()
      */
     public function getParentModel()

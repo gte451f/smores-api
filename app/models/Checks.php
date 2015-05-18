@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
-class Payments extends \PhalconRest\API\BaseModel
+class Checks extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -18,39 +18,33 @@ class Payments extends \PhalconRest\API\BaseModel
 
     /**
      *
-     * @var integer
+     * @var string
      */
-    public $card_id;
-
-    /**
-     *
-     * @var integer
-     */
-    public $check_id;
+    public $number;
 
     /**
      *
      * @var string
      */
-    public $external_id;
+    public $date;
 
     /**
      *
      * @var string
      */
-    public $created_on;
+    public $account_number;
 
     /**
      *
      * @var string
      */
-    public $settled_on;
+    public $routing_number;
 
     /**
      *
-     * @var double
+     * @var string
      */
-    public $amount;
+    public $name_on_check;
 
     /**
      * (non-PHPdoc)
@@ -64,17 +58,8 @@ class Payments extends \PhalconRest\API\BaseModel
             'alias' => 'Accounts'
         ));
         
-        $this->belongsTo("check_id", "PhalconRest\Models\Checks", "id", array(
-            'alias' => 'Checks'
+        $this->hasOne("id", "PhalconRest\Models\Payments", "check_id", array(
+            'alias' => 'Payments'
         ));
-        
-        $this->belongsTo("card_id", "PhalconRest\Models\Cards", "id", array(
-            'alias' => 'Cards'
-        ));
-    }
-
-    public function beforeValidationOnCreate()
-    {
-        $this->created_on = date('Y-m-d H:i:s');
     }
 }

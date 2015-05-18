@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
-class Payments extends \PhalconRest\API\BaseModel
+class Cards extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -18,18 +18,6 @@ class Payments extends \PhalconRest\API\BaseModel
 
     /**
      *
-     * @var integer
-     */
-    public $card_id;
-
-    /**
-     *
-     * @var integer
-     */
-    public $check_id;
-
-    /**
-     *
      * @var string
      */
     public $external_id;
@@ -42,15 +30,45 @@ class Payments extends \PhalconRest\API\BaseModel
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    public $settled_on;
+    public $allow_reoccuring;
 
     /**
      *
-     * @var double
+     * @var string
      */
-    public $amount;
+    public $expiration_month;
+
+    /**
+     *
+     * @var string
+     */
+    public $expiration_year;
+
+    /**
+     *
+     * @var string
+     */
+    public $name_on_card;
+
+    /**
+     *
+     * @var string
+     */
+    public $number;
+
+    /**
+     *
+     * @var string
+     */
+    public $vendor;
+
+    /**
+     *
+     * @var integer
+     */
+    public $is_debit;
 
     /**
      * (non-PHPdoc)
@@ -64,17 +82,8 @@ class Payments extends \PhalconRest\API\BaseModel
             'alias' => 'Accounts'
         ));
         
-        $this->belongsTo("check_id", "PhalconRest\Models\Checks", "id", array(
-            'alias' => 'Checks'
+        $this->hasMany("id", "PhalconRest\Models\Payments", "card_id", array(
+            'alias' => 'Payments'
         ));
-        
-        $this->belongsTo("card_id", "PhalconRest\Models\Cards", "id", array(
-            'alias' => 'Cards'
-        ));
-    }
-
-    public function beforeValidationOnCreate()
-    {
-        $this->created_on = date('Y-m-d H:i:s');
     }
 }
