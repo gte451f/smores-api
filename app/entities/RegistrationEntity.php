@@ -47,7 +47,6 @@ class RegistrationEntity extends \PhalconRest\API\Entity
      */
     public function afterSave($object, $id)
     {
-        
         // only apply system wide fees on insert
         if ($this->saveMode == 'update') {
             return;
