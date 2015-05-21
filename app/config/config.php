@@ -25,25 +25,17 @@ $config = [
         'publicUrl' => 'http://localhost:8080/phalcon-json-api/',
         'debugApp' => false
     ],
-    'database' => [
-        'adapter' => 'Mysql',
-        'host' => 'localhost',
-        'username' => 'api',
-        'password' => 'api',
-        'dbname' => 'smores'
-    ],
     'namespaces' => [
         'models' => "PhalconRest\\Models\\",
         'controllers' => "PhalconRest\\Controllers\\",
         'libraries' => "PhalconRest\\Libraries\\",
         'entities' => "PhalconRest\\Entities\\"
     ],
+    // used as a system wide prefix to all file storage paths
     'fileStorage' => [
         'basePath' => '/tmp/'
     ]
-] // uses as a system wide prefix to all file storage paths
-
-;
+];
 
 // override production config by enviroment config
 $override_path = dirname(__FILE__) . DIRECTORY_SEPARATOR . APPLICATION_ENV . '.php';

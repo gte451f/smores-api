@@ -1,11 +1,18 @@
 <?php
 // Ensure production specific settings
 // app/config/production.php
-$staging = [
+$production = [
     'application' => [
         'debugApp' => true
     ],
-    'security' => true
+    'security' => true,
+    'database' => [
+        'adapter' => 'Mysql',
+        'host' => '##localhost##',
+        'username' => '##username##',
+        'password' => '##password##',
+        'dbname' => '##dbname##'
+    ],
 ];
 
-return $staging;
+return $production;

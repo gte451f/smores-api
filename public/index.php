@@ -6,7 +6,7 @@ defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', str_replace('/public', '/app/', __DIR__));
 
 use \PhalconRest\Util\HTTPException;
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
 
 try {
     
@@ -20,11 +20,11 @@ try {
      * read in config values
      */
     require_once APPLICATION_PATH . 'config/config.php';
-
+    
     /**
      * bootstrap Phalcon Auto Loader
      */
-    require_once APPLICATION_PATH . 'config/loader.php';    
+    require_once APPLICATION_PATH . 'config/loader.php';
     
     /**
      * read in services
@@ -51,10 +51,9 @@ try {
     ));
     
     // d($e->getTrace());
-} catch (PDOException $e) {
-    
-    echo $e->getMessage();
+} catch (PDOException $e) {    
+    echo "<h3>Error:" . $e->getMessage() . "</h3>";
+    echo "<hr /> <pre>";
     print_r($e->getTrace());
-    
-    print_r($e->getTrace());
+    echo "</pre>";
 }
