@@ -3,7 +3,9 @@
 // app/config/production.php
 $production = [
     'application' => [
-        'debugApp' => true
+        'cacheDir' => '/tmp/cache/',
+        'publicUrl' => '##publicurl##',
+        'debugApp' => false
     ],
     'security' => true,
     'database' => [

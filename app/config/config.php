@@ -12,7 +12,6 @@ require_once APPLICATION_PATH . 'helpers/base.php';
 // app/config/config.php
 $config = [
     'application' => [
-        'cacheDir' => '/tmp/cache/',
         'appDir' => APPLICATION_PATH,
         "controllersDir" => APPLICATION_PATH . 'controllers/',
         "modelsDir" => APPLICATION_PATH . 'models/',
@@ -21,9 +20,7 @@ $config = [
         "exceptionsDir" => APPLICATION_PATH . 'exceptions/',
         "librariesDir" => APPLICATION_PATH . 'libraries/',
         'baseUri' => '/',
-        'basePath' => '/',
-        'publicUrl' => 'http://localhost:8080/phalcon-json-api/',
-        'debugApp' => false
+        'basePath' => '/'
     ],
     'namespaces' => [
         'models' => "PhalconRest\\Models\\",
@@ -37,10 +34,16 @@ $config = [
     ]
 ];
 
-// override production config by enviroment config
-$override_path = dirname(__FILE__) . DIRECTORY_SEPARATOR . APPLICATION_ENV . '.php';
-
-// log the correct combination of config values
-$config = file_exists($override_path) ? array_merge_recursive_replace($config, require (APPLICATION_ENV . '.php')) : $config;
+// incorporate the correct environmental config file
+// TODO throw error if no file is found?
+$overridePath = APPLICATION_PATH . 'config/' . APPLICATION_ENV . '.php';
+if (file_exists($overridePath)) {
+    $config = array_merge_recursive_replace($config, require ($overridePath));
+} else {
+    throw new HTTPException("Fatal Exception Caught.", 500, array(
+        'dev' => "Invalid Envronmental Config!  Could not load the specific config file.",
+        'internalCode' => '23897293759275'
+    ));
+}
 
 return new \Phalcon\Config($config);

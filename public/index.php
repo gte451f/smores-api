@@ -6,7 +6,6 @@ defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', str_replace('/public', '/app/', __DIR__));
 
 use \PhalconRest\Util\HTTPException;
-// error_reporting(E_ALL);
 
 try {
     
