@@ -17,6 +17,11 @@ use PhalconRest\API\Inflector;
 // for keeping time
 use PHPBenchTime\Timer;
 
+// for password and credit card encryption
+use Phalcon\Crypt;
+use Phalcon\Security;
+
+
 $T = new \PHPBenchTime\Timer();
 $T->start();
 
@@ -99,9 +104,27 @@ $di->setShared('memory', function () {
     return new \Phalcon\Mvc\Model\MetaData\Memory();
 });
 
-//
+// phalcon inflector?
 $di->setShared('inflector', function () {
     return new Inflector();
+});
+
+// one way to do reversable encryption
+$di->setShared('crypt', function () {
+    $crypt = new Crypt();
+    
+    // Set a global encryption key
+    $crypt->setKey('%31.1e$i86e$f!8jz');
+    return $crypt;
+});
+
+// one way to do reversable encryption
+$di->setShared('security', function () {
+    $security = new Security();
+    
+    // Set a global encryption key
+    $security->setWorkFactor(12);
+    return $security;
 });
 
 /**

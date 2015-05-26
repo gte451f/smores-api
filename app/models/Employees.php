@@ -44,7 +44,7 @@ class Employees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
+        $this->belongsTo("user_id", "PhalconRest\Models\Users", "id", array(
             'alias' => 'Users'
         ));
     }
@@ -54,8 +54,15 @@ class Employees extends \PhalconRest\API\BaseModel
      *
      * @see \PhalconRest\API\BaseModel::getParentModel()
      */
-    public function getParentModel()
+    // public function getParentModel()
+    // {
+    // return 'Users';
+    // }
+    public function beforeValidationOnCreate()
     {
-        return 'Users';
+        $this->active = 1;
+        $security = $this->getDI()->get('security');
+        $this->password = $security->hash($this->password);
+        $this->salt = substr(md5(rand()), 0, 45);
     }
 }
