@@ -58,11 +58,19 @@ class Employees extends \PhalconRest\API\BaseModel
     // {
     // return 'Users';
     // }
+    
+    /**
+     * set some default values before we create a new employee record
+     */
     public function beforeValidationOnCreate()
     {
         $this->active = 1;
+        
+        // assign a random string
+        $this->salt = substr(md5(rand()), 0, 45);
+        
+        // encrypt password
         $security = $this->getDI()->get('security');
         $this->password = $security->hash($this->password);
-        $this->salt = substr(md5(rand()), 0, 45);
     }
 }
