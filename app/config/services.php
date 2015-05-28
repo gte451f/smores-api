@@ -21,7 +21,6 @@ use PHPBenchTime\Timer;
 use Phalcon\Crypt;
 use Phalcon\Security;
 
-
 $T = new \PHPBenchTime\Timer();
 $T->start();
 
@@ -92,6 +91,17 @@ $di->set('modelsCache', function () {
     ));
     
     return $cache;
+});
+
+/**
+ * load an authenticator w/ local adapter
+ * called "auth" since the API expects a service of this name for subsequent token checks
+ */
+$di->setShared('auth', function () use($config) {
+    $adapter = new \PhalconRest\Libraries\Authentication\Local();
+    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
+    $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
+    return $auth;
 });
 
 // used in model?

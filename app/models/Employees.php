@@ -73,4 +73,17 @@ class Employees extends \PhalconRest\API\BaseModel
         $security = $this->getDI()->get('security');
         $this->password = $security->hash($this->password);
     }
+
+    /**
+     * set some default values before we create a new employee record
+     */
+    public function beforeValidationOnUpdate()
+    {
+        // only update the password if a new one is provided
+        if (strlen($this->password) >= 4) {
+            // encrypt password
+            $security = $this->getDI()->get('security');
+            $this->password = $security->hash($this->password);
+        }
+    }
 }
