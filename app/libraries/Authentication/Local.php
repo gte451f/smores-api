@@ -51,9 +51,7 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
             case 1:
                 $user = $users->getFirst();
                 // compare password
-                $proposed = hash('sha512', $user->salt . $password);
                 $security = $this->di->get('security');
-                
                 if ($security->checkHash($password, $user->password)) {
                     // The password is valid
                     return true;
