@@ -3,8 +3,7 @@
 /**
  * collection of routes to support for user controller
  */
-return call_user_func(function ()
-{
+return call_user_func(function () {
     $routes = new \Phalcon\Mvc\Micro\Collection();
     
     // VERSION NUMBER SHOULD BE FIRST URL PARAMETER, ALWAYS
@@ -17,14 +16,23 @@ return call_user_func(function ()
     $routes->options('/', 'optionsBase');
     $routes->options('/{id}', 'optionsOne');
     
-    $routes->get('/session_check', 'session_check');
-    
-    $routes->get('/login', 'login');
     // First paramter is the route, which with the collection prefix here would be GET /user/
     // Second paramter is the function name of the Controller.
-    $routes->post('/login', 'login');
-    // This is exactly the same execution as GET, but the Response has no body.
+    
+    // custom routes
+    $routes->get('/session_check', 'session_check');
     $routes->get('/logout', 'logout');
+    
+    $routes->post('/login', 'login');
+    $routes->post('/reminder', 'reminder');
+    $routes->post('/activate', 'activate');
+    $routes->post('/reset', 'reset');
+    
+    // copies used mostly for testing
+    $routes->get('/login', 'login');
+    // $routes->get('/activate', 'activate');
+    $routes->get('/reminder', 'reminder');
+    $routes->get('/reset', 'reset');
     
     return $routes;
 });

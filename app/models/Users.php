@@ -74,5 +74,14 @@ class Users extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
+        
+        $this->hasOne('id', 'PhalconRest\Models\Owners', 'user_id', array(
+            'alias' => 'Owners'
+        ));
+        
+        $this->hasOne('id', 'PhalconRest\Models\Attendees', 'user_id', array(
+            'alias' => 'Attendees'
+        ));
+        
     }
 }

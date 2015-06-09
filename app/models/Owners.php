@@ -17,6 +17,19 @@ class Owners extends \PhalconRest\API\BaseModel
     public $account_id;
 
     /**
+     * 0 | 1
+     * @var integer
+     */
+    public $primary_contact;
+    
+    /**
+     * Mother|Father|Grand Parent|Other|Guardian
+     * 
+     * @var string
+     */
+    public $relation;
+
+    /**
      * define custom model relationships
      *
      * (non-PHPdoc)

@@ -28,7 +28,13 @@ class Accounts extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $salt;
+    public $active;
+
+    /**
+     *
+     * @var number
+     */
+    public $code;
 
     /**
      *
@@ -72,10 +78,25 @@ class Accounts extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d');
+        
+        // assign a random string to the code
+        $this->code = substr(md5(rand()), 0, 45);
+        $this->active = 'Inactive';
+        
+        // encrypt password
+        $security = $this->getDI()->get('security');
+        $this->password = $security->hash($this->password);
     }
 
     public function beforeValidationOnUpdate()
     {
         $this->updated_on = date('Y-m-d');
+        
+        // only update the password if a new one is provided
+        if (strlen($this->password) >= 8 and strlen($this->password) !== 60) {
+            // encrypt password
+            $security = $this->getDI()->get('security');
+            $this->password = $security->hash($this->password);
+        }
     }
 }
