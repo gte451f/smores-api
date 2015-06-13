@@ -38,14 +38,14 @@ class Users extends \PhalconRest\API\BaseModel
 
     /**
      * Employee|Attendee|Owner
-     * 
+     *
      * @var string
      */
     public $user_type;
 
     /**
      * Male|Female
-     * 
+     *
      * @var string
      */
     public $gender;
@@ -82,6 +82,5 @@ class Users extends \PhalconRest\API\BaseModel
         $this->hasOne('id', 'PhalconRest\Models\Attendees', 'user_id', array(
             'alias' => 'Attendees'
         ));
-        
     }
 }

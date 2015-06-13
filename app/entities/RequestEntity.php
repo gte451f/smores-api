@@ -35,7 +35,7 @@ class RequestEntity extends \PhalconRest\API\Entity
     {
         $request = $this->model->findFirst($id);
         
-        $this->toggleFees($request);        
+        $this->toggleFees($request);
     }
 
     /**

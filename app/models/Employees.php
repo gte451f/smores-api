@@ -80,7 +80,7 @@ class Employees extends \PhalconRest\API\BaseModel
     public function beforeValidationOnUpdate()
     {
         // only update the password if a new one is provided
-        if (strlen($this->password) >= 8 AND strlen($this->password) !== 60) {
+        if (strlen($this->password) >= 8 and strlen($this->password) !== 60) {
             // encrypt password
             $security = $this->getDI()->get('security');
             $this->password = $security->hash($this->password);

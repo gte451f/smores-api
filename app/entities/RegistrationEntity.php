@@ -18,6 +18,11 @@ class RegistrationEntity extends \PhalconRest\API\Entity
     {
         $query = parent::queryBuilder($count);
         
+        // no need to proceed for simple counts
+        if ($count) {
+            return $query;
+        }
+        
         $config = $this->getDI()->get('config');
         $nameSpace = $config['namespaces']['models'];
         
@@ -80,6 +85,6 @@ class RegistrationEntity extends \PhalconRest\API\Entity
                 'internalCode' => '4562456786',
                 'dev' => 'Error while processing RegistratinoEntity->afterSave(). Could not find a valid attendee record.'
             ), $charge->getMessages());
-        }        
+        }
     }
 }
