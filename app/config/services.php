@@ -97,9 +97,17 @@ $di->set('modelsCache', function () {
  * load an authenticator w/ local adapter
  * called "auth" since the API expects a service of this name for subsequent token checks
  */
-$di->setShared('auth', function () use($config) {
-    $adapter = new \PhalconRest\Libraries\Authentication\Local();
-    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
+$di->setShared('auth', function ($type = 'Employee') use($config) {
+    
+    if ($type == 'Employee') {
+        $adapter = new \PhalconRest\Libraries\Authentication\Local();
+        $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
+    } else {
+        // assume type is Account
+        $adapter = new \PhalconRest\Libraries\Authentication\Local();
+        $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
+    }
+    
     $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
     return $auth;
 });

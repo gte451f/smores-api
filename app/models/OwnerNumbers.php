@@ -1,6 +1,11 @@
 <?php
 namespace PhalconRest\Models;
 
+use Phalcon\Mvc\Model\Validator;
+use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
+use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
+
+
 class OwnerNumbers extends \PhalconRest\API\BaseModel
 {
 
@@ -33,4 +38,31 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $number;
+    
+    
+    /**
+     * validatoni owern data
+     */
+    public function validation()
+    {
+        $this->validate(new InclusionInValidator(array(
+            'field' => 'phone_type',
+            'domain' => array(
+                'Mobile',
+                'Office',
+                'Home',
+                'Other'
+            )
+        )));
+    
+        $this->validate(new StringLengthValidator(array(
+            "field" => 'number',
+            'max' => 15,
+            'min' => 10,
+            'messageMaximum' => 'A phone number must be less than 15',
+            'messageMinimum' => 'A phone number must be greater than 9'
+        )));
+        
+        return $this->validationHasFailed() != true;
+    }
 }

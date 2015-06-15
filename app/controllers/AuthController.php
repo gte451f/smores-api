@@ -15,9 +15,14 @@ class AuthController extends \Phalcon\DI\Injectable
     {
         $di = \Phalcon\DI::getDefault();
         $this->setDI($di);
-        // the default auth library
-        // named to work with underlying api
-        $this->auth = $this->getDI()->get('auth');
+        
+        // what type of auth is the client requesting be performed?
+        $type = $this->request->getPost('type');
+        
+        // load the default auth library, pass in the client requested type employee | account
+        $this->auth = $this->getDI()->get('auth', [
+            $type
+        ]);
     }
 
     /**
@@ -32,8 +37,8 @@ class AuthController extends \Phalcon\DI\Injectable
         ));
         $password = $this->request->getPost('password');
         
-        // $userName = 'fred';
-        // $password = 'password';
+        $userName = 'foo';
+        $password = '123456789';
         
         if (strlen($password) < 2 or strlen($userName) < 2) {
             throw new HTTPException("Bad credentials supplied.", 400, array(
@@ -44,6 +49,7 @@ class AuthController extends \Phalcon\DI\Injectable
         
         // let's try local auth instead
         $result = $this->auth->authenticate($userName, $password);
+        
         if ($result == false) {
             throw new HTTPException("Bad credentials supplied.", 401, array(
                 'dev' => "Supplied credentials were not valid. UserName: $userName",
@@ -56,6 +62,109 @@ class AuthController extends \Phalcon\DI\Injectable
         // return the basic data needed to authenticate future requests
         // in our case, a token and expiration date
         return (array) $profile;
+    }
+
+    /**
+     * attempt to create a new account based on supplied values
+     * roll back records if the new action fails
+     * rely on underlying models to validate data...for the most part
+     */
+    public function create()
+    {
+        $request = $this->getDI()->get('request');
+        $post = $request->getPost();
+        
+        // check that the requisite fields exist
+        $fieldList = array(
+            'last_name',
+            'first_name',
+            'email',
+            'gender',
+            'last_name',
+            'number',
+            'password',
+            'password_confirm',
+            'phone_type',
+            'relationship'
+        );
+        
+        // verify that all the required fields are present before continuing
+        foreach ($fieldList as $field) {
+            if (! isset($post[$field])) {
+                throw new HTTPException("Incomplete account data submitted.", 400, array(
+                    'dev' => "Not all required data fields were supplied.  Missing: $field",
+                    'internalCode' => '891316819464749684'
+                ));
+            }
+        }
+        
+        // attempt to create account
+        $account = new \PhalconRest\Models\Accounts();
+        if ($account->create() == false) {
+            throw new ValidationException("Internal error adding new account", array(
+                'internalCode' => '78498119519',
+                'dev' => 'Error while attempting to create a brand new account'
+            ), $account->getMessages());
+        } else {
+            // proceed to next step
+            $user = new \PhalconRest\Models\Users();
+            $user->first_name = $post['first_name'];
+            $user->last_name = $post['last_name'];
+            $user->user_type = 'Owner';
+            $user->gender = $post['gender'];
+            $user->email = $post['email'];
+            $user->password = $post['password'];
+            if ($user->create() == false) {
+                throw new ValidationException("Internal error adding new user", array(
+                    'internalCode' => '7891351889184',
+                    'dev' => 'Error while attempting to create a brand new user'
+                ), $user->getMessages());
+                // roll back account
+                $account->delete();
+            } else {
+                // proceed to next step
+                $owner = new \PhalconRest\Models\Owners();
+                $owner->account_id = $account->id;
+                $owner->user_id = $user->id;
+                $owner->relationship = $post['relationship'];
+                if ($owner->create() == false) {
+                    throw new ValidationException("Internal error adding new owner", array(
+                        'internalCode' => '98616381',
+                        'dev' => 'Error while attempting to create a brand new owner'
+                    ), $owner->getMessages());
+                    // roll back account
+                    $account->delete();
+                    // roll back user
+                    $user->delete();
+                } else {
+                    // proceed to last step
+                    $number = new \PhalconRest\Models\OwnerNumbers();
+                    $number->user_id = $user->id;
+                    $number->phone_type = $post['phone_type'];
+                    $number->number = $post['number'];
+                    $number->primary = 1;
+                    if ($number->create() == false) {
+                        throw new ValidationException("Internal error adding new phone number", array(
+                            'internalCode' => '8941351968151313546494',
+                            'dev' => 'Error while attempting to create a brand new phone number'
+                        ), $number->getMessages());
+                        // roll back account
+                        $account->delete();
+                        // roll back user
+                        $user->delete();
+                        // roll back owner
+                        $owner->delete();
+                    } else {
+                        // success!
+                        return array(
+                            'status' => 'Success'
+                        );
+                    }
+                }
+            }
+        }
+        
+        $foo = 1;
     }
 
     /**
@@ -107,7 +216,11 @@ class AuthController extends \Phalcon\DI\Injectable
 
     /**
      * custom function to take in a username and activation code
-     * if a match is found, switch the account from inactive to active
+     * if a match is found on three criteria
+     * 1)active
+     * 2)code
+     * 3)user_name
+     * ....switch the account from inactive to active
      *
      * @throws HTTPException
      * @return array
@@ -163,9 +276,58 @@ class AuthController extends \Phalcon\DI\Injectable
     }
 
     /**
+     * check for a code and password
+     * attempt to reset the accounts password so long as the code is valid
+     *
+     * @throws HTTPException
+     * @return array
+     *
+     */
+    public function reset()
+    {
+        $password = $this->request->getPost("password", array(
+            "string",
+            "alphanum"
+        ));
+        $confirm = $this->request->getPost("confirm", array(
+            "string",
+            "alphanum"
+        ));
+        $code = $this->request->getPost('code');
+        
+        $search = array(
+            'code' => $code
+        );
+        
+        $accounts = \PhalconRest\Models\Accounts::query()->where("active = 'Reset'")
+            ->andWhere("code = :code:")
+            ->bind($search)
+            ->execute();
+        
+        $account = $accounts->getFirst();
+        
+        if ($account) {
+            // $account = $accounts->getFirst();
+            $account->active = 'Active';
+            $account->password = $password;
+            $account->code = NULL;
+            $result = $account->save();
+            return array(
+                'status' => 'Active',
+                'result' => $result
+            );
+        } else {
+            throw new HTTPException("Bad credentials supplied.", 400, array(
+                'dev' => "Could not save new password to account. Code: $code",
+                'internalCode' => '891819816131634'
+            ));
+        }
+    }
+
+    /**
      * custom function to mark an account for password reset
-     * for active accounts, move their status to Rest and create a new CODE
-     * otherwise thrown an error
+     * for active accounts, move their status to Reset and create a new CODE
+     * otherwise throw an error
      *
      * @throws HTTPException
      * @return array

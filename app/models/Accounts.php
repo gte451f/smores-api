@@ -2,6 +2,7 @@
 namespace PhalconRest\Models;
 
 use Phalcon\Mvc\Model\Behavior\Timestampable as Timestampable;
+use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
 
 class Accounts extends \PhalconRest\API\BaseModel
 {
@@ -16,25 +17,7 @@ class Accounts extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $user_name;
-
-    /**
-     *
-     * @var string
-     */
-    public $password;
-
-    /**
-     *
-     * @var string
-     */
-    public $active;
-
-    /**
-     *
-     * @var number
-     */
-    public $code;
+    public $notes;
 
     /**
      *
@@ -75,28 +58,38 @@ class Accounts extends \PhalconRest\API\BaseModel
         ));
     }
 
+    /**
+     * set created_on when inserting
+     */
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d');
         
-        // assign a random string to the code
-        $this->code = substr(md5(rand()), 0, 45);
+        // all accounts start as "Inactive" and require activation
         $this->active = 'Inactive';
-        
-        // encrypt password
-        $security = $this->getDI()->get('security');
-        $this->password = $security->hash($this->password);
     }
 
+    /**
+     * set updated on before updating
+     */
     public function beforeValidationOnUpdate()
     {
         $this->updated_on = date('Y-m-d');
+    }
+
+    /**
+     * validate that notes isn't too long
+     */
+    public function validation()
+    {
+        $this->validate(new StringLengthValidator(array(
+            "field" => 'notes',
+            'max' => 500,
+            'min' => 0,
+            'messageMaximum' => 'Notes field is too long, please enter a value less than 500 characters in length',
+            'messageMinimum' => 'This should never display'
+        )));
         
-        // only update the password if a new one is provided
-        if (strlen($this->password) >= 8 and strlen($this->password) !== 60) {
-            // encrypt password
-            $security = $this->getDI()->get('security');
-            $this->password = $security->hash($this->password);
-        }
+        return $this->validationHasFailed() != true;
     }
 }

@@ -24,6 +24,7 @@ return call_user_func(function () {
     $routes->get('/logout', 'logout');
     
     $routes->post('/login', 'login');
+    $routes->post('/create', 'create');
     $routes->post('/reminder', 'reminder');
     $routes->post('/activate', 'activate');
     $routes->post('/reset', 'reset');
@@ -31,8 +32,8 @@ return call_user_func(function () {
     // copies used mostly for testing
     $routes->get('/login', 'login');
     // $routes->get('/activate', 'activate');
-    $routes->get('/reminder', 'reminder');
-    $routes->get('/reset', 'reset');
+    // $routes->get('/reminder', 'reminder');
+    // $routes->get('/reset', 'reset');
     
     return $routes;
 });

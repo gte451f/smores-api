@@ -1,6 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
+use Phalcon\Mvc\Model\Validator;
+use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
+
 class Owners extends \PhalconRest\API\BaseModel
 {
 
@@ -18,7 +21,7 @@ class Owners extends \PhalconRest\API\BaseModel
 
     /**
      * 0 | 1
-     * 
+     *
      * @var integer
      */
     public $primary_contact;
@@ -28,7 +31,7 @@ class Owners extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $relation;
+    public $relationship;
 
     /**
      * define custom model relationships
@@ -46,6 +49,10 @@ class Owners extends \PhalconRest\API\BaseModel
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
+        
+        $this->hasMany("user_id", "PhalconRest\Models\OwnerNumbers", "user_id", array(
+            'alias' => 'OwnerNumbers'
+        ));
     }
 
     /**
@@ -56,5 +63,24 @@ class Owners extends \PhalconRest\API\BaseModel
     public function getParentModel()
     {
         return 'Users';
+    }
+
+    /**
+     * validatoni owern data
+     */
+    public function validation()
+    {
+        $this->validate(new InclusionInValidator(array(
+            'field' => 'relationship',
+            'domain' => array(
+                'Mother',
+                'Father',
+                'Guardian',
+                'Grand Parent',
+                'Other'
+            )
+        )));
+        
+        return $this->validationHasFailed() != true;
     }
 }

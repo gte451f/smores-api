@@ -14,12 +14,6 @@ class Attendees extends \PhalconRest\API\BaseModel
      *
      * @var integer
      */
-    public $active;
-
-    /**
-     *
-     * @var integer
-     */
     public $account_id;
 
     /**
