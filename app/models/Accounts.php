@@ -30,6 +30,13 @@ class Accounts extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $updated_on;
+    
+    /**
+     *
+     * @var string
+     */
+    public $active;
+    
 
     /**
      */

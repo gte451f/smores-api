@@ -37,14 +37,14 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
     /**
      * check the username & password against the local user table source
      *
-     * @param string $user_name            
+     * @param string $email            
      * @param false $password            
      * @return boolean
      */
-    function authenticate($userName, $password)
+    function authenticate($email, $password)
     {
-        $users = \PhalconRest\Models\Employees::find(array(
-            "user_name = '$userName'",
+        $users = \PhalconRest\Models\Users::find(array(
+            "email = '$email'",
             "active" => "Active"
         ));
         switch ($users->count()) {

@@ -31,28 +31,27 @@ class AuthController extends \Phalcon\DI\Injectable
      */
     public function login()
     {
-        $userName = $this->request->getPost("username", array(
-            "string",
-            "alphanum"
+        $email = $this->request->getPost("email", array(
+            "email"
         ));
         $password = $this->request->getPost('password');
         
-        $userName = 'foo';
-        $password = '123456789';
+        // $userName = 'foo';
+        // $password = '123456789';
         
-        if (strlen($password) < 2 or strlen($userName) < 2) {
+        if (strlen($password) < 2 or strlen($email) < 2) {
             throw new HTTPException("Bad credentials supplied.", 400, array(
-                'dev' => "Supplied credentials were not valid. UserName: $userName",
+                'dev' => "Supplied credentials were not valid. Email: $email",
                 'internalCode' => '3446567'
             ));
         }
         
         // let's try local auth instead
-        $result = $this->auth->authenticate($userName, $password);
+        $result = $this->auth->authenticate($email, $password);
         
         if ($result == false) {
             throw new HTTPException("Bad credentials supplied.", 401, array(
-                'dev' => "Supplied credentials were not valid. UserName: $userName",
+                'dev' => "Supplied credentials were not valid. Email: $email",
                 'internalCode' => '304958034850'
             ));
         } else {
@@ -99,6 +98,7 @@ class AuthController extends \Phalcon\DI\Injectable
         }
         
         // attempt to create account
+        // use transaction here?
         $account = new \PhalconRest\Models\Accounts();
         if ($account->create() == false) {
             throw new ValidationException("Internal error adding new account", array(
@@ -163,8 +163,6 @@ class AuthController extends \Phalcon\DI\Injectable
                 }
             }
         }
-        
-        $foo = 1;
     }
 
     /**
@@ -215,11 +213,11 @@ class AuthController extends \Phalcon\DI\Injectable
     }
 
     /**
-     * custom function to take in a username and activation code
+     * custom function to take in a email and activation code
      * if a match is found on three criteria
      * 1)active
      * 2)code
-     * 3)user_name
+     * 3)email
      * ....switch the account from inactive to active
      *
      * @throws HTTPException
@@ -227,11 +225,13 @@ class AuthController extends \Phalcon\DI\Injectable
      */
     public function activate()
     {
-        $userName = $this->request->getPost("userName", array(
+        $email = $this->request->getPost("email", array(
+            "email"
+        ));
+        $code = $this->request->getPost("code", array(
             "string",
             "alphanum"
         ));
-        $code = $this->request->getPost('code');
         
         // $userName = $this->request->get("userName", array(
         // "string",
@@ -239,37 +239,58 @@ class AuthController extends \Phalcon\DI\Injectable
         // ));
         // $code = $this->request->get('code');
         
-        if (strlen($code) < 25 or strlen($userName) < 2) {
+        if (strlen($code) < 25 or strlen($email) < 6) {
             throw new HTTPException("Bad activation data supplied.", 400, array(
-                'dev' => "Supplied activation username and code were not valid. UserName: $userName",
+                'dev' => "Supplied activation email and code were not valid. Email: $email",
                 'internalCode' => '98411916891891'
             ));
         }
         
         $search = array(
-            'user_name' => $userName,
+            'email' => $email,
             'code' => $code
         );
         
-        $accounts = \PhalconRest\Models\Accounts::query()->where("user_name = :user_name:")
+        $users = \PhalconRest\Models\Users::query()->where("email = :email:")
             ->andWhere("active = 'Inactive'")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
         
-        $account = $accounts->getFirst();
+        $user = $users->getFirst();
         
-        if ($account) {
-            // $account = $accounts->getFirst();
-            $account->active = 'Active';
-            $result = $account->save();
+        if ($user) {
+            $user->active = 'Active';
+            $user->code = NULL;
+            $result = $user->save();
+            
+            // update account as well
+            if ($user->user_type == 'Owner') {
+                $owner = $user->Owners;
+                $account = $owner->Accounts;
+                $account->active = 'Active';
+                $result = $account->save();
+                
+                if ($result) {
+                    return array(
+                        'status' => 'Active',
+                        'result' => $result
+                    );
+                } else {
+                    throw new ValidationException("Internal error activating user.", array(
+                        'internalCode' => '6456513131',
+                        'dev' => 'Error while attempting to activate account.'
+                    ), $account->getMessages());
+                }
+            }
+            
             return array(
                 'status' => 'Active',
                 'result' => $result
             );
         } else {
             throw new HTTPException("Bad activation data supplied.", 400, array(
-                'dev' => "Supplied activation username and code were not valid. UserName: $userName",
+                'dev' => "Supplied activation email and code were not valid. Email: $email",
                 'internalCode' => '2168546681'
             ));
         }
@@ -293,25 +314,28 @@ class AuthController extends \Phalcon\DI\Injectable
             "string",
             "alphanum"
         ));
-        $code = $this->request->getPost('code');
+        $code = $this->request->getPost("code", array(
+            "string",
+            "alphanum"
+        ));
         
         $search = array(
             'code' => $code
         );
         
-        $accounts = \PhalconRest\Models\Accounts::query()->where("active = 'Reset'")
+        $accounts = \PhalconRest\Models\Users::query()->where("active = 'Reset'")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
         
-        $account = $accounts->getFirst();
+        $user = $accounts->getFirst();
         
-        if ($account) {
+        if ($user) {
             // $account = $accounts->getFirst();
-            $account->active = 'Active';
-            $account->password = $password;
-            $account->code = NULL;
-            $result = $account->save();
+            $user->active = 'Active';
+            $user->password = $password;
+            $user->code = NULL;
+            $result = $user->save();
             return array(
                 'status' => 'Active',
                 'result' => $result
@@ -334,84 +358,60 @@ class AuthController extends \Phalcon\DI\Injectable
      */
     public function reminder()
     {
-        $userName = $this->request->getPost("userName", array(
-            "string",
-            "alphanum"
+        $email = $this->request->getPost("email", array(
+            "email"
         ));
-        $email = $this->request->getPost('email');
         
-        $userName = $this->request->get("userName", array(
-            "string",
-            "alphanum"
-        ));
-        $email = $this->request->get('email');
+        // $email = $this->request->get('email');
         
-        $query = \PhalconRest\Models\Accounts::query()->where("active = 'Active'");
+        // SELECT u.email, o.account_id
+        // FROM owners AS o
+        // JOIN accounts AS a ON o.account_id = a.id
+        // JOIN users AS u ON o.user_id = u.id
+        // WHERE a.active <> 'Inactive'
+        // AND u.email = 'aaaa@aaa.com';
         
-        // create a valid search query based on the first valid supplied value
-        if (strlen($userName) > 0) {
-            $query = \PhalconRest\Models\Accounts::query()->where("active = 'Active'")->andWhere("user_name = :user_name:");
-            $search = array(
-                'user_name' => $userName
-            );
-            
-            $accounts = $query->bind($search)->execute();
-            $account = $accounts->getFirst();
-        } elseif (strlen($email) > 0) {
-            
-            // SELECT u.email, o.account_id
-            // FROM owners AS o
-            // JOIN accounts AS a ON o.account_id = a.id
-            // JOIN users AS u ON o.user_id = u.id
-            // WHERE a.active <> 'Inactive'
-            // AND u.email = 'aaaa@aaa.com';
-            
-            $query = \PhalconRest\Models\Users::query()->
-            // ->join('\PhalconRest\Models\Owners')
-            // ->join('\PhalconRest\Models\Accounts')
-            // ->where("active <> 'Inactive'")
-            where("email = :email:");
-            
-            $search = array(
-                'email' => $email
-            );
-            
-            $users = $query->bind($search)->execute();
-            $user = $users->getFirst();
+        $query = \PhalconRest\Models\Users::query()->where("email = :email: AND (active = 'Active' OR active = 'Reset') ");
+        $search = array(
+            'email' => $email
+        );
+        
+        $users = $query->bind($search)->execute();
+        $user = $users->getFirst();
+        
+        if ($user) {
             
             if ($user->user_type == 'Owner') {
                 $owner = $user->Owners;
                 $account = $owner->Accounts;
-            } else {
-                throw new HTTPException("The identifier you supplied is invalid.", 400, array(
-                    'dev' => "Supplied identifier was not valid. Email: $email",
-                    'internalCode' => '89841911385131'
-                ));
+                
+                // check that account is valid
+                if ($account and ($account->active == 'Inactive' or $account->active == 'Archived')) {
+                    // modify the user and return the code
+                    throw new HTTPException("Bad activation data supplied.", 400, array(
+                        'dev' => "Supplied activation email is not valid. Email: $email",
+                        'internalCode' => '2168546681'
+                    ));
+                }
+                
+                // should work for either Owner or Employee
+                $user->active = 'Reset';
+                $user->code = substr(md5(rand()), 0, 45);
+                
+                // send email somewhere around here
+                
+                $result = $user->save();
+                return array(
+                    'status' => 'Reset',
+                    'result' => $result,
+                    'code' => $user->code
+                );
             }
         } else {
-            // uh oh
+            // somehow test for false results
             throw new HTTPException("The identifier you supplied is invalid.", 400, array(
-                'dev' => "Supplied identifier was not valid.",
-                'internalCode' => '9841961353138664'
-            ));
-        }
-        
-        if ($account and $account->active != 'Inactive') {
-            
-            // modify the account and return the code
-            $account->active = 'Reset';
-            $account->code = substr(md5(rand()), 0, 45);
-            
-            $result = $account->save();
-            return array(
-                'status' => 'Reset',
-                'result' => $result,
-                'code' => $account->code
-            );
-        } else {
-            throw new HTTPException("Bad activation data supplied.", 400, array(
-                'dev' => "Supplied activation username and code were not valid. UserName: $userName",
-                'internalCode' => '2168546681'
+                'dev' => "Supplied identifier was not valid. Email: $email",
+                'internalCode' => '89841911385131'
             ));
         }
     }

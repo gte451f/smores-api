@@ -19,6 +19,8 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
 
     public $lastName;
 
+    public $email;
+
     /**
      * (non-PHPdoc)
      *
@@ -30,12 +32,12 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
             // load config defined user id
             $search = 'user_id = 103';
         } else {
-            $search .= " and active = 1";
+            $search .= " and active = 'Active'";
         }
         
-        $employees = \PhalconRest\Models\Employees::find($search);
+        $users = \PhalconRest\Models\Users::find($search);
         
-        switch (count($employees)) {
+        switch (count($users)) {
             case 0:
                 throw new HTTPException("No user found.", 401, array(
                     'dev' => "No valid user was found.",
@@ -44,12 +46,12 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
                 break;
             
             case 1:
-                foreach ($employees as $employee) {
-                    $this->id = $employee->user_id;
-                    $this->userName = $employee->user_name;
-                    $this->firstName = $employee->Users->first_name;
-                    $this->lastName = $employee->Users->last_name;
-                    $this->email = $employee->Users->email;
+                foreach ($users as $user) {
+                    $this->id = $user->id;
+                    $this->firstName = $user->first_name;
+                    $this->lastName = $user->last_name;
+                    $this->email = $user->email;
+                    $this->gender = $user->gender;
                     $this->expiresOn = 'NOT IMPLEMENTED YET';
                     $this->token = 'NOT IMPLEMENTED YET';
                 }
@@ -70,8 +72,8 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
      */
     public function resetToken($wipe = false)
     {
-        $search = "user_name = '{$this->userName}' and active = 1";
-        $user = \PhalconRest\Models\Employees::findFirst($search);
+        $search = "email = '{$this->email}' and active = 'Active'";
+        $user = \PhalconRest\Models\Users::findFirst($search);
         
         if ($wipe) {
             $this->token = $user->token = null;

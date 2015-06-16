@@ -146,9 +146,9 @@ class Users extends \PhalconRest\API\BaseModel
         $this->validate(new StringLengthValidator(array(
             "field" => 'last_name',
             'max' => 45,
-            'min' => 5,
+            'min' => 4,
             'messageMaximum' => 'Last Name should be less than 45 characters in length',
-            'messageMinimum' => 'Last Name should be greater than 4 characters in length'
+            'messageMinimum' => 'Last Name should be greater than 3 characters in length'
         )));
         
         // check length for first/last namespace

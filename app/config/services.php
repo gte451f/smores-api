@@ -99,16 +99,11 @@ $di->set('modelsCache', function () {
  */
 $di->setShared('auth', function ($type = 'Employee') use($config) {
     
-    if ($type == 'Employee') {
-        $adapter = new \PhalconRest\Libraries\Authentication\Local();
-        $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
-    } else {
-        // assume type is Account
-        $adapter = new \PhalconRest\Libraries\Authentication\Local();
-        $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
-    }
+    $adapter = new \PhalconRest\Libraries\Authentication\Local();
+    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
     
     $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
+    $auth->userNameFieldName = 'email';
     return $auth;
 });
 
