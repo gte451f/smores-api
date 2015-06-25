@@ -32,6 +32,13 @@ class Owners extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $relationship;
+    
+    /**
+     * this model's parent model
+     *
+     * @var string
+     */
+    public static $parentModel = 'Users';
 
     /**
      * define custom model relationships
@@ -55,15 +62,6 @@ class Owners extends \PhalconRest\API\BaseModel
         ));
     }
 
-    /**
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\BaseModel::getParentModel()
-     */
-    public function getParentModel()
-    {
-        return 'Users';
-    }
 
     /**
      * validatoni owern data

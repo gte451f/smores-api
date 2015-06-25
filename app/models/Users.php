@@ -87,6 +87,14 @@ class Users extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
+        $this->blockColumns = array(
+            'password'
+        );
+        
+        $this->hasOne('id', 'PhalconRest\Models\Employees', 'user_id', array(
+            'alias' => 'Employees'
+        ));
+        
         $this->hasOne('id', 'PhalconRest\Models\Owners', 'user_id', array(
             'alias' => 'Owners'
         ));
@@ -104,6 +112,9 @@ class Users extends \PhalconRest\API\BaseModel
         
         // all user accounts start as invactive and must be activated
         $this->active = 'Inactive';
+        
+        // all user accounts have this type
+        $this->user_type = 'Employee';
         
         // encrypt password if one is provided
         // from the existance of a password we infer that it is either an owner or an employee

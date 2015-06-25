@@ -23,6 +23,13 @@ class Attendees extends \PhalconRest\API\BaseModel
     public $school_grade;
 
     /**
+     * this model's parent model
+     *
+     * @var string
+     */
+    public static $parentModel = 'Users';
+
+    /**
      * define custom model relationships
      *
      * (non-PHPdoc)
@@ -43,15 +50,5 @@ class Attendees extends \PhalconRest\API\BaseModel
         $this->hasMany("user_id", "PhalconRest\Models\Registrations", "user_id", array(
             'alias' => 'Registrations'
         ));
-    }
-
-    /**
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\BaseModel::getParentModel()
-     */
-    public function getParentModel()
-    {
-        return 'Users';
     }
 }

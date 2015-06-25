@@ -117,6 +117,11 @@ $di->setShared('memory', function () {
     return new \Phalcon\Mvc\Model\MetaData\Memory();
 });
 
+// hold messages that should be returned to the client
+$di->setShared('registry', function () {
+    return new \Phalcon\Registry();
+});
+
 // phalcon inflector?
 $di->setShared('inflector', function () {
     return new Inflector();
@@ -142,28 +147,34 @@ $di->setShared('security', function () {
 
 /**
  * Database setup.
- * Here, we'll use a simple SQLite database of Disney Princesses.
  */
-$di->set('db', function () use($config) {
+$di->set('db', function () use($config, $di) {
     // config the event and log services
     $eventsManager = new EventsManager();
     $fileName = date("d_m_y");
     $logger = new FileLogger("/tmp/$fileName.log");
+    // $registry = new \Phalcon\Registry();
+    $registry = $di->get('registry');
+    $registry->dbCount = 0;
     
     // Listen all the database events
-    $eventsManager->attach('db', function ($event, $connection) use($logger) {
+    $eventsManager->attach('db', function ($event, $connection) use($logger, $registry) {
         if ($event->getType() == 'beforeQuery') {
-            $logger->log($connection->getSQLStatement(), Logger::INFO);
+            $count = $registry->dbCount;
+            $count ++;
+            $registry->dbCount = $count;
+            
+            // $logger->log($connection->getSQLStatement(), Logger::INFO);
         }
     });
     
     $connection = new Connection($config['database']);
+    
     // Assign the eventsManager to the db adapter instance
     $connection->setEventsManager($eventsManager);
     
     return $connection;
 });
-
 /**
  * If our request contains a body, it has to be valid JSON.
  * This parses the body into a standard Object and makes that available from the DI.

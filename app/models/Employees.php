@@ -16,7 +16,12 @@ class Employees extends \PhalconRest\API\BaseModel
      */
     public $position;
 
-
+    /**
+     * this model's parent model
+     *
+     * @var string
+     */
+    public static $parentModel = 'Users';
 
     /**
      * define custom model relationships
@@ -28,20 +33,20 @@ class Employees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("user_id", "PhalconRest\Models\Users", "id", array(
+        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
             'alias' => 'Users'
         ));
     }
-
-    /**
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\BaseModel::getParentModel()
-     */
-    // public function getParentModel()
-    // {
-    // return 'Users';
-    // }
     
+    /**
+     * set some default values before we create a new user record
+     */
+    public function beforeValidationOnCreate()
+    {    
+        // all user accounts have this type
+        $this->user_type = 'Employee';
+
+    }
+
 
 }
