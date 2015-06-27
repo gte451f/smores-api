@@ -14,30 +14,30 @@ class RegistrationEntity extends \PhalconRest\API\Entity
      *
      * @see \PhalconRest\API\Entity::queryBuilder()
      */
-    public function queryBuilder($count = false)
-    {
-        $query = parent::queryBuilder($count);
+//     public function queryBuilder($count = false)
+//     {
+//         $query = parent::queryBuilder($count);
         
-        // no need to proceed for simple counts
-        if ($count) {
-            return $query;
-        }
+//         // no need to proceed for simple counts
+//         if ($count) {
+//             return $query;
+//         }
         
-        $config = $this->getDI()->get('config');
-        $nameSpace = $config['namespaces']['models'];
+//         $config = $this->getDI()->get('config');
+//         $nameSpace = $config['namespaces']['models'];
         
-        $modelNameSpace = $nameSpace . $this->model->getModelName();
-        $refModelNameSpace = $nameSpace . 'Attendees';
+//         $modelNameSpace = $nameSpace . $this->model->getModelName();
+//         $refModelNameSpace = $nameSpace . 'Attendees';
         
-        $query->join($refModelNameSpace);
-        $columns = array(
-            "$modelNameSpace.*",
-            "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
-        );
-        $query->columns($columns);
+//         $query->join($refModelNameSpace);
+//         $columns = array(
+//             "$modelNameSpace.*",
+//             "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
+//         );
+//         $query->columns($columns);
         
-        return $query;
-    }
+//         return $query;
+//     }
 
     /**
      * everytime a new registration is created

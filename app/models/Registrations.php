@@ -48,17 +48,27 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Requests'
         ));
         
-        $this->belongsTo("user_id", "PhalconRest\Models\Attendees", "user_id", array(
+        $this->belongsTo("attendee_id", "PhalconRest\Models\Attendees", "user_id", array(
             'alias' => 'Attendees'
-        ));
-        
-        $this->belongsTo("user_id", "PhalconRest\Models\Users", "id", array(
-            'alias' => 'Users'
         ));
     }
 
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+            'id' => 'id',
+            'user_id' => 'attendee_id',
+            'notes' => 'notes',
+            'created_on' => 'created_on',
+            'updated_on' => 'updated_on'
+        );
     }
 }
