@@ -48,7 +48,7 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Requests'
         ));
         
-        $this->belongsTo("attendee_id", "PhalconRest\Models\Attendees", "user_id", array(
+        $this->hasOne("attendee_id", "PhalconRest\Models\Attendees", "user_id", array(
             'alias' => 'Attendees'
         ));
     }

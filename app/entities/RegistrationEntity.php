@@ -14,31 +14,31 @@ class RegistrationEntity extends \PhalconRest\API\Entity
      *
      * @see \PhalconRest\API\Entity::queryBuilder()
      */
-//     public function queryBuilder($count = false)
-//     {
-//         $query = parent::queryBuilder($count);
-        
-//         // no need to proceed for simple counts
-//         if ($count) {
-//             return $query;
-//         }
-        
-//         $config = $this->getDI()->get('config');
-//         $nameSpace = $config['namespaces']['models'];
-        
-//         $modelNameSpace = $nameSpace . $this->model->getModelName();
-//         $refModelNameSpace = $nameSpace . 'Attendees';
-        
-//         $query->join($refModelNameSpace);
-//         $columns = array(
-//             "$modelNameSpace.*",
-//             "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
-//         );
-//         $query->columns($columns);
-        
-//         return $query;
-//     }
-
+    // public function queryBuilder($count = false)
+    // {
+    // $query = parent::queryBuilder($count);
+    
+    // // no need to proceed for simple counts
+    // if ($count) {
+    // return $query;
+    // }
+    
+    // $config = $this->getDI()->get('config');
+    // $nameSpace = $config['namespaces']['models'];
+    
+    // $modelNameSpace = $nameSpace . $this->model->getModelName();
+    // $refModelNameSpace = $nameSpace . 'Attendees';
+    
+    // $query->join($refModelNameSpace);
+    // $columns = array(
+    // "$modelNameSpace.*",
+    // "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
+    // );
+    // $query->columns($columns);
+    
+    // return $query;
+    // }
+    
     /**
      * everytime a new registration is created
      * consult with the fee table and create relevant charges
@@ -62,7 +62,7 @@ class RegistrationEntity extends \PhalconRest\API\Entity
             "basis = 'Registration'"
         ));
         
-        $attendee = \PhalconRest\Models\Attendees::findFirst($object->user_id);
+        $attendee = \PhalconRest\Models\Attendees::findFirst($object->attendee_id);
         
         if ($attendee) {
             // create a charge fee for each one found
