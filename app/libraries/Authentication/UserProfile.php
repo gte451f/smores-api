@@ -21,6 +21,8 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
 
     public $email;
 
+    public $accountId;
+
     /**
      * (non-PHPdoc)
      *
@@ -51,6 +53,11 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
                     $this->firstName = $user->first_name;
                     $this->lastName = $user->last_name;
                     $this->email = $user->email;
+                    
+                    if ($user->user_type == 'Owner') {
+                        $this->accountId = $user->owners->account_id;
+                    }
+                    
                     $this->gender = $user->gender;
                     $this->expiresOn = 'NOT IMPLEMENTED YET';
                     $this->token = 'NOT IMPLEMENTED YET';

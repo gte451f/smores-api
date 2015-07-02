@@ -114,7 +114,8 @@ class Users extends \PhalconRest\API\BaseModel
         $this->active = 'Inactive';
         
         // all user accounts have this type
-        $this->user_type = 'Employee';
+        // this is not true!
+        // $this->user_type = 'Employee';
         
         // encrypt password if one is provided
         // from the existance of a password we infer that it is either an owner or an employee
