@@ -57,14 +57,14 @@ class Owners extends \PhalconRest\API\BaseModel
             'alias' => 'Accounts'
         ));
         
-        $this->hasMany("user_id", "PhalconRest\Models\OwnerNumbers", "user_id", array(
+        $this->hasMany("user_id", "PhalconRest\Models\OwnerNumbers", "owner_id", array(
             'alias' => 'OwnerNumbers'
         ));
     }
 
 
     /**
-     * validatoni owern data
+     * validation owern data
      */
     public function validation()
     {

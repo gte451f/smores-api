@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('perform actions and see result');
+$I->wantTo('Test Employee CRUD');
 
 $employee = '{"employee":
                 {"active":null,
@@ -17,11 +17,11 @@ $employee = '{"employee":
 $I->sendPOST('employees', $employee);
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
-//$newEmployeeID = $I->grabDataFromResponse('$.employee[0].id');
+// $newEmployeeID = $I->grabDataFromResponse('$.employee[0].id');
 $newEmployeeID = $I->grabDataFromResponseByJsonPath('$.employee[0].id');
 
 // load a particular employee
-$I->sendGet("/employees/$newEmployee->id");
+$I->sendGet("/employees/{$newEmployeeID[0]}");
 $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$.employee[0].id');

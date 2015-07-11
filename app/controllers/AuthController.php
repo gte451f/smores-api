@@ -39,7 +39,7 @@ class AuthController extends \Phalcon\DI\Injectable
         // $userName = 'foo';
         // $password = '123456789';
         
-        if (strlen($password) < 2 or strlen($email) < 2) {
+        if (strlen($password) < 4 or strlen($email) < 4) {
             throw new HTTPException("Bad credentials supplied.", 400, array(
                 'dev' => "Supplied credentials were not valid. Email: $email",
                 'internalCode' => '3446567'
@@ -127,6 +127,8 @@ class AuthController extends \Phalcon\DI\Injectable
                 $owner->account_id = $account->id;
                 $owner->user_id = $user->id;
                 $owner->relationship = $post['relationship'];
+                // always make the first owner created the primary
+                $owner->primary_contact = 1;
                 if ($owner->create() == false) {
                     throw new ValidationException("Internal error adding new owner", array(
                         'internalCode' => '98616381',
@@ -139,7 +141,7 @@ class AuthController extends \Phalcon\DI\Injectable
                 } else {
                     // proceed to last step
                     $number = new \PhalconRest\Models\OwnerNumbers();
-                    $number->user_id = $user->id;
+                    $number->owner_id = $user->id;
                     $number->phone_type = $post['phone_type'];
                     $number->number = $post['number'];
                     $number->primary = 1;
@@ -252,7 +254,7 @@ class AuthController extends \Phalcon\DI\Injectable
         );
         
         $users = \PhalconRest\Models\Users::query()->where("email = :email:")
-            ->andWhere("active = 'Inactive'")
+            ->andWhere("active = 0")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
@@ -260,7 +262,7 @@ class AuthController extends \Phalcon\DI\Injectable
         $user = $users->getFirst();
         
         if ($user) {
-            $user->active = 'Active';
+            $user->active = 1;
             $user->code = NULL;
             $result = $user->save();
             
@@ -268,7 +270,7 @@ class AuthController extends \Phalcon\DI\Injectable
             if ($user->user_type == 'Owner') {
                 $owner = $user->Owners;
                 $account = $owner->Accounts;
-                $account->active = 'Active';
+                $account->active = 1;
                 $result = $account->save();
                 
                 if ($result) {
@@ -323,7 +325,7 @@ class AuthController extends \Phalcon\DI\Injectable
             'code' => $code
         );
         
-        $accounts = \PhalconRest\Models\Users::query()->where("active = 'Reset'")
+        $accounts = \PhalconRest\Models\Users::query()->where("active = 2")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
@@ -332,7 +334,7 @@ class AuthController extends \Phalcon\DI\Injectable
         
         if ($user) {
             // $account = $accounts->getFirst();
-            $user->active = 'Active';
+            $user->active = 1;
             $user->password = $password;
             $user->code = NULL;
             $result = $user->save();
@@ -368,10 +370,11 @@ class AuthController extends \Phalcon\DI\Injectable
         // FROM owners AS o
         // JOIN accounts AS a ON o.account_id = a.id
         // JOIN users AS u ON o.user_id = u.id
-        // WHERE a.active <> 'Inactive'
+        // WHERE a.active <> 0
         // AND u.email = 'aaaa@aaa.com';
         
-        $query = \PhalconRest\Models\Users::query()->where("email = :email: AND (active = 'Active' OR active = 'Reset') ");
+        // look for either active or password reset
+        $query = \PhalconRest\Models\Users::query()->where("email = :email: AND active <> 0 ");
         $search = array(
             'email' => $email
         );
@@ -379,33 +382,36 @@ class AuthController extends \Phalcon\DI\Injectable
         $users = $query->bind($search)->execute();
         $user = $users->getFirst();
         
-        if ($user) {
-            
+        // mark for password reset
+        // this way a user can only attempt to reset the password of an account that has performed this step
+        
+        if ($user) {           
             if ($user->user_type == 'Owner') {
                 $owner = $user->Owners;
                 $account = $owner->Accounts;
                 
                 // check that account is valid
-                if ($account and ($account->active == 'Inactive' or $account->active == 'Archived')) {
+                if ($account and $account->active !== 0) {
+                    // should work for either Owner or Employee
+                    $user->active = 2;
+                    $user->code = substr(md5(rand()), 0, 45);
+                    
+                    // send email somewhere around here
+                    
+                    $result = $user->save();
+                    return array(
+                        'status' => 'Reset',
+                        'result' => $result
+                        // don't return the code, they are supposed to get that from email
+                        // 'code' => $user->code
+                    );
+                } else {
                     // modify the user and return the code
                     throw new HTTPException("Bad activation data supplied.", 400, array(
-                        'dev' => "Supplied activation email is not valid. Email: $email",
+                        'dev' => "Account is not eligable for password resets. Email: $email",
                         'internalCode' => '2168546681'
                     ));
                 }
-                
-                // should work for either Owner or Employee
-                $user->active = 'Reset';
-                $user->code = substr(md5(rand()), 0, 45);
-                
-                // send email somewhere around here
-                
-                $result = $user->save();
-                return array(
-                    'status' => 'Reset',
-                    'result' => $result,
-                    'code' => $user->code
-                );
             }
         } else {
             // somehow test for false results

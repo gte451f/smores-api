@@ -30,13 +30,14 @@ class Accounts extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $updated_on;
-    
+
     /**
      *
-     * @var string
+     * 0=Inactive | 1=Active
+     * 
+     * @var int
      */
     public $active;
-    
 
     /**
      */
@@ -73,7 +74,7 @@ class Accounts extends \PhalconRest\API\BaseModel
         $this->created_on = date('Y-m-d');
         
         // all accounts start as "Inactive" and require activation
-        $this->active = 'Inactive';
+        $this->active = 0;
     }
 
     /**

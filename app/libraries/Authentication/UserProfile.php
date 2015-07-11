@@ -34,7 +34,7 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
             // load config defined user id
             $search = 'user_id = 103';
         } else {
-            $search .= " and active = 'Active'";
+            $search .= " and active = 1";
         }
         
         $users = \PhalconRest\Models\Users::find($search);
@@ -79,8 +79,16 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
      */
     public function resetToken($wipe = false)
     {
-        $search = "email = '{$this->email}' and active = 'Active'";
+        $search = "email = '{$this->email}' and active = '1'";
         $user = \PhalconRest\Models\Users::findFirst($search);
+        
+        if (! $user) {
+            throw new HTTPException("No valid user account was found", 401, array(
+                'dev' => "This has to be a bug to have made it this far.",
+                'internalCode' => '760708898897686'
+            ));
+            break;
+        }
         
         if ($wipe) {
             $this->token = $user->token = null;

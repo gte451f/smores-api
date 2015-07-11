@@ -70,9 +70,9 @@ class Users extends \PhalconRest\API\BaseModel
 
     /**
      * status type field
-     * Inactive | Active | Archived (soft delete)
+     * 0=Inactive | 1=Active | 2=Password Reset
      *
-     * @var string
+     * @var int
      */
     public $active;
 
@@ -110,8 +110,11 @@ class Users extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         
-        // all user accounts start as invactive and must be activated
-        $this->active = 'Inactive';
+        // all employees or owner accounts start as invactive
+        // if they wish to login to either admin or portal, they must be activated
+        if ($this->user_type == 'Employee' OR $this->user_type == 'Owner') {
+            $this->active = 0;
+        }
         
         // all user accounts have this type
         // this is not true!
@@ -125,7 +128,10 @@ class Users extends \PhalconRest\API\BaseModel
             $this->password = $security->hash($this->password);
             // also set a code when we infer a password
             $this->code = substr(md5(rand()), 0, 45);
-            $this->active = 'Inactive';
+            
+            // why set the account to inactive when the password changes?
+            // is this a specific password reset?  THen do this in the auth controller
+            // $this->active = 0;
         }
     }
 
@@ -149,25 +155,26 @@ class Users extends \PhalconRest\API\BaseModel
     public function validation()
     {
         // check for valid email
-        $this->validate(new Email(array(
-            'field' => 'email',
-            'required' => true
-        )));
+        // how to make for only employees
+        // $this->validate(new Email(array(
+        // 'field' => 'email',
+        // 'required' => true
+        // )));
         
         // check length for first/last namespace
         $this->validate(new StringLengthValidator(array(
             "field" => 'last_name',
             'max' => 45,
-            'min' => 4,
+            'min' => 2,
             'messageMaximum' => 'Last Name should be less than 45 characters in length',
-            'messageMinimum' => 'Last Name should be greater than 3 characters in length'
+            'messageMinimum' => 'Last Name should be greater than 2 characters in length'
         )));
         
         // check length for first/last namespace
         $this->validate(new StringLengthValidator(array(
             "field" => 'first_name',
             'max' => 45,
-            'min' => 3,
+            'min' => 2,
             'messageMaximum' => 'First Name should be less than 45 characters in length',
             'messageMinimum' => 'First Name should be greater than 2 characters in length'
         )));

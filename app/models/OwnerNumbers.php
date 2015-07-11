@@ -5,7 +5,6 @@ use Phalcon\Mvc\Model\Validator;
 use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
 use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
 
-
 class OwnerNumbers extends \PhalconRest\API\BaseModel
 {
 
@@ -38,8 +37,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $number;
-    
-    
+
     /**
      * validatoni owern data
      */
@@ -54,7 +52,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
                 'Other'
             )
         )));
-    
+        
         $this->validate(new StringLengthValidator(array(
             "field" => 'number',
             'max' => 15,
@@ -64,5 +62,20 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
         )));
         
         return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * Independent Column Mapping.
+     */
+    public function columnMap()
+    {
+        return array(
+            'id' => 'id',
+            'user_id' => 'owner_id',
+            'phone_type' => 'phone_type',
+            'primary' => 'primary',
+            'number' => 'number'
+        )
+        ;
     }
 }

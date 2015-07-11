@@ -45,7 +45,7 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
     {
         $users = \PhalconRest\Models\Users::find(array(
             "email = '$email'",
-            "active" => "Active"
+            "active" => 1
         ));
         switch ($users->count()) {
             case 1:
