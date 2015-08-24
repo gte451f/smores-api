@@ -19,9 +19,9 @@ class PaymentEntity extends \PhalconRest\API\Entity
         // extend me in child class
         if ($model->check_id > 0) {
             $check = \PhalconRest\Models\Checks::findFirst($model->check_id);
-            if ($check->delete() == false) {
-                throw new ValidationException("Internal error removing check record.  This error has been logged.", array(
-                    'internalCode' => '29629674',
+            if (! $check->delete()) {
+                throw new ValidationException("Internal error removing check record", array(
+                    'code' => '29629674',
                     'dev' => 'Error while attempting to delete a check after the related payment was removed.'
                 ), $check->getMessages());
             }

@@ -74,15 +74,15 @@ class RegistrationEntity extends \PhalconRest\API\Entity
                 $charge->account_id = $attendee->account_id;
                 
                 if ($charge->create() == false) {
-                    throw new ValidationException("Internal error creating a registration.  This error has been logged.", array(
-                        'internalCode' => '34534657',
+                    throw new ValidationException("Internal error creating a registration", array(
+                        'code' => '34534657',
                         'dev' => 'Error while processing RegistrationEntity->afterSave().  Could not create Charge record.'
                     ), $charge->getMessages());
                 }
             }
         } else {
-            throw new ValidationException("Internal error creating a registration.  This error has been logged.", array(
-                'internalCode' => '4562456786',
+            throw new ValidationException("Internal error creating a registration", array(
+                'code' => '4562456786',
                 'dev' => 'Error while processing RegistratinoEntity->afterSave(). Could not find a valid attendee record.'
             ), $charge->getMessages());
         }

@@ -3,6 +3,12 @@
 /.settings/
 /vendor/
 /composer.lock
+
+# ingnore codception files
+/tests/_data
+/tests/_output
+/tests/_support
+
 /deployment.properties
 /deployment.xml
 
@@ -51,9 +57,3 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# testing cruft
-tests/_output/*
-
-# for private work
-/util/

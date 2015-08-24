@@ -61,9 +61,9 @@ class RequestEntity extends \PhalconRest\API\Entity
                 $attendee = $request->Registrations->Attendees;
                 $charge->account_id = $attendee->account_id;
                 
-                if ($charge->create() == false) {
-                    throw new ValidationException("Internal error saving a request.  This error has been logged.", array(
-                        'internalCode' => '45623457456987986',
+                if (! $charge->create()) {
+                    throw new ValidationException("Internal error saving a request", array(
+                        'code' => '45623457456987986',
                         'dev' => 'Error while processing RequestEntity->toggleFee().  Could not create Charge record.'
                     ), $charge->getMessages());
                 }
@@ -71,9 +71,9 @@ class RequestEntity extends \PhalconRest\API\Entity
         } else {
             // remove fees
             foreach (\PhalconRest\Models\Charges::find("request_id=$request->id") as $charge) {
-                if ($charge->delete() == false) {
-                    throw new ValidationException("Internal error clearing out charges.  This error has been logged.", array(
-                        'internalCode' => '234546678345',
+                if (! $charge->delete()) {
+                    throw new ValidationException("Internal error clearing out charges", array(
+                        'code' => '234546678345',
                         'dev' => 'Error while attempting to delete a charge for a request that is no longer CONFIRMED.'
                     ), $charge->getMessages());
                 }

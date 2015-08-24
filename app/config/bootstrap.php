@@ -72,11 +72,13 @@ $app->get('/', function () use($app) {
  */
 $app->after(function () use($app) {
     $method = $app->request->getMethod();
+    $output = new \PhalconRest\API\Output();
     
     switch ($method) {
         case 'OPTIONS':
             $app->response->setStatusCode('200', 'OK');
             $app->response->send();
+            return;
             break;
         
         case 'DELETE':
@@ -86,56 +88,17 @@ $app->after(function () use($app) {
             break;
         
         case 'POST':
-            $app->response->setStatusCode('201', 'Created');
-            break;
-        
-        default:
-            ;
+            $output->setStatusCode('201', 'Created');
             break;
     }
     
-    $requestType = $app->request->get('type');
-    // Respond by default as JSON
-    if (! $requestType) {
-        $requestType = 'json';
-    }
+    // Results returned from the route's controller. All Controllers should return an array
+    $records = $app->getReturnedValue();
     
-    switch ($requestType) {
-        case 'json':
-            // Results returned from the route's controller. All Controllers should return an array
-            $records = $app->getReturnedValue();
-            
-            $response = new \PhalconRest\Responses\JSONResponse();
-            // this is default behavior
-            $response->useEnvelope(false)
-                ->convertSnakeCase(false)
-                ->send($records);
-            return;
-            break;
-        
-        case 'csv':
-            $records = $app->getReturnedValue();
-            $response = new \PhalconRest\Responses\CSVResponse();
-            $response->useHeaderRow(true)
-                ->send($records);
-            return;
-            break;
-        
-        case 'html':
-            $records = $app->getReturnedValue();
-            $response = new \PhalconRest\Responses\HTMLResponse();
-            $response->send($records);
-            return;
-            break;
-        
-        default:
-            throw new \PhalconRest\Util\HTTPException('Could not return results in specified format', 403, array(
-                'dev' => 'Could not understand type specified by type paramter in query string.',
-                'internalCode' => '3',
-                'more' => 'Type may not be implemented. Choose either "csv" or "json"'
-            ));
-            break;
-    }
+    // this is default behavior
+    $output->convertSnakeCase(false)
+        ->send($records);
+    return;
 });
 
 /**
@@ -145,7 +108,7 @@ $app->after(function () use($app) {
 $app->notFound(function () use($app) {
     throw new \PhalconRest\Util\HTTPException('Not Found.', 404, array(
         'dev' => 'That route was not found on the server.',
-        'internalCode' => '4',
+        'code' => '4',
         'more' => 'Check route for mispellings.'
     ));
 });
@@ -156,15 +119,27 @@ $app->notFound(function () use($app) {
  * TODO: Improve this.
  * TODO: Kept here due to dependency on $app
  */
-set_exception_handler(function ($exception) use($app) {
+set_exception_handler(function ($exception) use($app, $config) {
+    // $config = $di->get('config');
+    
     // HTTPException's send method provides the correct response headers and body
-    if (is_a($exception, 'PhalconRest\\Util\\HTTPException') or is_a($exception, 'PhalconRest\\Util\\ValidationException')) {
+    if (is_a($exception, 'PhalconRest\\Util\\HTTPException')) {
         $exception->send();
+        error_log($exception);
+        // end early to make sure nothing else gets in the way of delivering response
+        return;
     }
     
-    // Also log error details to a temp file
-    $errorMessage = date('Y-m-d H:i:s') . " Message: " . $exception->getMessage() . PHP_EOL;
-    $errorMessage .= "->File: " . $exception->getFile() . " at line: " . $exception->getLine() . PHP_EOL;
-    $errorMessage .= "->Trace: " . $exception->getTraceAsString() . PHP_EOL;
-    error_log($errorMessage, 3, "/tmp/error.log");
+    // HTTPException's send method provides the correct response headers and body
+    if (is_a($exception, 'PhalconRest\\Util\\ValidationException')) {
+        $exception->send();
+        error_log($exception);
+        // end early to make sure nothing else gets in the way of delivering response
+        return;
+    }
+    
+    // seems like this is only run when an unexpected exception occurs
+    if ($config['application']['debugApp'] == true) {
+        Kint::dump($exception);
+    }
 });

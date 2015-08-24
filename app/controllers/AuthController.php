@@ -39,11 +39,14 @@ class AuthController extends \Phalcon\DI\Injectable
         // $userName = 'foo';
         // $password = '123456789';
         
-        if (strlen($password) < 4 or strlen($email) < 4) {
-            throw new HTTPException("Bad credentials supplied.", 400, array(
-                'dev' => "Supplied credentials were not valid. Email: $email",
-                'internalCode' => '3446567'
-            ));
+        if (strlen($password) < 8 or strlen($userName) < 3) {
+            throw new ValidationException("Bad Credentials Supplied", [
+                'dev' => "Supplied credentials were not valid. UserName: $userName",
+                'code' => '3446567'
+            ], [
+                'password' => 'The password should be 8 characters or greater',
+                'username' => 'The username must be greater than 3 characters'
+            ]);
         }
         
         // let's try local auth instead
@@ -52,7 +55,7 @@ class AuthController extends \Phalcon\DI\Injectable
         if ($result == false) {
             throw new HTTPException("Bad credentials supplied.", 401, array(
                 'dev' => "Supplied credentials were not valid. Email: $email",
-                'internalCode' => '304958034850'
+                'code' => '304958034850'
             ));
         } else {
             $profile = $this->auth->getProfile();
@@ -90,19 +93,21 @@ class AuthController extends \Phalcon\DI\Injectable
         // verify that all the required fields are present before continuing
         foreach ($fieldList as $field) {
             if (! isset($post[$field])) {
-                throw new HTTPException("Incomplete account data submitted.", 400, array(
+                throw new ValidationException("Incomplete account data submitted.", 400, array(
                     'dev' => "Not all required data fields were supplied.  Missing: $field",
-                    'internalCode' => '891316819464749684'
-                ));
+                    'code' => '891316819464749684'
+                ), [
+                    $field => "$field is required, please enter a value for this field."
+                ]);
             }
         }
         
         // attempt to create account
         // use transaction here?
         $account = new \PhalconRest\Models\Accounts();
-        if ($account->create() == false) {
+        if (! $account->create()) {
             throw new ValidationException("Internal error adding new account", array(
-                'internalCode' => '78498119519',
+                'code' => '78498119519',
                 'dev' => 'Error while attempting to create a brand new account'
             ), $account->getMessages());
         } else {
@@ -114,9 +119,9 @@ class AuthController extends \Phalcon\DI\Injectable
             $user->gender = $post['gender'];
             $user->email = $post['email'];
             $user->password = $post['password'];
-            if ($user->create() == false) {
+            if (! $user->create()) {
                 throw new ValidationException("Internal error adding new user", array(
-                    'internalCode' => '7891351889184',
+                    'code' => '7891351889184',
                     'dev' => 'Error while attempting to create a brand new user'
                 ), $user->getMessages());
                 // roll back account
@@ -129,9 +134,9 @@ class AuthController extends \Phalcon\DI\Injectable
                 $owner->relationship = $post['relationship'];
                 // always make the first owner created the primary
                 $owner->primary_contact = 1;
-                if ($owner->create() == false) {
+                if (! $owner->create()) {
                     throw new ValidationException("Internal error adding new owner", array(
-                        'internalCode' => '98616381',
+                        'code' => '98616381',
                         'dev' => 'Error while attempting to create a brand new owner'
                     ), $owner->getMessages());
                     // roll back account
@@ -145,9 +150,9 @@ class AuthController extends \Phalcon\DI\Injectable
                     $number->phone_type = $post['phone_type'];
                     $number->number = $post['number'];
                     $number->primary = 1;
-                    if ($number->create() == false) {
+                    if (! $number->create()) {
                         throw new ValidationException("Internal error adding new phone number", array(
-                            'internalCode' => '8941351968151313546494',
+                            'code' => '8941351968151313546494',
                             'dev' => 'Error while attempting to create a brand new phone number'
                         ), $number->getMessages());
                         // roll back account
@@ -209,7 +214,7 @@ class AuthController extends \Phalcon\DI\Injectable
             // TODO throw error here
             throw new HTTPException("Unauthorized, please authenticate first.", 401, array(
                 'dev' => "Must be authenticated to access.",
-                'internalCode' => '30945680384502037'
+                'code' => '30945680384502037'
             ));
         }
     }
@@ -235,17 +240,14 @@ class AuthController extends \Phalcon\DI\Injectable
             "alphanum"
         ));
         
-        // $userName = $this->request->get("userName", array(
-        // "string",
-        // "alphanum"
-        // ));
-        // $code = $this->request->get('code');
-        
         if (strlen($code) < 25 or strlen($email) < 6) {
-            throw new HTTPException("Bad activation data supplied.", 400, array(
-                'dev' => "Supplied activation email and code were not valid. Email: $email",
-                'internalCode' => '98411916891891'
-            ));
+            throw new ValidationException("Bad activation data supplied", [
+                'dev' => "Supplied activation email or code were not valid. Email: $email",
+                'code' => '98411916891891'
+            ], [
+                'code' => 'The could should be 25 characters or greater',
+                'email' => 'The email must be greater than 5 characters'
+            ]);
         }
         
         $search = array(
@@ -279,9 +281,9 @@ class AuthController extends \Phalcon\DI\Injectable
                         'result' => $result
                     );
                 } else {
-                    throw new ValidationException("Internal error activating user.", array(
-                        'internalCode' => '6456513131',
-                        'dev' => 'Error while attempting to activate account.'
+                    throw new ValidationException("Internal error activating user", array(
+                        'code' => '6456513131',
+                        'dev' => 'Error while attempting to activate account'
                     ), $account->getMessages());
                 }
             }
@@ -291,9 +293,9 @@ class AuthController extends \Phalcon\DI\Injectable
                 'result' => $result
             );
         } else {
-            throw new HTTPException("Bad activation data supplied.", 400, array(
-                'dev' => "Supplied activation email and code were not valid. Email: $email",
-                'internalCode' => '2168546681'
+            throw new HTTPException("Bad activation data supplied", 400, array(
+                'dev' => "Could not find valid account Email: $email",
+                'code' => '2168546681'
             ));
         }
     }
@@ -345,7 +347,7 @@ class AuthController extends \Phalcon\DI\Injectable
         } else {
             throw new HTTPException("Bad credentials supplied.", 400, array(
                 'dev' => "Could not save new password to account. Code: $code",
-                'internalCode' => '891819816131634'
+                'code' => '891819816131634'
             ));
         }
     }
@@ -385,7 +387,7 @@ class AuthController extends \Phalcon\DI\Injectable
         // mark for password reset
         // this way a user can only attempt to reset the password of an account that has performed this step
         
-        if ($user) {           
+        if ($user) {
             if ($user->user_type == 'Owner') {
                 $owner = $user->Owners;
                 $account = $owner->Accounts;
@@ -396,20 +398,20 @@ class AuthController extends \Phalcon\DI\Injectable
                     $user->active = 2;
                     $user->code = substr(md5(rand()), 0, 45);
                     
-                    // send email somewhere around here
                     
+                    // send email somewhere around here
                     $result = $user->save();
                     return array(
                         'status' => 'Reset',
                         'result' => $result
-                        // don't return the code, they are supposed to get that from email
-                        // 'code' => $user->code
                     );
+                    // don't return the code, they are supposed to get that from email
+                    // 'code' => $user->code
                 } else {
                     // modify the user and return the code
                     throw new HTTPException("Bad activation data supplied.", 400, array(
                         'dev' => "Account is not eligable for password resets. Email: $email",
-                        'internalCode' => '2168546681'
+                        'code' => '2168546681'
                     ));
                 }
             }
@@ -417,7 +419,7 @@ class AuthController extends \Phalcon\DI\Injectable
             // somehow test for false results
             throw new HTTPException("The identifier you supplied is invalid.", 400, array(
                 'dev' => "Supplied identifier was not valid. Email: $email",
-                'internalCode' => '89841911385131'
+                'code' => '89841911385131'
             ));
         }
     }

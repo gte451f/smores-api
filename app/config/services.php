@@ -78,8 +78,7 @@ $di->setShared('session', function () {
     return $session;
 });
 
-$di->set('modelsCache', function () {
-    
+$di->set('modelsCache', function () {    
     // Cache data for one day by default
     $frontCache = new \Phalcon\Cache\Frontend\Data(array(
         'lifetime' => 3600
@@ -100,8 +99,7 @@ $di->set('modelsCache', function () {
 $di->setShared('auth', function ($type = 'Employee') use($config) {
     
     $adapter = new \PhalconRest\Libraries\Authentication\Local();
-    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
-    
+    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();    
     $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
     $auth->userNameFieldName = 'email';
     return $auth;
@@ -189,7 +187,7 @@ $di->setShared('requestBody', function () {
     if ($in === null) {
         throw new HTTPException('There was a problem understanding the data sent to the server by the application.', 409, array(
             'dev' => 'The JSON body sent to the server was unable to be parsed.',
-            'internalCode' => '5',
+            'code' => '5',
             'more' => ''
         ));
     }

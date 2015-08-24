@@ -112,7 +112,7 @@ class Users extends \PhalconRest\API\BaseModel
         
         // all employees or owner accounts start as invactive
         // if they wish to login to either admin or portal, they must be activated
-        if ($this->user_type == 'Employee' OR $this->user_type == 'Owner') {
+        if ($this->user_type == 'Employee' or $this->user_type == 'Owner') {
             $this->active = 0;
         }
         
@@ -127,10 +127,10 @@ class Users extends \PhalconRest\API\BaseModel
             $security = $this->getDI()->get('security');
             $this->password = $security->hash($this->password);
             // also set a code when we infer a password
-            $this->code = substr(md5(rand()), 0, 45);
+            $this->code = substr(md5(rand()) . md5(rand()), 0, 45);
             
             // why set the account to inactive when the password changes?
-            // is this a specific password reset?  THen do this in the auth controller
+            // is this a specific password reset? THen do this in the auth controller
             // $this->active = 0;
         }
     }

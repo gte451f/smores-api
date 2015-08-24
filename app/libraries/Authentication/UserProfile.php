@@ -41,9 +41,9 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
         
         switch (count($users)) {
             case 0:
-                throw new HTTPException("No user found.", 401, array(
-                    'dev' => "No valid user was found.",
-                    'internalCode' => '347589347598'
+                throw new HTTPException("No user found", 401, array(
+                    'dev' => "No valid user was found",
+                    'code' => '347589347598'
                 ));
                 break;
             
@@ -67,7 +67,7 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
             default:
                 throw new HTTPException("Multiple users found!", 401, array(
                     'dev' => "More than one user was found, when only one was expected.",
-                    'internalCode' => '347589347598'
+                    'code' => '347589347598'
                 ));
                 break;
         }

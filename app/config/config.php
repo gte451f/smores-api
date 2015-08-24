@@ -42,7 +42,7 @@ if (file_exists($overridePath)) {
 } else {
     throw new HTTPException("Fatal Exception Caught.", 500, array(
         'dev' => "Invalid Envronmental Config!  Could not load the specific config file.",
-        'internalCode' => '23897293759275'
+        'code' => '23897293759275'
     ));
 }
 
