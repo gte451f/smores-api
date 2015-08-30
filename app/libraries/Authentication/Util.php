@@ -19,35 +19,26 @@ class Util
             'code' => $code
         );
         
-        $users = \PhalconRest\Models\Users::query()->where("status = 'Reset'")
+        $accounts = \PhalconRest\Models\Users::query()->where("active = 2")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
         
-        $user = $users->getFirst();        
+        $user = $accounts->getFirst();
+        
         if ($user) {
-            $user->status = 'Active';
+            // $account = $accounts->getFirst();
+            $user->active = 1;
             $user->password = $password;
             $user->code = NULL;
             
             // update record
-            if ($user->save() == false) {                
+            if ($user->save() == false) {
                 throw new ValidationException("Could not reset password.", array(
                     'dev' => 'Error updating users account while attempting to reset password',
                     'code' => '4981909148946416'
                 ), $user->getMessages());
             } else {
-                
-                $event = new \PhalconRest\Models\EventLogs();
-                $event->description = "UserName:::" . $user->user_name;
-                $event->code = 'Password Reset';
-                $event->created_by_id = $user->id;
-                if ($event->save() == false) {
-                    throw new ValidationException("Could not reset password", array(
-                        'dev' => 'Reset attempt failed when saving event record',
-                        'code' => '798418614686767684'
-                    ), $event->getMessages());
-                }
                 return true;
             }
         } else {
@@ -73,8 +64,15 @@ class Util
         if ($inactive) {
             $where = "email = :email:";
         } else {
-            $where = "email = :email: AND status != 'Inactive'";
+            $where = "email = :email: AND active <> 0";
         }
+        
+        // SELECT u.email, o.account_id
+        // FROM owners AS o
+        // JOIN accounts AS a ON o.account_id = a.id
+        // JOIN users AS u ON o.user_id = u.id
+        // WHERE a.active <> 0
+        // AND u.email = 'aaaa@aaa.com';
         
         // look for either active or password reset
         $query = \PhalconRest\Models\Users::query()->where($where);
@@ -85,23 +83,41 @@ class Util
         $users = $query->bind($search)->execute();
         $user = $users->getFirst();
         
-        if ($user) {            
-            // mark for password reset
-            // this way a user can only attempt to reset the password of an account that has performed this step
-            $user->status = 'Reset';
-            // generate a pseudo random string for the activation code
-            $user->code = substr(md5(rand()) . md5(rand()), 0, 45);
-            
-            // send email somewhere around here
-            
-            // update record
-            if ($user->save() == false) {
-                throw new ValidationException("Could not request reminder.", array(
-                    'dev' => 'Could not update user record while resetting the password',
-                    'code' => '9891861681618761584684'
-                ), $user->getMessages());
+        if ($user) {
+            //only process owners this way
+            if ($user->user_type == 'Owner') {
+                $owner = $user->Owners;
+                $account = $owner->Accounts;
+                
+                // mark for password reset
+                // this way a user can only attempt to reset the password of an account that has performed this step
+                // check that account is valid
+                if ($account and $account->active !== 0) {
+                    // should work for either Owner or Employee
+                    $user->active = 2;
+                    // generate a pseudo random string for the activation code
+                    $user->code = substr(md5(rand()) . md5(rand()), 0, 45);
+                    
+                    // send email somewhere around here
+                    
+                    // update record
+                    if ($user->save() == false) {
+                        throw new ValidationException("Could not request reminder.", array(
+                            'dev' => 'Could not update user record while resetting the password',
+                            'code' => '9891861681618761584684'
+                        ), $user->getMessages());
+                    } else {
+                        return true;
+                    }
+                } else {
+                    // modify the user and return the code
+                    throw new HTTPException("Bad activation data supplied.", 400, array(
+                        'dev' => "Account is not eligable for password resets. Email: $email",
+                        'code' => '2168546681'
+                    ));
+                }
             } else {
-                return true;
+                //other code for an employee
             }
         } else {
             // somehow test for false results

@@ -39,13 +39,13 @@ class AuthController extends \Phalcon\DI\Injectable
         // $userName = 'foo';
         // $password = '123456789';
         
-        if (strlen($password) < 8 or strlen($userName) < 3) {
+        if (strlen($password) < 8 or strlen($email) < 3) {
             throw new ValidationException("Bad Credentials Supplied", [
-                'dev' => "Supplied credentials were not valid. UserName: $userName",
+                'dev' => "Supplied credentials were not valid. UserName: $email",
                 'code' => '3446567'
             ], [
                 'password' => 'The password should be 8 characters or greater',
-                'username' => 'The username must be greater than 3 characters'
+                'email' => 'The email must be greater than 3 characters'
             ]);
         }
         
@@ -303,6 +303,7 @@ class AuthController extends \Phalcon\DI\Injectable
     /**
      * check for a code and password
      * attempt to reset the accounts password so long as the code is valid
+     * use shared library for actual reset
      *
      * @throws HTTPException
      * @return array
@@ -323,33 +324,20 @@ class AuthController extends \Phalcon\DI\Injectable
             "alphanum"
         ));
         
-        $search = array(
-            'code' => $code
-        );
-        
-        $accounts = \PhalconRest\Models\Users::query()->where("active = 2")
-            ->andWhere("code = :code:")
-            ->bind($search)
-            ->execute();
-        
-        $user = $accounts->getFirst();
-        
-        if ($user) {
-            // $account = $accounts->getFirst();
-            $user->active = 1;
-            $user->password = $password;
-            $user->code = NULL;
-            $result = $user->save();
-            return array(
-                'status' => 'Active',
-                'result' => $result
-            );
-        } else {
-            throw new HTTPException("Bad credentials supplied.", 400, array(
-                'dev' => "Could not save new password to account. Code: $code",
-                'code' => '891819816131634'
-            ));
+        if ($password != $confirm) {
+            throw new ValidationException("Passwords do not match.", array(
+                'dev' => "Confirm & Password values did not match.",
+                'code' => '9498498946846'
+            ), [
+                'password' => "Password and Confirmation do not match"
+            ]);
         }
+        
+        $result = \PhalconRest\Libraries\Authentication\Util::reset($password, $code);
+        return array(
+            'status' => 'Active',
+            'result' => $result
+        );
     }
 
     /**
@@ -367,60 +355,11 @@ class AuthController extends \Phalcon\DI\Injectable
         ));
         
         // $email = $this->request->get('email');
+        $result = \PhalconRest\Libraries\Authentication\Util::reminder($email, false);
         
-        // SELECT u.email, o.account_id
-        // FROM owners AS o
-        // JOIN accounts AS a ON o.account_id = a.id
-        // JOIN users AS u ON o.user_id = u.id
-        // WHERE a.active <> 0
-        // AND u.email = 'aaaa@aaa.com';
-        
-        // look for either active or password reset
-        $query = \PhalconRest\Models\Users::query()->where("email = :email: AND active <> 0 ");
-        $search = array(
-            'email' => $email
+        return array(
+            'status' => 'Reset',
+            'result' => $result
         );
-        
-        $users = $query->bind($search)->execute();
-        $user = $users->getFirst();
-        
-        // mark for password reset
-        // this way a user can only attempt to reset the password of an account that has performed this step
-        
-        if ($user) {
-            if ($user->user_type == 'Owner') {
-                $owner = $user->Owners;
-                $account = $owner->Accounts;
-                
-                // check that account is valid
-                if ($account and $account->active !== 0) {
-                    // should work for either Owner or Employee
-                    $user->active = 2;
-                    $user->code = substr(md5(rand()), 0, 45);
-                    
-                    
-                    // send email somewhere around here
-                    $result = $user->save();
-                    return array(
-                        'status' => 'Reset',
-                        'result' => $result
-                    );
-                    // don't return the code, they are supposed to get that from email
-                    // 'code' => $user->code
-                } else {
-                    // modify the user and return the code
-                    throw new HTTPException("Bad activation data supplied.", 400, array(
-                        'dev' => "Account is not eligable for password resets. Email: $email",
-                        'code' => '2168546681'
-                    ));
-                }
-            }
-        } else {
-            // somehow test for false results
-            throw new HTTPException("The identifier you supplied is invalid.", 400, array(
-                'dev' => "Supplied identifier was not valid. Email: $email",
-                'code' => '89841911385131'
-            ));
-        }
     }
 }
