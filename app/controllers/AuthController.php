@@ -315,7 +315,7 @@ class AuthController extends \Phalcon\DI\Injectable
             "string",
             "alphanum"
         ));
-        $confirm = $this->request->getPost("confirm", array(
+        $password_confirm = $this->request->getPost("password_confirm", array(
             "string",
             "alphanum"
         ));
@@ -324,7 +324,7 @@ class AuthController extends \Phalcon\DI\Injectable
             "alphanum"
         ));
         
-        if ($password != $confirm) {
+        if ($password != $password_confirm) {
             throw new ValidationException("Passwords do not match.", array(
                 'dev' => "Confirm & Password values did not match.",
                 'code' => '9498498946846'

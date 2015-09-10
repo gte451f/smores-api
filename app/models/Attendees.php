@@ -23,6 +23,24 @@ class Attendees extends \PhalconRest\API\BaseModel
     public $school_grade;
 
     /**
+     *
+     * @var string
+     */
+    public $medical_notes;
+
+    /**
+     *
+     * @var string
+     */
+    public $allergy_notes;
+
+    /**
+     *
+     * @var string
+     */
+    public $general_notes;
+
+    /**
      * this model's parent model
      *
      * @var string

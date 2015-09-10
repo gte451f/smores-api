@@ -58,8 +58,8 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
                 } else {
                     return false;
                 }
-                break;
-            
+                break;                          
+                
             default:
                 // to many user accounts found
                 return false;
