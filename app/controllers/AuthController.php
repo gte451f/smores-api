@@ -362,4 +362,23 @@ class AuthController extends \Phalcon\DI\Injectable
             'result' => $result
         );
     }
+
+    /**
+     * a simple point of entry to test out logic in smores
+     * placed here since it is a non-secure controller and route
+     */
+    public function scratch1()
+    {
+        $processor = $this->getDI()->get('paymentProcessor');
+        $account = \PhalconRest\Models\Accounts::findFirst(103);
+        $accountExternalId = $processor->createCustomer($account);
+        
+        $card = \PhalconRest\Models\Cards::findFirst(4);
+        $cardExternalId = $processor->createCard($accountExternalId, $card, '4242424242424242', '123');
+        
+        return [
+            'accountExternalId' => $accountExternalId,
+            'cardExternalId' => $cardExternalId
+        ];
+    }
 }

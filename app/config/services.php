@@ -78,7 +78,7 @@ $di->setShared('session', function () {
     return $session;
 });
 
-$di->set('modelsCache', function () {    
+$di->set('modelsCache', function () {
     // Cache data for one day by default
     $frontCache = new \Phalcon\Cache\Frontend\Data(array(
         'lifetime' => 3600
@@ -99,7 +99,7 @@ $di->set('modelsCache', function () {
 $di->setShared('auth', function ($type = 'Employee') use($config) {
     
     $adapter = new \PhalconRest\Libraries\Authentication\Local();
-    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();    
+    $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
     $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
     $auth->userNameFieldName = 'email';
     return $auth;
@@ -141,6 +141,12 @@ $di->setShared('security', function () {
     // Set a global encryption key
     $security->setWorkFactor(12);
     return $security;
+});
+
+// one way to do reversable encryption
+$di->setShared('paymentProcessor', function () {
+    $setting = \PhalconRest\Models\Settings::findFirst(4);
+    return new \PhalconRest\Libraries\Payments\StripeAdapter($setting->value);
 });
 
 /**

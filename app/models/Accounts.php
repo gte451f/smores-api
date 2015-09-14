@@ -32,9 +32,16 @@ class Accounts extends \PhalconRest\API\BaseModel
     public $updated_on;
 
     /**
+     * the payment processors PKID
+     * 
+     * @var string
+     */
+    public $external_id;
+
+    /**
      *
      * 0=Inactive | 1=Active
-     * 
+     *
      * @var int
      */
     public $active;

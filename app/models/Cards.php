@@ -103,10 +103,10 @@ class Cards extends \PhalconRest\API\BaseModel
     public function validation()
     {
         // make sure this credit card number isn't already in the table
-        $this->validate(new Uniqueness(array(
-            "field" => 'number'
-        )));
-        
+        // remove this since we only store the last four digits which will collide with other records
+        // $this->validate(new Uniqueness(array(
+        // "field" => 'number'
+        // )));
         $this->validate(new StringLengthValidator(array(
             'field' => 'name_on_card',
             'min' => 2,

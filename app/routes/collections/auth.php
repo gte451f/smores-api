@@ -22,6 +22,7 @@ return call_user_func(function () {
     // custom routes
     $routes->get('/session_check', 'session_check');
     $routes->get('/logout', 'logout');
+    $routes->get('/scratch1', 'scratch1');
     
     $routes->post('/login', 'login');
     $routes->post('/create', 'create');
