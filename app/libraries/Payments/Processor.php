@@ -13,7 +13,9 @@ interface Processor
 
     /**
      * create a stripe "customer" record for an account
-     * update the account to store stripes external PKID
+     * update the account to store stripe's external PKID
+     * might be bad to couple external record with internal update, but this is normally done
+     * in a transparent manner and opt to keep both actions as close as possible
      *
      * include logic to search for this account in stripe before attempting to make a brand new one
      *
@@ -36,14 +38,17 @@ interface Processor
     public function findCustomer($external_id, $force_api_call);
 
     /**
-     * for a given card number and the smores card record
+     * for a given external account number and credit card data
      * create a processor card record
      *
-     * cardNumber and cvv included since they are never stored in persistant storage
+     * written so an internal need not already be created (unlike new accounts)
+     * returns the newly created card record
+     * leaving it up to the entity to update the internal record
      *
      * @param object $card
      *            a stdObject that holds common card data
-     *            
+     * @return string external card id
+     *        
      */
     public function createCard($accountExternalId, $card);
 

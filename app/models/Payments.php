@@ -1,9 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Validation\Validator\Between;
 use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
 use Phalcon\Mvc\Model\Validator\InclusionIn;
+use Phalcon\Mvc\Model\Message as Message;
 
 class Payments extends \PhalconRest\API\BaseModel
 {
@@ -83,20 +83,21 @@ class Payments extends \PhalconRest\API\BaseModel
         ));
     }
 
+    /**
+     * set a standard create date
+     */
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d H:i:s');
     }
 
+    /**
+     * perform various checks on when insert/edit a payment record
+     *
+     * TODO maybe a security check here? verify that the card submitted is owned by the authenticated user
+     */
     public function validation()
     {
-        $this->validation(new Between(array(
-            'field' => 'amount',
-            'minimum' => 0,
-            'maximum' => 10000,
-            'message' => 'The payment must be between 0 and 10000'
-        )));
-        
         $this->validate(new InclusionIn(array(
             "field" => 'mode',
             'message' => 'Payment must be a specific value from the list.',
@@ -107,6 +108,24 @@ class Payments extends \PhalconRest\API\BaseModel
                 'discount'
             ]
         )));
+        
+        if ($this->amount < 10 or $this->amount > 10000) {
+            $message = new Message("Payment amount must be between 10 and 10,000", "amount", "InvalidValue");
+            $this->appendMessage($message);
+            return false;
+        }
+        
+        if ($this->mode == 'card' and $this->card_id <= 0) {
+            $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
+            $this->appendMessage($message);
+            return false;
+        }
+        
+        if ($this->mode == 'check' and $this->check_id <= 0) {
+            $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");
+            $this->appendMessage($message);
+            return false;
+        }
         
         return $this->validationHasFailed() != true;
     }

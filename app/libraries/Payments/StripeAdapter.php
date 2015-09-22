@@ -95,7 +95,7 @@ final class StripeAdapter extends Injectable implements Processor
             ]);
         }
         
-        if (strlen($card->expiration_month) > 1) {
+        if (strlen($card->expiration_month) <= 1) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
             ), [
@@ -146,14 +146,6 @@ final class StripeAdapter extends Injectable implements Processor
                 $result = $customer->sources->create(array(
                     "source" => $cardData
                 ));
-                $card->external_id = $result->id;
-                if (! $card->save()) {
-                    throw new HTTPException("Could not save Card information", 404, array(
-                        'code' => 1872391762862,
-                        'dev' => 'StripeAdapter->createCard failed to save external_id: ' . $result->id
-                    ), $card->getMessages());
-                    return false;
-                }
                 return $result->id;
             } catch (\Stripe\Error\Base $e) {
                 $this->handleStripeError($e);
@@ -255,12 +247,33 @@ final class StripeAdapter extends Injectable implements Processor
     }
 
     /**
+     * attempt to keep api as simple as possible
+     * provide the external id of the card to delete and the
+     * adapter does the rest
+     *
      * (non-PHPdoc)
      *
      * @see \PhalconRest\Libraries\Payments\Processor::deleteCard()
      */
     public function deleteCard($externalId)
-    {}
+    {
+        $mm = $this->di->get('modelsManager');
+        
+        $cardList = $mm->createBuilder()
+            ->from('PhalconRest\\Models\\Cards')
+            ->join('PhalconRest\\Models\\Accounts')
+            ->where("PhalconRest\\Models\\Cards.external_id >= '$externalId'")
+            ->getQuery()
+            ->execute();
+        
+        // remove all cards..in case there are 0 or N
+        foreach ($cardList as $card) {
+            // load customer from model
+            $customer = \Stripe\Customer::retrieve($card->Accounts->external_id);
+            // issue delete command
+            $customer->sources->retrieve($externalId)->delete();
+        }
+    }
 
     /**
      * (non-PHPdoc)

@@ -24,5 +24,9 @@ return call_user_func(function () {
     $routes->put('/{id:[0-9]+}', 'put');
     $routes->patch('/{id:[0-9]+}', 'patch');
     
+    // custom action to post a one-time payment
+    // complete with credit card to use
+    $routes->post('/one-time', 'post');
+    
     return $routes;
 });
