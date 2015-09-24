@@ -1,6 +1,9 @@
 <?php
 namespace PhalconRest\Entities;
 
+use \PhalconRest\Util\ValidationException;
+use Inacho\CreditCard;
+
 class CardEntity extends \PhalconRest\API\Entity
 {
 
@@ -20,6 +23,30 @@ class CardEntity extends \PhalconRest\API\Entity
             $accountExternalId = $processor->createCustomer($account);
         } else {
             $accountExternalId = $account->external_id;
+        }
+        
+        // run credit card through a series of validation tests
+        $result = CreditCard::validCreditCard($object->number, $object->vendor);
+        if ($result['valid'] == false) {
+            throw new ValidationException("Bad Credit Card Supplied", [
+                'dev' => "Bad card number supplied:  $object->number",
+                'code' => '5846846848644984'
+            ], [
+                'number' => 'The supplied credit card number is invalid.'
+            ]);
+        } else {
+            $object->number = $result['number'];
+        }
+        
+        $result = CreditCard::validDate($object->expiration_year, $object->expiration_month);
+        if ($result == false) {
+            throw new ValidationException("Bad Expiration Date Supplied", [
+                'dev' => "Bad expiration month or year:  $object->expiration_month | $object->expiration_year",
+                'code' => '81618161684684'
+            ], [
+                'expiration_month' => 'The supplied expiration month is invalid.',
+                'expiration_year' => 'The supplied expiration year is invalid.'
+            ]);
         }
         
         // put this in until we better populate the credit card form

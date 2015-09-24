@@ -87,6 +87,14 @@ final class StripeAdapter extends Injectable implements Processor
     {
         
         // validate some credit card data
+        if (strlen($card->name_on_card) < 2 or strlen($card->name_on_card) > 45) {
+            throw new ValidationException("Could not save card information", array(
+                'code' => 216894194189464684
+            ), [
+                'name_on_card' => 'The name on the card should be between 2 and 45 characters in length'
+            ]);
+        }
+        
         if ($card->expiration_year < date("Y")) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
@@ -271,7 +279,15 @@ final class StripeAdapter extends Injectable implements Processor
             // load customer from model
             $customer = \Stripe\Customer::retrieve($card->Accounts->external_id);
             // issue delete command
-            $customer->sources->retrieve($externalId)->delete();
+            try {
+                $customer->sources->retrieve($externalId)->delete();
+            } catch (\Stripe\Error\InvalidRequest $e) {
+                // Invalid parameters were supplied to Stripe's API
+                // card to delete didn't exist in stripe, ignore this and delete local card
+                return;
+            } catch (\Stripe\Error\Base $e) {
+                $this->handleStripeError($e);
+            }
         }
     }
 

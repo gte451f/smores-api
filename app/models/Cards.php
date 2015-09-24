@@ -119,9 +119,12 @@ class Cards extends \PhalconRest\API\BaseModel
             "field" => 'vendor',
             'message' => 'Card vendor must be one of the following: American Express, Visa or Master Card',
             'domain' => [
-                "American Express",
-                "Visa",
-                "Master Card"
+                "amex",
+                "visa",
+                "mastercard",
+                "discover",
+                'dinersclub',
+                'jcb'
             ]
         )));
         
