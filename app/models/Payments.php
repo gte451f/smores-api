@@ -102,7 +102,7 @@ class Payments extends \PhalconRest\API\BaseModel
             "field" => 'mode',
             'message' => 'Payment must be a specific value from the list.',
             'domain' => [
-                "card",
+                "credit",
                 "check",
                 "cash",
                 'discount'
@@ -115,7 +115,7 @@ class Payments extends \PhalconRest\API\BaseModel
             return false;
         }
         
-        if ($this->mode == 'card' and $this->card_id <= 0) {
+        if ($this->mode == 'credit' and $this->card_id <= 0) {
             $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
             $this->appendMessage($message);
             return false;
