@@ -3,6 +3,7 @@
 /.settings/
 /vendor/
 /composer.lock
+/dummy.php
 
 # ingnore codception files
 /tests/_data
