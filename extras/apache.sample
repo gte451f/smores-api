@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+    # sample values to give you an idea of what 
+    # your apache virtual directory should look like
+    # not suitable to copy and paste
+    DocumentRoot /PATH/TO/WWW
+
+    #.....
+    #.....
+
+    <Directory /PATH/TO/WWW/SMORES/>
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
+        </IfModule>
+    </Directory>
+</VirtualHost>
+
