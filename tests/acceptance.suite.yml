@@ -11,9 +11,9 @@ modules:
         - AcceptanceHelper
         - REST:
             depends: PhpBrowser
-            url: 'http://localhost/smores-api/v1/'
+            url: 'http://smores.dev/v1/'            
     config:
         PhpBrowser:
-            url: 'http://localhost/smores-api/'
+            url: 'http://smores.dev/'
         REST:
-            url: 'http://localhost/smores-api/v1/'
+            url: 'http://smores.dev/v1/'

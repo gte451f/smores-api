@@ -5,19 +5,24 @@ error_reporting(E_ALL);
 // app/config/staging.php
 $staging = [
     'application' => [
-        'cacheDir' => '/tmp/cache/',
-        'publicUrl' => 'http://localhost:8080/phalcon-json-api/',
+        'cacheDir' => '/tmp/',
+        // FQDN
+        'publicUrl' => 'http://localhost:8080',
+        // probalby the same FQDN
+        'corsOrigin' => 'https://localhost:8080',
+        // should the api return additional meta data and enable additional server loggin?
         'debugApp' => true
     ],
-    // enable security?
-    'security' => true,
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
         'username' => 'api',
         'password' => 'api',
-        'dbname' => 'smores'
+        'dbname' => 'smores',
+        'charset' => 'utf8'
     ],
+    // enable security for controllers marked as secure?
+    'security' => false
 ];
 
 return $staging;

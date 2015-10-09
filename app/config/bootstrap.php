@@ -15,19 +15,10 @@ $app->setDI($di);
  * Returning true in this function resumes normal routing.
  * Returning false stops any route from executing.
  */
-
 $app->before(function () use($app, $di) {
-    // TODO
     // set standard CORS headers before routing just incase no valid route is found
-    // hard coded until we can figure out a better way to calculate this
-    // probably perform some calcs based on prduction vs development
-    $app->response->setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-    
-    // this seems to fail every time in a local environment
-    // have not tested in production, that is with a FQDN
-    // $origin = $app->request->getHeader("ORIGIN") ? $app->request->getHeader("ORIGIN") : '*';
-    
-    // authenticate here
+    $config = $di->get('config');
+    $app->response->setHeader('Access-Control-Allow-Origin', $config['application']['corsOrigin']);
     return true;
 });
 
