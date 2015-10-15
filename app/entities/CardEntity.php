@@ -50,7 +50,8 @@ class CardEntity extends \PhalconRest\API\Entity
         }
         
         // put this in until we better populate the credit card form
-        $object->cvc = '123';
+        // TODO fix CVC in app
+        // $object->cvc = '123';
         
         $object->external_id = $processor->createCard($accountExternalId, $object);
         

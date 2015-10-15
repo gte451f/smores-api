@@ -147,7 +147,9 @@ final class StripeAdapter extends Injectable implements Processor
                 'name' => $card->name_on_card,
                 'exp_month' => $card->expiration_month,
                 'exp_year' => $card->expiration_year,
-                'object' => 'card'
+                'object' => 'card',
+                'address_line1' => $card->address,
+                'address_zip' => $card->zip
             ];
             
             try {
@@ -270,7 +272,7 @@ final class StripeAdapter extends Injectable implements Processor
         $cardList = $mm->createBuilder()
             ->from('PhalconRest\\Models\\Cards')
             ->join('PhalconRest\\Models\\Accounts')
-            ->where("PhalconRest\\Models\\Cards.external_id >= '$externalId'")
+            ->where("PhalconRest\\Models\\Cards.external_id = '$externalId'")
             ->getQuery()
             ->execute();
         
@@ -311,12 +313,16 @@ final class StripeAdapter extends Injectable implements Processor
         
         // Since it's a decline, \Stripe\Error\Card will be caught
         $body = $e->getJsonBody();
-        $err = $body['error'];
-        $devMessage = '';
-        $devMessage .= 'Status: ' . $e->getHttpStatus() . "\n";
-        $devMessage .= 'Type: ' . $err['type'] . "\n";
-        $devMessage .= 'Param: ' . $err['param'] . "\n";
-        $devMessage .= 'Message: ' . $err['message'] . "\n";
+        if ($body == null) {
+            $devMessage = $e->getMessage();
+        } else {
+            $err = $body['error'];
+            $devMessage = '';
+            $devMessage .= 'Status: ' . $e->getHttpStatus() . "\n";
+            $devMessage .= 'Type: ' . $err['type'] . "\n";
+            $devMessage .= 'Param: ' . $err['param'] . "\n";
+            $devMessage .= 'Message: ' . $err['message'] . "\n";
+        }
         
         // treat as validation error
         if ($err['type'] == 'card_error') {
