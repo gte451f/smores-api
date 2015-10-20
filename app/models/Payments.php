@@ -63,6 +63,18 @@ class Payments extends \PhalconRest\API\BaseModel
     public $mode;
 
     /**
+     *
+     * @var string
+     */
+    public $refund_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $refunded_on;
+
+    /**
      * (non-PHPdoc)
      *
      * @see \PhalconRest\API\BaseModel::initialize()
@@ -105,7 +117,8 @@ class Payments extends \PhalconRest\API\BaseModel
                 "credit",
                 "check",
                 "cash",
-                'discount'
+                'discount',
+                'refund'
             ]
         )));
         
@@ -115,11 +128,12 @@ class Payments extends \PhalconRest\API\BaseModel
             return false;
         }
         
-        if ($this->mode == 'credit' and $this->card_id <= 0) {
-            $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
-            $this->appendMessage($message);
-            return false;
-        }
+        // this is wrong, it won't allow a one time charge
+//         if ($this->mode == 'credit' and $this->card_id <= 0) {
+//             $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
+//             $this->appendMessage($message);
+//             return false;
+//         }
         
         if ($this->mode == 'check' and $this->check_id <= 0) {
             $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");

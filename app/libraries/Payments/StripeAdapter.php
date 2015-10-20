@@ -79,6 +79,76 @@ final class StripeAdapter extends Injectable implements Processor
     }
 
     /**
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\Libraries\Payments\Processor::chargeCard()
+     */
+    public function chargeCard($data)
+    {
+        // assume we use stored card for now, will support a new card soon
+        if ($data['amount'] < 10) {
+            throw new \Exception('Charge amount must exceed $10.');
+        }
+        
+        // convert amount to decimal
+        // then convert to cents cuz that is what stripe wants
+        $amount = bcmul(number_format($data['amount'], 2), 100);
+        
+        // set base charge data, add card on file or new card
+        $chargeData = [
+            "amount" => $amount,
+            "currency" => "usd",
+            "description" => "SMORES Payment"
+        ];
+        
+        if (isset($data['card_id'])) {
+            // verify that the external_id exists in the database
+            $card = $this->findCard($data['card_id']);
+            $chargeData['source'] = $data['card_id'];
+            $chargeData['customer'] = $data['account_id'];
+        } else {
+            // maybe this is a one time card?
+            $chargeData['source'] = [
+                // 'brand' => $data['vendor'],
+                'address_zip' => $data['zip'],
+                'number' => $data['number'],
+                'object' => 'card',
+                'cvc' => $data['cvc'],
+                'exp_year' => $data['expiration_year'],
+                'exp_month' => $data['expiration_month'],
+                'name' => $data['name'],
+                'address_line1' => $data['address']
+            ];
+        }
+        
+        try {
+            $result = \Stripe\Charge::create($chargeData);
+            return $result->id;
+        } catch (\Stripe\Error\Base $e) {
+            $this->handleStripeError($e);
+        }
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\Libraries\Payments\Processor::chargeCard()
+     */
+    public function refundCharge($data)
+    {
+        try {
+            $result = \Stripe\Refund::create(array(
+                'charge' => $data['charge_id']
+            ));
+            return $result->id;
+        } catch (\Stripe\Error\Base $e) {
+            $this->handleStripeError($e);
+        }
+    }
+
+    /**
      * (non-PHPdoc)
      *
      * @see \PhalconRest\Libraries\Payments\Processor::createCard()

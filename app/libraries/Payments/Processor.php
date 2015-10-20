@@ -38,6 +38,25 @@ interface Processor
     public function findCustomer($external_id, $force_api_call);
 
     /**
+     * for a given credit card create a charge request
+     *
+     *
+     * @param array $data
+     *            an array hold various combinations of card data to be processed
+     * @return object an object representing the charge record otherwise false
+     */
+    public function chargeCard($data);
+
+    /**
+     * for a given charge, refund the transaction
+     *
+     * @param array $data
+     *            an array hold various combinations of charge data to be processed
+     * @return object an object representing the refund record otherwise false
+     */
+    public function refundCharge($data);
+
+    /**
      * for a given external account number and credit card data
      * create a processor card record
      *
