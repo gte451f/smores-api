@@ -145,7 +145,8 @@ $di->setShared('security', function () {
 
 // one way to do reversable encryption
 $di->setShared('paymentProcessor', function () {
-    $setting = \PhalconRest\Models\Settings::findFirst(4);
+    // TODO swap out a dummy adapter if no valid key is found
+    $setting = \PhalconRest\Models\Settings::findFirst("name = 'Stripe API Key'");
     return new \PhalconRest\Libraries\Payments\StripeAdapter($setting->value);
 });
 
