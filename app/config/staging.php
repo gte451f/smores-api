@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 // app/config/staging.php
 $staging = [
     'application' => [
+        // where to store temporary files
         'cacheDir' => '/tmp/',
         // FQDN
         'publicUrl' => 'http://localhost:8080',
@@ -13,6 +14,7 @@ $staging = [
         // should the api return additional meta data and enable additional server loggin?
         'debugApp' => true
     ],
+    // enable security for controllers marked as secure?
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
@@ -22,7 +24,11 @@ $staging = [
         'charset' => 'utf8'
     ],
     // enable security for controllers marked as secure?
-    'security' => false
+    'security' => false,
+    // used as a system wide prefix to all file storage paths
+    'fileStorage' => [
+        'basePath' => '/tmp/'
+    ]
 ];
 
 return $staging;

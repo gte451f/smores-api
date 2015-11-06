@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 
 $development = [
     'application' => [
+        // where to store temporary files
         'cacheDir' => '/tmp/',
         // FQDN
         'publicUrl' => 'http://localhost:8080',
@@ -14,6 +15,7 @@ $development = [
         // should the api return additional meta data and enable additional server loggin?
         'debugApp' => true
     ],
+    // standard database configuration values
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
@@ -21,9 +23,13 @@ $development = [
         'password' => 'api',
         'dbname' => 'smores',
         'charset' => 'utf8'
-    ],
+    ],    
     // enable security for controllers marked as secure?
-    'security' => false
+    'security' => false,    
+    // used as a system wide prefix to all file storage paths
+    'fileStorage' => [
+        'basePath' => '/tmp/'
+    ]
 ];
 
 return $development;

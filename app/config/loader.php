@@ -6,7 +6,6 @@
  *
  */
 use Phalcon\Loader;
-
 use PhalconRest\Libraries\Formatters;
 
 /**

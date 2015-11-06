@@ -27,10 +27,6 @@ $config = [
         'controllers' => "PhalconRest\\Controllers\\",
         'libraries' => "PhalconRest\\Libraries\\",
         'entities' => "PhalconRest\\Entities\\"
-    ],
-    // used as a system wide prefix to all file storage paths
-    'fileStorage' => [
-        'basePath' => '/tmp/'
     ]
 ];
 
