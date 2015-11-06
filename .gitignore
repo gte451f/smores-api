@@ -1,10 +1,15 @@
+# zend studio files
 /.buildpath
 /.project
 /.settings/
+
+#composer directory
 /vendor/
+
+# zend debugger file
 /dummy.php
 
-# ingnore codception files
+# ignore codception files
 /tests/_data
 /tests/_output
 /tests/_support
