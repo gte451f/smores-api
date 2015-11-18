@@ -3,20 +3,14 @@
 /.project
 /.settings/
 
-#composer directory
+# composer
 /vendor/
 
 # zend debugger file
 /dummy.php
 
-# ignore codception files
-/tests/_data
-/tests/_output
-/tests/_support
-
 /deployment.properties
 /deployment.xml
-
 
 # ingnore mysql schema builder bak file
 *.bak
@@ -62,3 +56,5 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+tests/_output/*
