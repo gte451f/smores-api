@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class OwnerNumberController extends \PhalconRest\API\BaseController
+class OwnerNumberController extends \PhalconRest\Libraries\API\SecureController
 {
 }

@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class RequestController extends \PhalconRest\API\BaseController
+class RequestController extends \PhalconRest\Libraries\API\SecureController
 {
 }

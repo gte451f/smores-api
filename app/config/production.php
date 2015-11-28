@@ -30,4 +30,10 @@ $production = [
     
 ];
 
+// Define APPNAME if this is production environment
+// - must be defined on each deployed PRODUCTION version
+//  useful when the production code is deployed in multiple configurations ie. portal or admin
+defined('APPLICATION_NAME') || define('APPLICATION_NAME', 'admin');
+
+
 return $production;

@@ -42,4 +42,8 @@ if (file_exists($overridePath)) {
     ));
 }
 
+// load defined security rules based on current environment
+$security_rules_path = 'security_rules/' . APPLICATION_ENV . '.php';
+$config = (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . $security_rules_path)) ? array_merge_recursive_replace($config, require ($security_rules_path)) : $config;
+
 return new \Phalcon\Config($config);

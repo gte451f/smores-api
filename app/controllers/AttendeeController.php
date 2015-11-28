@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class AttendeeController extends \PhalconRest\API\BaseController
+class AttendeeController extends \PhalconRest\Libraries\API\SecureController
 {
 }

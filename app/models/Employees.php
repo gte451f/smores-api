@@ -37,16 +37,4 @@ class Employees extends \PhalconRest\API\BaseModel
             'alias' => 'Users'
         ));
     }
-    
-    /**
-     * set some default values before we create a new user record
-     */
-    public function beforeValidationOnCreate()
-    {    
-        // all user accounts have this type
-        $this->user_type = 'Employee';
-
-    }
-
-
 }

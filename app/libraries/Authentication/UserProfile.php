@@ -13,15 +13,43 @@ use PhalconRest\Util\HTTPException;
 class UserProfile extends \PhalconRest\Authentication\UserProfile
 {
 
+    /**
+     *
+     * @var int
+     */
     public $id;
 
+    /**
+     *
+     * @var string
+     */
     public $firstName;
 
+    /**
+     *
+     * @var string
+     */
     public $lastName;
 
+    /**
+     *
+     * @var string
+     */
     public $email;
 
+    /**
+     *
+     * @var int
+     */
     public $accountId;
+
+    /**
+     * is this user a staff member or a client for the portal?
+     * Attendee|Employee|Owner
+     * 
+     * @var string
+     */
+    public $userType;
 
     /**
      * (non-PHPdoc)
@@ -53,14 +81,15 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
                     $this->firstName = $user->first_name;
                     $this->lastName = $user->last_name;
                     $this->email = $user->email;
+                    $this->userType = $user->user_type;
                     
                     if ($user->user_type == 'Owner') {
                         $this->accountId = $user->owners->account_id;
                     }
                     
                     $this->gender = $user->gender;
-                    $this->expiresOn = 'NOT IMPLEMENTED YET';
-                    $this->token = 'NOT IMPLEMENTED YET';
+                    $this->expiresOn = $this->generateExpiration();
+                    $this->token = $user->token;
                 }
                 break;
             

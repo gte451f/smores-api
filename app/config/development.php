@@ -9,9 +9,9 @@ $development = [
         // where to store temporary files
         'cacheDir' => '/tmp/',
         // FQDN
-        'publicUrl' => 'http://localhost:8080',
+        'publicUrl' => 'http://smores.dev:8080',
         // probalby the same FQDN
-        'corsOrigin' => 'https://localhost:8080',
+        'corsOrigin' => 'https://smores.dev:8080',
         // should the api return additional meta data and enable additional server loggin?
         'debugApp' => true
     ],
@@ -25,7 +25,7 @@ $development = [
         'charset' => 'utf8'
     ],    
     // enable security for controllers marked as secure?
-    'security' => false,    
+    'security' => true,    
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [
         'basePath' => '/tmp/'

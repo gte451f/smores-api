@@ -41,6 +41,11 @@ $di->setShared('request', function () {
     return $request;
 });
 
+    // load a security service applied to select controllers
+$di->setShared('securityService', function () use($config) {
+    return new \PhalconRest\Libraries\Security\SecurityService();
+});
+
 // stopwatch service to track
 $di->setShared('stopwatch', function () use($T) {
     // start the stopwatch

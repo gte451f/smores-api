@@ -75,6 +75,19 @@ class Users extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $active;
+    
+
+    /**
+     *
+     * @var string
+     */
+    public $token;
+    
+    /**
+     *
+     * @var string
+     */
+    public $token_created_on;    
 
     /**
      * define custom model relationships

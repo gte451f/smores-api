@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class PaymentController extends \PhalconRest\API\BaseController
+class PaymentController extends \PhalconRest\Libraries\API\SecureController
 {
 
     /**

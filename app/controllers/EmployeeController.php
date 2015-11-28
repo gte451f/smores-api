@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class EmployeeController extends \PhalconRest\API\BaseController
+class EmployeeController extends \PhalconRest\Libraries\API\SecureController
 {
 }
