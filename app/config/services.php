@@ -41,7 +41,7 @@ $di->setShared('request', function () {
     return $request;
 });
 
-    // load a security service applied to select controllers
+// load a security service applied to select controllers
 $di->setShared('securityService', function () use($config) {
     return new \PhalconRest\Libraries\Security\SecurityService();
 });
@@ -83,20 +83,21 @@ $di->setShared('session', function () {
     return $session;
 });
 
-$di->set('modelsCache', function () {
-    // Cache data for one day by default
+// general purpose cache used to store complex or database heavy structures
+$di->setShared('cache', function () use($config) {
+    // Cache data for one hour by default
     $frontCache = new \Phalcon\Cache\Frontend\Data(array(
-        'lifetime' => 3600
+        'lifetime' => 60
     ));
     
-    // File cache settings
+    // Create the component that will cache "Data" to a "File" backend
+    // Set the cache file directory - important to keep the "/" at the end of
+    // of the value for the folder
     $cache = new \Phalcon\Cache\Backend\File($frontCache, array(
-        'cacheDir' => __DIR__ . '/cache/'
+        'cacheDir' => $config['application']['cacheDir']
     ));
-    
     return $cache;
 });
-
 /**
  * load an authenticator w/ local adapter
  * called "auth" since the API expects a service of this name for subsequent token checks
@@ -110,9 +111,15 @@ $di->setShared('auth', function ($type = 'Employee') use($config) {
     return $auth;
 });
 
-// used in model?
 $di->setShared('modelsManager', function () {
     return new \Phalcon\Mvc\Model\Manager();
+});
+
+$di->set('modelsMetadata', function () use($config) {
+    $metaData = new \Phalcon\Mvc\Model\Metadata\Files(array(
+        'metaDataDir' => $config['application']['tempDir']
+    ));
+    return $metaData;
 });
 
 // used in model?
@@ -159,32 +166,46 @@ $di->setShared('paymentProcessor', function () {
  * Database setup.
  */
 $di->set('db', function () use($config, $di) {
-    // config the event and log services
-    $eventsManager = new EventsManager();
-    $fileName = date("d_m_y");
-    $logger = new FileLogger("/tmp/$fileName.log");
-    // $registry = new \Phalcon\Registry();
-    $registry = $di->get('registry');
-    $registry->dbCount = 0;
     
-    // Listen all the database events
-    $eventsManager->attach('db', function ($event, $connection) use($logger, $registry) {
-        if ($event->getType() == 'beforeQuery') {
-            $count = $registry->dbCount;
-            $count ++;
-            $registry->dbCount = $count;
-            
-            // $logger->log($connection->getSQLStatement(), Logger::INFO);
-        }
-    });
-    
+    // Listen all the database events if debugging is enabled
+    if ($config['application']['debugApp']) {
+        $registry = $di->get('registry');
+        $registry->dbCount = 0;
+        
+        // config the event and log services
+        $eventsManager = new EventsManager();
+        $fileName = date("d_m_y");
+        $logger = new FileLogger($config['application']['loggingDir'] . "$fileName-db-query.log");
+        
+        $eventsManager->attach('db', function ($event, $connection) use($logger, $registry) {
+            if ($event->getType() == 'beforeQuery') {
+                $count = $registry->dbCount;
+                $count ++;
+                $registry->dbCount = $count;
+                
+                $logger->log($connection->getSQLStatement(), Logger::INFO);
+                $vars = $connection->getSQLVariables();
+                if (count($vars) > 0) {
+                    $variableList = 'Variables: ';
+                    foreach ($vars as $key => $val) {
+                        $variableList .= " ( [$key]-[$val] ) ";
+                    }
+                    $logger->log($variableList, Logger::INFO);
+                }
+            }
+        });
+    }
+    // init db connection
     $connection = new Connection($config['database']);
     
     // Assign the eventsManager to the db adapter instance
-    $connection->setEventsManager($eventsManager);
+    if ($config['application']['debugApp']) {
+        $connection->setEventsManager($eventsManager);
+    }
     
     return $connection;
 });
+
 /**
  * If our request contains a body, it has to be valid JSON.
  * This parses the body into a standard Object and makes that available from the DI.

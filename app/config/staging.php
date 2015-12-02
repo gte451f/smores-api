@@ -5,14 +5,18 @@ error_reporting(E_ALL);
 // app/config/staging.php
 $staging = [
     'application' => [
-        // where to store temporary files
+        // where to store cache related files
         'cacheDir' => '/tmp/',
         // FQDN
-        'publicUrl' => 'http://localhost:8080',
+        'publicUrl' => 'http://smores.dev:8080',
         // probalby the same FQDN
-        'corsOrigin' => 'https://localhost:8080',
+        'corsOrigin' => 'https://smores.dev:8080',
         // should the api return additional meta data and enable additional server loggin?
-        'debugApp' => true
+        'debugApp' => true,
+        // where should system temp files go?
+        'tempDir' => '/tmp/',
+        // where should app generated logs be stored?
+        'loggingDir' => '/tmp/'
     ],
     // enable security for controllers marked as secure?
     'database' => [

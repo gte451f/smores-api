@@ -32,7 +32,7 @@ class Owners extends \PhalconRest\API\BaseModel
      * @var string
      */
     public $relationship;
-    
+
     /**
      * this model's parent model
      *
@@ -62,12 +62,11 @@ class Owners extends \PhalconRest\API\BaseModel
         ));
     }
 
-
     /**
      * validation owern data
      */
     public function validation()
-    {
+    {        
         $this->validate(new InclusionInValidator(array(
             'field' => 'relationship',
             'domain' => array(

@@ -5,6 +5,7 @@ use Phalcon\Mvc\Model\Validator\Email as Email;
 use Phalcon\Mvc\Model\Validator\PresenceOf;
 use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
 use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
+use Phalcon\Mvc\Model\Validator\Uniqueness;
 
 class Users extends \PhalconRest\API\BaseModel
 {
@@ -75,19 +76,18 @@ class Users extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $active;
-    
 
     /**
      *
      * @var string
      */
     public $token;
-    
+
     /**
      *
      * @var string
      */
-    public $token_created_on;    
+    public $token_created_on;
 
     /**
      * define custom model relationships
@@ -168,11 +168,15 @@ class Users extends \PhalconRest\API\BaseModel
     public function validation()
     {
         // check for valid email
-        // how to make for only employees
-        // $this->validate(new Email(array(
-        // 'field' => 'email',
-        // 'required' => true
-        // )));
+        $this->validate(new Email(array(
+            'field' => 'email',
+            'allowEmpty' => true
+        )));
+        
+        $this->validate(new Uniqueness(array(
+            "field" => 'email',
+            'allowEmpty' => true
+        )));
         
         // check length for first/last namespace
         $this->validate(new StringLengthValidator(array(

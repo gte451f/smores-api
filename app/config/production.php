@@ -3,14 +3,18 @@
 // app/config/production.php
 $production = [
     'application' => [
-        // where to store temporary files
+        // where to store cache
         'cacheDir' => '##cacheDir##',
         // FQDN
         'publicUrl' => '##publicurl##',
-        // probalby the same FQDN
+        // probably the same FQDN
         'corsOrigin' => '##publicurl##',
         // should the api return additional meta data and enable additional server logging?
-        'debugApp' => false
+        'debugApp' => false,
+        // where to store ephemeral files
+        'tempDir' => '##tempDir##',
+        // where to store system logs
+        'loggingDir' => '##loggingDir##'
     ],    
     // enable security for controllers marked as secure?
     'security' => true,

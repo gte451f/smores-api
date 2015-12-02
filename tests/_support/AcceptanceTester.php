@@ -40,7 +40,7 @@ class AcceptanceTester extends \Codeception\Actor
                 break;
             
             case 'Employee':
-                $password = 'password5678';
+                $password = 'password1234';
                 $username = 'admin@smores.camp';
                 break;
             

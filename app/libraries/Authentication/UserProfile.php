@@ -46,7 +46,7 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
     /**
      * is this user a staff member or a client for the portal?
      * Attendee|Employee|Owner
-     * 
+     *
      * @var string
      */
     public $userType;
@@ -58,9 +58,14 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
      */
     public function loadProfile($search)
     {
+        /**
+         * backdoor to run app w/o security...yeah
+         */
         if ($search == "token = 'HACKYHACKERSON'") {
             // load config defined user id
-            $search = 'user_id = 103';
+            $config = $this->getDI()->get('config');
+            $id = $config['securityUserId'];
+            $search = "id = $id";
         } else {
             $search .= " and active = 1";
         }
