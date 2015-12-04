@@ -3,7 +3,7 @@ namespace PhalconRest\Entities;
 
 use \PhalconRest\Util\ValidationException;
 
-class RequestEntity extends \PhalconRest\API\Entity
+class RequestEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**

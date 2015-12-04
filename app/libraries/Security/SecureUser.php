@@ -37,13 +37,13 @@ final class SecureUser extends Injectable
             
             case 'Employee':
                 $this->user_groups = [
-                    'System - Administrator'
+                    ADMIN_USER
                 ];
                 break;
             
             case 'Owner':
                 $this->user_groups = [
-                    'Portal - User'
+                    PORTAL_USER
                 ];
                 break;
             

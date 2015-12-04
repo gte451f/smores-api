@@ -3,42 +3,9 @@ namespace PhalconRest\Entities;
 
 use \PhalconRest\Util\ValidationException;
 
-class RegistrationEntity extends \PhalconRest\API\Entity
+class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
 {
 
-    /**
-     * extend to always provide account_id and school grade
-     * these are values stored in the user table, yet only attendee is joined
-     *
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\Entity::queryBuilder()
-     */
-    // public function queryBuilder($count = false)
-    // {
-    // $query = parent::queryBuilder($count);
-    
-    // // no need to proceed for simple counts
-    // if ($count) {
-    // return $query;
-    // }
-    
-    // $config = $this->getDI()->get('config');
-    // $nameSpace = $config['namespaces']['models'];
-    
-    // $modelNameSpace = $nameSpace . $this->model->getModelName();
-    // $refModelNameSpace = $nameSpace . 'Attendees';
-    
-    // $query->join($refModelNameSpace);
-    // $columns = array(
-    // "$modelNameSpace.*",
-    // "$refModelNameSpace.account_id, $refModelNameSpace.school_grade"
-    // );
-    // $query->columns($columns);
-    
-    // return $query;
-    // }
-    
     /**
      * everytime a new registration is created
      * consult with the fee table and create relevant charges
@@ -86,5 +53,36 @@ class RegistrationEntity extends \PhalconRest\API\Entity
                 'dev' => 'Error while processing RegistratinoEntity->afterSave(). Could not find a valid attendee record.'
             ), $charge->getMessages());
         }
+    }
+
+    /**
+     * custom implimentation of account filter
+     * must filter through related attendee records
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\Libraries\API\Entity::applyAccountFilter()
+     */
+    public function applyAccountFilter($query)
+    {
+        // load current account
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        // add custom filter
+        $query->where("PhalconRest\Models\Attendees.account_id = $currentUser->accountId");
+        
+        // only add needed join if it isn't already in place
+        $applyJoin = true;
+        foreach ($this->activeRelations as $alias => $relation) {
+            if ($alias == 'Attendees') {
+                $applyJoin = false;
+                break;
+            }
+        }
+        if ($applyJoin) {
+            $query->join("PhalconRest\Models\Attendees");
+        }
+        return $query;
     }
 }

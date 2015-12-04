@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Entities;
 
-class OwnerEntity extends \PhalconRest\API\Entity
+class OwnerEntity extends \PhalconRest\Libraries\API\Entity
 {
     /**
      * auto assign user_type to form

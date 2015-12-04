@@ -4,7 +4,7 @@ namespace PhalconRest\Entities;
 use \PhalconRest\Util\ValidationException;
 use Inacho\CreditCard;
 
-class CardEntity extends \PhalconRest\API\Entity
+class CardEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**

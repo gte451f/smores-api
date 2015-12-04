@@ -17,28 +17,28 @@
 $security_rules = [
     'security_rules' => [
         'read' => [
-            'System - Administrator' => [
+            ADMIN_USER => [
                 'cabins'
             ],
-            'Portal - User' => [
+            PORTAL_USER => [
                 'cabins'
             ]
         ],
         
         'write' => [
-            'Portal - User' => [
+            PORTAL_USER => [
                 'cabins'
             ],
-            'System - Administrator' => [
+            ADMIN_USER => [
                 'cabins'
             ]
         ],
         
         'delete' => [
-            'Portal - User' => [
+            PORTAL_USER => [
                 'cabins'
             ],
-            'System - Administrator' => [
+            ADMIN_USER => [
                 'cabins'
             ]
         ]

@@ -1,5 +1,5 @@
 <?php
-namespace PhalconRest\Libraries\Core;
+namespace PhalconRest\Libraries\API;
 
 use \PhalconRest\Util\HTTPException;
 
@@ -13,22 +13,6 @@ class Entity extends \PhalconRest\API\Entity
 {
 
     /**
-     * process injected model
-     *
-     * @param \PhalconRest\API\BaseModel $model            
-     */
-    public function __construct(\PhalconRest\API\BaseModel $model, \PhalconRest\API\SearchHelper $searchHelper)
-    {
-        $di = \Phalcon\DI::getDefault();
-        $this->di = $di;
-        
-        // get the security service
-        $this->security_service = $this->getDI()->get('securityService');
-        
-        parent::__construct($model, $searchHelper);
-    }
-
-    /**
      * This is a method that hooks into the PhalconRest\API\Entity::queryBuilder method right before it returns the query
      * object.
      * This gives us an oportunity to alter the object however we choose before it is returned to be processed.
@@ -40,8 +24,10 @@ class Entity extends \PhalconRest\API\Entity
     public function afterQueryBuilderHook($query)
     {
         // check to see whether the controller has set the security_service to enforce matter level security for this resource
-        if ($this->security_service->getEnforceMatterLevelPermissions()) {
-            $this->applyMatterSecurityFilter($query);
+        $securityService = $this->getDI()->get('securityService');
+        
+        if ($securityService->getEnforceAccountFilter()) {
+            $this->applyAccountFilter($query);
         }
         
         return $query;
@@ -49,15 +35,35 @@ class Entity extends \PhalconRest\API\Entity
 
     /**
      * This is a method which is called form the afterQueryBuilderHook.
-     * This method gives us a specific place to put all matter level security
-     * logic in child Entity classes. It will simply return the $query object if it is not defined in Entity class which extend \PhalconRest\Libraries\Core\Entity
+     * This method gives us a specific place to put all account related filters logic in child Entity classes.
+     * By default it assumes the primary model contains an account id and filters for the current user's
      *
      * @param
      *            phalcon query object
+     *            
      * @return phalcon query object
      */
-    public function applyMatterSecurityFilter($query)
+    public function applyAccountFilter($query)
     {
+        // load current account
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        
+        // figure out best way to filter by default
+        $model = $this->model->getModelNamespace();
+        switch ($model) {
+            case 'PhalconRest\Models\Accounts':
+                $id = 'id';
+                break;
+            
+            default:
+                $id = 'account_id';
+                break;
+        }
+        
+        // apply generic account filter assuming column is present in query
+        $query->where("$model.$id = $currentUser->accountId");
         return $query;
     }
 }

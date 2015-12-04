@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class FeeEntity extends \PhalconRest\API\Entity
+class FeeEntity extends \PhalconRest\Libraries\API\Entity
 {
 }

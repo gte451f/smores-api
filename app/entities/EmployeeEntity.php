@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Entities;
 
-class EmployeeEntity extends \PhalconRest\API\Entity
+class EmployeeEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class CabinEntity extends \PhalconRest\API\Entity
+class CabinEntity extends \PhalconRest\Libraries\API\Entity
 {
 }

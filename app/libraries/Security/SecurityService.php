@@ -37,9 +37,13 @@ final class SecurityService extends Injectable
     
     // the resource that was requested i.e. /v1/appl_lists -- $requestedResource = 'appl_lists'
     private $requestedResource;
-    
-    // boolean value to be set by the controller to tell the SecurityService whether or not to enforce matter level security for the requested resource
-    public $enforceMatterLevelSecurity = false;
+
+    /**
+     * used by controller
+     * should SecurityService apply account filter
+     * @boolean
+     */
+    public $enforceAccountFilter = false;
     
     // array of security rules to apply. defined in a config file.
     private $security_rules;
@@ -70,10 +74,10 @@ final class SecurityService extends Injectable
      */
     private function setRoleList()
     {
-        $role = new Role('System - Administrator');
+        $role = new Role(ADMIN_USER);
         $this->acl->addRole($role);
         
-        $role = new Role('Portal - User');
+        $role = new Role(PORTAL_USER);
         $this->acl->addRole($role);
     }
 
@@ -199,9 +203,9 @@ final class SecurityService extends Injectable
      *
      * @param unknown $bool            
      */
-    public function setEnforceMatterLevelSecurity($bool)
+    public function setEnforceAccountFilter($bool)
     {
-        $this->enforceMatterLevelSecurity = $bool;
+        $this->enforceAccountFilter = $bool;
     }
 
     /**
@@ -232,8 +236,8 @@ final class SecurityService extends Injectable
         return $this->requestedResource;
     }
 
-    public function getEnforceMatterLevelPermissions()
+    public function getEnforceAccountFilter()
     {
-        return $this->enforceMatterLevelSecurity;
+        return $this->enforceAccountFilter;
     }
 }

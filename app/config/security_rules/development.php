@@ -14,10 +14,11 @@
  * 
  * 
  */
+
 $security_rules = [
     'security_rules' => [
         'read' => [
-            'Portal - User' => [
+            PORTAL_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",
@@ -38,7 +39,7 @@ $security_rules = [
                 "sessions",
                 "users"
             ],
-            'System - Administrator' => [
+            ADMIN_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",
@@ -63,7 +64,7 @@ $security_rules = [
         ],
         
         'write' => [
-            'Portal - User' => [
+            PORTAL_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",
@@ -75,7 +76,7 @@ $security_rules = [
                 "registrations",
                 "requests"
             ],
-            'System - Administrator' => [
+            ADMIN_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",
@@ -100,7 +101,7 @@ $security_rules = [
         ],
         
         'delete' => [
-            'Portal - User' => [
+            PORTAL_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",
@@ -112,7 +113,7 @@ $security_rules = [
                 "registrations",
                 "requests"
             ],
-            'System - Administrator' => [
+            ADMIN_USER => [
                 "account_addrs",
                 "accounts",
                 "attendees",

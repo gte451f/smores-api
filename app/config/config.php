@@ -2,6 +2,9 @@
 // define if it isn't already in palce
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', __DIR__ . '/../');
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', 'staging');
+// define security roles
+define("PORTAL_USER", "Portal - User");
+define("ADMIN_USER", "System - Administrator");
 
 /**
  * load low level helper here so it also works when used in conjunction with phalcon devtools

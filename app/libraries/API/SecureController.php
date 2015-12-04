@@ -10,12 +10,6 @@ class SecureController extends \PhalconRest\API\SecureController
 {
 
     /**
-     *
-     * @var boolean
-     */
-    public $enforceMatterLevelSecurity = false;
-
-    /**
      * Determine whether the user can access the requested resource
      *
      * @return bool

@@ -39,6 +39,21 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
     public $number;
 
     /**
+     * define custom model relationships
+     *
+     * (non-PHPdoc)
+     *
+     * @see extends \PhalconRest\API\BaseModel::initialize()
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->belongsTo("owner_id", "PhalconRest\Models\Owners", "user_id", array(
+            'alias' => 'Owners'
+        ));
+    }
+    
+    /**
      * validatoni owern data
      */
     public function validation()

@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Entities;
 
-class EventEntity extends \PhalconRest\API\Entity
+class EventEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**

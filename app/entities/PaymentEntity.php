@@ -3,7 +3,7 @@ namespace PhalconRest\Entities;
 
 use \PhalconRest\Util\ValidationException;
 
-class PaymentEntity extends \PhalconRest\API\Entity
+class PaymentEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
