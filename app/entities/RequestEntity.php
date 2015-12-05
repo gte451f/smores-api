@@ -111,4 +111,38 @@ class RequestEntity extends \PhalconRest\Libraries\API\Entity
         
         return $fees;
     }
+
+    /**
+     * custom implimentation of account filter
+     * must filter through related registration - attendee records
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\Libraries\API\Entity::applyAccountFilter()
+     */
+    public function applyAccountFilter($query)
+    {
+        // load current account
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        // add custom filter
+        $query->where("PhalconRest\Models\Attendees.account_id = $currentUser->accountId");
+        
+        // only add needed join if it isn't already in place
+        $applyJoin = true;
+        foreach ($this->activeRelations as $alias => $relation) {
+            if ($alias == 'Registration') {
+                $applyJoin = false;
+                break;
+            }
+        }
+        if ($applyJoin) {
+            $query->join("PhalconRest\Models\Registrations");
+        }
+        
+        // use registration to reach attendees for the filter
+        $query->join("PhalconRest\Models\Attendees", "PhalconRest\Models\Registrations.attendee_id = PhalconRest\Models\Attendees.user_id");
+        return $query;
+    }
 }

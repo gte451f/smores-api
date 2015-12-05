@@ -66,7 +66,7 @@ class Owners extends \PhalconRest\API\BaseModel
      * validation owern data
      */
     public function validation()
-    {        
+    {
         $this->validate(new InclusionInValidator(array(
             'field' => 'relationship',
             'domain' => array(

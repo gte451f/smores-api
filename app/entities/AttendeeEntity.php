@@ -18,4 +18,22 @@ class AttendeeEntity extends \PhalconRest\Libraries\API\Entity
         return $object;
     }
     
+    
+    /**
+     * remove user record
+     * really renders the subsequent delete worthless, but this is the cleanest way to avoid partial deletes
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\Entity::beforeDelete()
+     */
+    public function beforeDelete($model)
+    {
+        // extend me in child class
+        $user = $model->users;
+        if ($user) {
+            $user->delete();
+        }
+    }
+    
 }
