@@ -37,4 +37,30 @@ class Employees extends \PhalconRest\API\BaseModel
             'alias' => 'Users'
         ));
     }
+
+    /**
+     * hide user_id in favor of parent id
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns()
+    {
+        $this->setBlockColumns([
+            'user_id'
+        ]);
+    }
+
+    /**
+     * set to pkid of parent table
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::getPrimaryKeyName()
+     */
+    public function getPrimaryKeyName()
+    {
+        return 'id';
+    }
 }

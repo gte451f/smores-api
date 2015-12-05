@@ -100,10 +100,6 @@ class Users extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->blockColumns = array(
-            'password'
-        );
-        
         $this->hasOne('id', 'PhalconRest\Models\Employees', 'user_id', array(
             'alias' => 'Employees'
         ));
@@ -205,5 +201,32 @@ class Users extends \PhalconRest\API\BaseModel
         )));
         
         return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns()
+    {
+        $blockColumns = [
+            'password',
+            'code',
+            'token',
+            'token_created_on'
+        ];
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'dob';
+            $blockColumns[] = 'active';
+            $blockColumns[] = 'email';
+        }
+        $this->setBlockColumns($blockColumns, true);
     }
 }

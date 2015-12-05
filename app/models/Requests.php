@@ -74,4 +74,26 @@ class Requests extends \PhalconRest\API\BaseModel
         $this->attending = 0;
         $this->submit_status = 'New';
     }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns()
+    {
+        $blockColumns = []
+
+        ;
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'attending';
+        }
+        $this->setBlockColumns($blockColumns, true);
+    }
 }
