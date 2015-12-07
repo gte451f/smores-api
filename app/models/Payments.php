@@ -129,11 +129,11 @@ class Payments extends \PhalconRest\API\BaseModel
         }
         
         // this is wrong, it won't allow a one time charge
-//         if ($this->mode == 'credit' and $this->card_id <= 0) {
-//             $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
-//             $this->appendMessage($message);
-//             return false;
-//         }
+        // if ($this->mode == 'credit' and $this->card_id <= 0) {
+        // $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
+        // $this->appendMessage($message);
+        // return false;
+        // }
         
         if ($this->mode == 'check' and $this->check_id <= 0) {
             $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");
@@ -142,5 +142,25 @@ class Payments extends \PhalconRest\API\BaseModel
         }
         
         return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns()
+    {
+        $blockColumns = [];
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'external_id';
+        }
+        $this->setBlockColumns($blockColumns, true);
     }
 }

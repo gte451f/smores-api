@@ -33,7 +33,7 @@ class Accounts extends \PhalconRest\API\BaseModel
 
     /**
      * the payment processors PKID
-     * 
+     *
      * @var string
      */
     public $external_id;
@@ -106,5 +106,25 @@ class Accounts extends \PhalconRest\API\BaseModel
         )));
         
         return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns()
+    {
+        $blockColumns = [];
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'external_id';
+        }
+        $this->setBlockColumns($blockColumns, true);
     }
 }
