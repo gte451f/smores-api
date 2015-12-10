@@ -24,6 +24,12 @@ class Payments extends \PhalconRest\API\BaseModel
      *
      * @var integer
      */
+    public $payment_batch_id;
+    
+    /**
+     *
+     * @var integer
+     */
     public $card_id;
 
     /**

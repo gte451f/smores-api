@@ -17,29 +17,125 @@
 $security_rules = [
     'security_rules' => [
         'read' => [
-            ADMIN_USER => [
-                'cabins'
-            ],
             PORTAL_USER => [
-                'cabins'
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cabins",
+                "cards",
+                "charges",
+                "checks",
+                "employees",
+                "events",
+                "fees",
+                "locations",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "programs",
+                "registrations",
+                "requests",
+                "sessions",
+                "users"
+            ],
+            ADMIN_USER => [
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cabins",
+                "cards",
+                "charges",
+                "checks",
+                "employees",
+                "events",
+                "fees",
+                "locations",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "programs",
+                "registrations",
+                "requests",
+                "sessions",
+                "settings",
+                "users",
+                "payment_batches"
             ]
         ],
         
         'write' => [
             PORTAL_USER => [
-                'cabins'
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cards",
+                "charges",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "registrations",
+                "requests"
             ],
             ADMIN_USER => [
-                'cabins'
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cabins",
+                "cards",
+                "charges",
+                "checks",
+                "employees",
+                "events",
+                "fees",
+                "locations",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "programs",
+                "registrations",
+                "requests",
+                "sessions",
+                "settings",
+                "users",
+                "payment_batches"
             ]
         ],
         
         'delete' => [
             PORTAL_USER => [
-                'cabins'
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cards",
+                "charges",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "registrations",
+                "requests"
             ],
             ADMIN_USER => [
-                'cabins'
+                "account_addrs",
+                "accounts",
+                "attendees",
+                "cabins",
+                "cards",
+                "charges",
+                "checks",
+                "employees",
+                "events",
+                "fees",
+                "locations",
+                "owner_numbers",
+                "owners",
+                "payments",
+                "programs",
+                "registrations",
+                "requests",
+                "sessions",
+                "settings",
+                "users",
+                "payment_batches"
             ]
         ]
     ]

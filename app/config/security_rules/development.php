@@ -14,7 +14,6 @@
  * 
  * 
  */
-
 $security_rules = [
     'security_rules' => [
         'read' => [
@@ -59,7 +58,8 @@ $security_rules = [
                 "requests",
                 "sessions",
                 "settings",
-                "users"
+                "users",
+                "payment_batches"
             ]
         ],
         
@@ -96,7 +96,8 @@ $security_rules = [
                 "requests",
                 "sessions",
                 "settings",
-                "users"
+                "users",
+                "payment_batches"
             ]
         ],
         
@@ -133,7 +134,8 @@ $security_rules = [
                 "requests",
                 "sessions",
                 "settings",
-                "users"
+                "users",
+                "payment_batches"
             ]
         ]
     ]
