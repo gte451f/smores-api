@@ -25,7 +25,7 @@ class Payments extends \PhalconRest\API\BaseModel
      * @var integer
      */
     public $payment_batch_id;
-    
+
     /**
      *
      * @var integer
@@ -81,6 +81,13 @@ class Payments extends \PhalconRest\API\BaseModel
     public $refunded_on;
 
     /**
+     * Paid|Failed|Refunded
+     * 
+     * @var string
+     */
+    public $status;
+
+    /**
      * (non-PHPdoc)
      *
      * @see \PhalconRest\API\BaseModel::initialize()
@@ -98,6 +105,10 @@ class Payments extends \PhalconRest\API\BaseModel
         
         $this->belongsTo("card_id", "PhalconRest\Models\Cards", "id", array(
             'alias' => 'Cards'
+        ));
+        
+        $this->belongsTo('payment_batch_id', 'PhalconRest\Models\PaymentBatches', 'id', array(
+            'alias' => 'PaymenttBatches'
         ));
     }
 
@@ -118,13 +129,23 @@ class Payments extends \PhalconRest\API\BaseModel
     {
         $this->validate(new InclusionIn(array(
             "field" => 'mode',
-            'message' => 'Payment must be a specific value from the list.',
+            'message' => 'Payment Mode must be a specific value from the list.',
             'domain' => [
-                "credit",
-                "check",
-                "cash",
-                'discount',
-                'refund'
+                "Credit",
+                "Check",
+                "Cash",
+                'Discount',
+                'Refund'
+            ]
+        )));
+        
+        $this->validate(new InclusionIn(array(
+            "field" => 'status',
+            'message' => 'Payment Status must be a specific value from the list.',
+            'domain' => [
+                "Paid",
+                "Failed",
+                "Refunded"
             ]
         )));
         
@@ -133,13 +154,6 @@ class Payments extends \PhalconRest\API\BaseModel
             $this->appendMessage($message);
             return false;
         }
-        
-        // this is wrong, it won't allow a one time charge
-        // if ($this->mode == 'credit' and $this->card_id <= 0) {
-        // $message = new Message("A credit card payment must be accompanied by a valid card on file.", "card_id", "InvalidValue");
-        // $this->appendMessage($message);
-        // return false;
-        // }
         
         if ($this->mode == 'check' and $this->check_id <= 0) {
             $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");

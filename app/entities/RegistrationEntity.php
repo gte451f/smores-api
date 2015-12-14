@@ -2,7 +2,15 @@
 namespace PhalconRest\Entities;
 
 use \PhalconRest\Util\ValidationException;
+use PhalconRest\API\Entity;
 
+/**
+ * unusual in that is always joins in the attendee record
+ * undocumented side affect is ability to filter by account_id through attendee table
+ *
+ * @author jjenkins
+ *        
+ */
 class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
 {
 
@@ -56,6 +64,30 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
     }
 
     /**
+     * Registrations are a bit of a special case
+     * needs the account_id joined in from attendee in many cases
+     *
+     * force attendee join for all cases
+     *
+     * an undocument side affect is that the api will filter by account_id even if it isn't returned in the registration record
+     */
+    public function beforeQueryBuilderHook($query)
+    {
+        // only add needed join if it isn't already in place
+        $applyJoin = true;
+        foreach ($this->activeRelations as $alias => $relation) {
+            if ($alias == 'Attendees') {
+                $applyJoin = false;
+                break;
+            }
+        }
+        if ($applyJoin) {
+            $query->join("PhalconRest\Models\Attendees");
+        }
+        return true;
+    }
+
+    /**
      * custom implimentation of account filter
      * must filter through related attendee records
      *
@@ -72,17 +104,6 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
         // add custom filter
         $query->where("PhalconRest\Models\Attendees.account_id = $currentUser->accountId");
         
-        // only add needed join if it isn't already in place
-        $applyJoin = true;
-        foreach ($this->activeRelations as $alias => $relation) {
-            if ($alias == 'Attendees') {
-                $applyJoin = false;
-                break;
-            }
-        }
-        if ($applyJoin) {
-            $query->join("PhalconRest\Models\Attendees");
-        }
-        return $query;
+        return true;
     }
 }

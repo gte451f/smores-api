@@ -59,7 +59,8 @@ $security_rules = [
                 "sessions",
                 "settings",
                 "users",
-                "payment_batches"
+                "payment_batches",
+                "statement_batches"
             ]
         ],
         
@@ -97,7 +98,8 @@ $security_rules = [
                 "sessions",
                 "settings",
                 "users",
-                "payment_batches"
+                "payment_batches",
+                "statement_batches"
             ]
         ],
         
@@ -135,7 +137,8 @@ $security_rules = [
                 "sessions",
                 "settings",
                 "users",
-                "payment_batches"
+                "payment_batches",
+                "statement_batches"
             ]
         ]
     ]

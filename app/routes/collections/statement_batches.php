@@ -9,8 +9,8 @@ return call_user_func(function () {
     
     // VERSION NUMBER SHOULD BE FIRST URL PARAMETER, ALWAYS
     // setHandler MUST be a string in order to support lazy loading
-    $routes->setPrefix('/v1/accounts')
-        ->setHandler('\PhalconRest\Controllers\AccountController')
+    $routes->setPrefix('/v1/statement_batches')
+        ->setHandler('\PhalconRest\Controllers\StatementBatchController')
         ->setLazy(true);
     
     $routes->options('/', 'optionsBase');
@@ -23,10 +23,6 @@ return call_user_func(function () {
     $routes->delete('/{id:[0-9]+}', 'delete');
     $routes->put('/{id:[0-9]+}', 'put');
     $routes->patch('/{id:[0-9]+}', 'patch');
-
-    // custom routes
-    // return any accounts elligble to be billed
-    $routes->get('/billable', 'getBillable');
     
     return $routes;
 });

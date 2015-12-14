@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
-class PaymentBatches extends \PhalconRest\API\BaseModel
+class StatementBatches extends \PhalconRest\API\BaseModel
 {
 
     /**
@@ -9,30 +9,6 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
      * @var integer
      */
     public $batch_id;
-
-    /**
-     *
-     * @var integer
-     */
-    public $fail_count;
-
-    /**
-     *
-     * @var integer
-     */
-    public $success_count;
-
-    /**
-     *
-     * @var double
-     */
-    public $amount_failed;
-
-    /**
-     *
-     * @var double
-     */
-    public $amount_processed;
 
     /**
      * this model's parent model
@@ -49,16 +25,13 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         // set these since plural is slightly non-standard
-        $this->pluralName = 'PaymentBatches';
-        $this->singularName = 'PaymentBatch';
+        $this->pluralName = 'StatementBatches';
+        $this->singularName = 'StatementBatch';
         
-        $this->pluralTableName = 'payment_batches';
-        $this->singularTableName = 'payment_batch';
+        $this->pluralTableName = 'statements_batches';
+        $this->singularTableName = 'statements_batch';
         
         parent::initialize();
-        $this->hasMany("id", "PhalconRest\Models\Payments", "payment_batch_id", array(
-            'alias' => 'Payments'
-        ));
         
         $this->hasOne("batch_id", "PhalconRest\Models\Batches", "id", array(
             'alias' => 'Batches'
