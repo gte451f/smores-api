@@ -3,14 +3,12 @@ $I = new AcceptanceTester($scenario);
 $I->wantTo('Test Payment Batch CRUD');
 
 $payment_batch = '{"payment_batch":
-                {"status": "New",
-                 "fail_count":0,
-                 "success_count":0,
-                 "amount_processed": 0,
-                 "amount_failed": 0,
-                 "payment_method": "Credit"
-                }
-             }';
+                    {
+                    "min_type":"Outstanding",
+                    "min_amount":"25",
+                    "selectedAccounts":["95"]
+                    }
+                  }';
 
 // attempt to login as Owner first
 $user = $I->login('Employee');

@@ -60,7 +60,8 @@ $security_rules = [
                 "settings",
                 "users",
                 "payment_batches",
-                "statement_batches"
+                "statement_batches",
+                "account_billing_summaries"
             ]
         ],
         
