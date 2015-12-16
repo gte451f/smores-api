@@ -36,6 +36,11 @@ class Batches extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $min_amount;
+    
+    /**
+     * @var string
+     */
+    public $log;
 
     /**
      * (non-PHPdoc)

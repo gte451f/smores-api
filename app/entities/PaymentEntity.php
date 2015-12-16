@@ -16,7 +16,7 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
      */
     function beforeSave($object, $id)
     {
-        if ($object->mode == 'credit') {
+        if ($object->mode == 'Credit') {
             $processor = $this->getDI()->get('paymentProcessor');
             
             if ($object->card_id > 0) {
@@ -39,11 +39,11 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
             }
         }
         
-        if ($object->mode == 'refund' and isset($id)) {
+        if ($object->mode == 'Refund' and isset($id)) {
             // see if the save is going FROM card to refund and apply refund logic
             $payment = \PhalconRest\Models\Payments::findFirst($id);
             
-            if ($payment->mode == 'credit') {
+            if ($payment->mode == 'Credit') {
                 $processor = $this->getDI()->get('paymentProcessor');
                 $refund_id = $processor->refundCharge([
                     'charge_id' => $object->external_id
@@ -67,12 +67,12 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
     public function beforeDelete($model)
     {
         // blocking refunds for the time being
-        if ($model->mode == 'refund') {
+        if ($model->mode == 'Refund') {
             throw new \Exception('Blocked attempt to delete credit card charge that was refunded');
         }
         
         // prevent delete of non-refunded credit card payment
-        if ($model->mode == 'card' and $model->external_id != NULL) {
+        if ($model->mode == 'Credit' and $model->external_id != NULL) {
             throw new \Exception('Blocked attempt to delete payment with valid charge');
         }
     }

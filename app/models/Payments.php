@@ -149,8 +149,8 @@ class Payments extends \PhalconRest\API\BaseModel
             ]
         )));
         
-        if ($this->amount < 10 or $this->amount > 10000) {
-            $message = new Message("Payment amount must be between 10 and 10,000", "amount", "InvalidValue");
+        if ($this->amount < 1 or $this->amount > 5000) {
+            $message = new Message("Payment amount must be between 1 and 5,000", "amount", "InvalidValue");
             $this->appendMessage($message);
             return false;
         }
