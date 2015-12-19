@@ -87,8 +87,8 @@ final class StripeAdapter extends Injectable implements Processor
     public function chargeCard($data)
     {
         // assume we use stored card for now, will support a new card soon
-        if ($data['amount'] < 10) {
-            throw new \Exception('Charge amount must exceed $10.');
+        if ($data['amount'] < 1) {
+            throw new \Exception('Charge amount must exceed $1.');
         }
         
         // convert amount to decimal

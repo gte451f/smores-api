@@ -50,4 +50,16 @@ class StatementBatches extends \PhalconRest\API\BaseModel
             'batch_id'
         ], true);
     }
+
+    /**
+     * point to parent id
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::getPrimaryKeyName()
+     */
+    public function getPrimaryKeyName()
+    {
+        return "id";
+    }
 }

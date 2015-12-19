@@ -56,7 +56,7 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
         $this->singularTableName = 'payment_batch';
         
         parent::initialize();
-        $this->hasMany("id", "PhalconRest\Models\Payments", "payment_batch_id", array(
+        $this->hasMany("batch_id", "PhalconRest\Models\Payments", "payment_batch_id", array(
             'alias' => 'Payments'
         ));
         
@@ -76,5 +76,17 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
         $this->setBlockColumns([
             'batch_id'
         ], true);
+    }
+
+    /**
+     * point to parent id
+     * 
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::getPrimaryKeyName()
+     */
+    public function getPrimaryKeyName()
+    {
+        return "id";
     }
 }

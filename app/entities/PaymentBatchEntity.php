@@ -1,6 +1,8 @@
 <?php
 namespace PhalconRest\Entities;
 
+use \PhalconRest\Util\HTTPException;
+
 class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
 {
 
@@ -10,6 +12,29 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
      * @var array
      */
     private $batch_log = [];
+
+    /**
+     * perform custom checks before allowing delete
+     * do not allow a delete with any processed payments in it
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\Entity::beforeDelete()
+     */
+    public function beforeDelete($model)
+    {
+        foreach ($model->payments as $payment) {
+            if ($payment->status == 'Paid' or $payment->status == 'Refunded') {
+                throw new HTTPException("Unable to delete this Payment Batch, it has processed payments associated with it.", 500, array(
+                    'dev' => "Attempted to delete a payment batch with valid payments (Paided|Refunded)",
+                    'code' => '4648464684684864'
+                ));
+            }
+        }
+        
+        // if you make it this far, remove the parent batch
+        $result = $model->batches->delete();
+    }
 
     /**
      * create all payment records and charge the payment processor
@@ -89,6 +114,9 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
             
             try {
                 $result = $paymentEntity->save($inputs);
+                // reset this other wise subsequent saves fail!
+                $paymentEntity->model->id = null;
+                
                 $processedRunningTotal = $processedRunningTotal + $inputs->amount;
                 $processCount ++;
             } catch (\PhalconRest\Util\ValidationException $e) {
