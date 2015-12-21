@@ -23,6 +23,12 @@ class Accounts extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
+    public $name;
+
+    /**
+     *
+     * @var string
+     */
     public $created_on;
 
     /**

@@ -82,7 +82,7 @@ class Payments extends \PhalconRest\API\BaseModel
 
     /**
      * Paid|Failed|Refunded
-     * 
+     *
      * @var string
      */
     public $status;
@@ -118,6 +118,8 @@ class Payments extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d H:i:s');
+        // set a default status
+        $this->status = 'Paid';
     }
 
     /**

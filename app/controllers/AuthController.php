@@ -105,6 +105,7 @@ class AuthController extends \Phalcon\DI\Injectable
         // attempt to create account
         // use transaction here?
         $account = new \PhalconRest\Models\Accounts();
+        $account->name = $post['last_name'];
         if (! $account->create()) {
             throw new ValidationException("Internal error adding new account", array(
                 'code' => '78498119519',
