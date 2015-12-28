@@ -36,7 +36,8 @@ $security_rules = [
                 "registrations",
                 "requests",
                 "sessions",
-                "users"
+                "users",
+                "fields"
             ],
             ADMIN_USER => [
                 "account_addrs",
@@ -61,7 +62,8 @@ $security_rules = [
                 "users",
                 "payment_batches",
                 "statement_batches",
-                "account_billing_summaries"
+                "account_billing_summaries",
+                "fields"
             ]
         ],
         
@@ -100,7 +102,8 @@ $security_rules = [
                 "settings",
                 "users",
                 "payment_batches",
-                "statement_batches"
+                "statement_batches",
+                "fields"
             ]
         ],
         
@@ -139,7 +142,8 @@ $security_rules = [
                 "settings",
                 "users",
                 "payment_batches",
-                "statement_batches"
+                "statement_batches",
+                "fields"
             ]
         ]
     ]

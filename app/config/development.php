@@ -29,14 +29,15 @@ $development = [
         'charset' => 'utf8'
     ],
     // enable security for controllers marked as secure?
-    'security' => true,
+//     'security' => true,
+    'security' => false,
     
     // if secuirty is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // owner access
     // 'securityUserId' => 595,
     // employee access
-    // 'securityUserId' => 768,
+    'securityUserId' => 768,
     
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [

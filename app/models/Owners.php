@@ -60,10 +60,14 @@ class Owners extends \PhalconRest\API\BaseModel
         $this->hasMany("user_id", "PhalconRest\Models\OwnerNumbers", "owner_id", array(
             'alias' => 'OwnerNumbers'
         ));
+        
+        $this->hasOne('user_id', "PhalconRest\Models\CustomOwnerFields", 'user_id', [
+            'alias' => 'CustomOwnerFields'
+        ]);
     }
 
     /**
-     * validation owern data
+     * validation owner data
      */
     public function validation()
     {
@@ -82,7 +86,7 @@ class Owners extends \PhalconRest\API\BaseModel
     }
 
     /**
-     * hide user_id in favor of parent id
+     * hide local PKID in favor of parent id
      *
      * {@inheritDoc}
      *

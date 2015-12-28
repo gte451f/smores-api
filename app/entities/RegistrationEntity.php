@@ -15,6 +15,14 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
+     * always include custom fields, regardless of what the client asks for
+     */
+    public function configureSearchHelper()
+    {
+        $this->searchHelper->entityWith = 'custom_registration_fields';
+    }
+
+    /**
      * everytime a new registration is created
      * consult with the fee table and create relevant charges
      * this could be a registration fee

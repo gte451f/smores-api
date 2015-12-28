@@ -87,19 +87,19 @@ class Events extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->hasOne('location_id', 'PhalconRest\Models\Locations', 'id', array(
+        $this->belongsTo('location_id', 'PhalconRest\Models\Locations', 'id', array(
             'alias' => 'Locations'
         ));
         
-        $this->hasOne('program_id', 'PhalconRest\Models\Programs', 'id', array(
+        $this->belongsTo('program_id', 'PhalconRest\Models\Programs', 'id', array(
             'alias' => 'Programs'
         ));
         
-        $this->hasOne('cabin_id', 'PhalconRest\Models\Cabins', 'id', array(
+        $this->belongsTo('cabin_id', 'PhalconRest\Models\Cabins', 'id', array(
             'alias' => 'Cabins'
         ));
         
-        $this->hasOne('session_id', 'PhalconRest\Models\Sessions', 'id', array(
+        $this->belongsTo('session_id', 'PhalconRest\Models\Sessions', 'id', array(
             'alias' => 'Sessions'
         ));
     }

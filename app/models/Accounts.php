@@ -51,7 +51,7 @@ class Accounts extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $active;
-
+    
     /**
      */
     public function initialize()
@@ -77,6 +77,10 @@ class Accounts extends \PhalconRest\API\BaseModel
         $this->hasMany("id", "PhalconRest\Models\Charges", "account_id", array(
             'alias' => 'Charges'
         ));
+        
+        $this->hasOne('id', "PhalconRest\Models\CustomAccountFields", 'account_id', [
+            'alias' => 'CustomAccountFields'
+        ]);
     }
 
     /**

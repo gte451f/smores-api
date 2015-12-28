@@ -23,7 +23,7 @@ class Entity extends \PhalconRest\API\Entity
      */
     public function afterQueryBuilderHook($query)
     {
-        // check to see whether the controller has set the security_service to enforce matter level security for this resource
+        // check to see whether the controller has set the security_service to enforce account level security for this resource
         $securityService = $this->getDI()->get('securityService');
         
         if ($securityService->getEnforceAccountFilter()) {

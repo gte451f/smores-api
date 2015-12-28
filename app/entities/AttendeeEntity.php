@@ -3,22 +3,30 @@ namespace PhalconRest\Entities;
 
 class AttendeeEntity extends \PhalconRest\Libraries\API\Entity
 {
-    
+
+    /**
+     * always include custom fields, regardless of what the client asks for
+     */
+    public function configureSearchHelper()
+    {
+        $this->searchHelper->entityWith = 'custom_attendee_fields';
+    }
+
     /**
      * auto assign user_type to form
+     * 
      * {@inheritDoc}
      *
      * @see \PhalconRest\API\Entity::beforeSave()
      */
-    public function beforeSave($object, $id)
+    public function beforeSave($object, $id=null)
     {
         // extend me in child class
         $object->user_type = 'Attendee';
-    
+        
         return $object;
     }
-    
-    
+
     /**
      * remove user record
      * really renders the subsequent delete worthless, but this is the cleanest way to avoid partial deletes
@@ -35,5 +43,4 @@ class AttendeeEntity extends \PhalconRest\Libraries\API\Entity
             $user->delete();
         }
     }
-    
 }

@@ -44,13 +44,17 @@ class Registrations extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasMany("id", "PhalconRest\Models\Requests", "registration_id", array(
+        $this->hasMany("id", "PhalconRest\Models\Requests", "registration_id", [
             'alias' => 'Requests'
-        ));
+        ]);
         
-        $this->belongsTo("attendee_id", "PhalconRest\Models\Attendees", "user_id", array(
+        $this->belongsTo("attendee_id", "PhalconRest\Models\Attendees", "user_id", [
             'alias' => 'Attendees'
-        ));
+        ]);
+        
+        $this->hasOne('id', "PhalconRest\Models\CustomRegistrationFields", 'registration_id', [
+            'alias' => 'CustomRegistrationFields'
+        ]);
     }
 
     public function beforeValidationOnCreate()
