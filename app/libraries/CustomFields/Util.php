@@ -93,4 +93,88 @@ class Util extends Injectable
         $file = new FileUtil();
         $file->clearCache();
     }
+
+    /**
+     * for a given list of fields (with data) and the table they are related to
+     * save each individual field into the correct *_has_fields table
+     *
+     * @param object $object            
+     * @param string $table            
+     * @param int $id
+     *            the pkid of the parent record
+     */
+    function saveFields($object, $table, $id)
+    {
+        $customFields = \PhalconRest\Models\Fields::find("table = '$table'");
+        
+        $metaValues = $this->detectModel($table);
+        $tableModel = $metaValues['model'];
+        $foreignKey = $metaValues['key'];
+        
+        foreach ($customFields as $customField) {
+            // see if any data is present for each field
+            $customFieldName = $customField->name;
+            if (isset($object->$customFieldName)) {
+                $newField = $tableModel::findFirst("field_id=$customField->id AND $foreignKey=$id");
+                if (! $newField) {
+                    $newField = new $tableModel();
+                    $newField->field_id = $customField->id;
+                    $newField->$foreignKey = $id;
+                }
+                $newField->value = $object->$customFieldName;
+                
+                // persist to database
+                if ($newField->save() == false) {
+                    throw new ValidationException("Could not save custom value", array(
+                        'dev' => "Error saving a custom field for table: $table and # $id",
+                        'code' => '2865586241346'
+                    ), $user->getMessages());
+                }
+            }
+        }
+    }
+
+    /**
+     * for a given table, return a string pointing to the correct *HadFields
+     *
+     * @param unknown $table            
+     * @throws HTTPException
+     */
+    private function detectModel($table)
+    {
+        // calc class namespace
+        switch ($table) {
+            case 'attendees':
+                $tableModel = "\\PhalconRest\\Models\\AttendeeHasFields";
+                $foreignKey = 'user_id';
+                break;
+            
+            case 'registrations':
+                $tableModel = "\\PhalconRest\\Models\\RegistrationHasFields";
+                $foreignKey = 'registration_id';
+                break;
+            
+            case 'accounts':
+                $tableModel = "\\PhalconRest\\Models\\AccountHasFields";
+                $foreignKey = 'account_id';
+                break;
+            
+            case 'owners':
+                $tableModel = "\\PhalconRest\\Models\\OwnerHasFields";
+                $foreignKey = 'user_id';
+                break;
+            
+            default:
+                throw new HTTPException("Unknown table supplied", 400, array(
+                    'dev' => "Supplied table was: $table",
+                    'code' => '28349237927'
+                ));
+                break;
+        }
+        
+        return [
+            'model' => $tableModel,
+            'key' => $foreignKey
+        ];
+    }
 }

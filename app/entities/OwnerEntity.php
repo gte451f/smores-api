@@ -13,6 +13,21 @@ class OwnerEntity extends \PhalconRest\Libraries\API\Entity
     }
 
     /**
+     * deal with any custom fields that may have been submitted
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\Entity::afterSave()
+     */
+    public function afterSave($object, $id = null)
+    {
+        // process custom fields as part of general save
+        // treat updates/adds the same
+        $fieldService = new \PhalconRest\Libraries\CustomFields\Util();
+        $fieldService->saveFields($object, 'owners', $id);
+    }    
+    
+    /**
      * auto assign user_type to form
      *
      * {@inheritDoc}

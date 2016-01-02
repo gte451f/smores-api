@@ -35,6 +35,12 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
      */
     public function afterSave($object, $id)
     {
+        
+        // process custom fields as part of general save
+        // treat updates/adds the same
+        $fieldService = new \PhalconRest\Libraries\CustomFields\Util();
+        $fieldService->saveFields($object, 'owners', $id);
+        
         // only apply system wide fees on insert
         if ($this->saveMode == 'update') {
             return;

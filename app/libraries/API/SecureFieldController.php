@@ -26,9 +26,10 @@ class SecureFieldController extends \PhalconRest\API\SecureController
                 $this->setDI($di);
                 // initialize entity and set to class property
                 $this->getEntity();
-            } else {
-                return parent::__construct($parseQueryString);
+                return;
             }
         }
+        
+        return parent::__construct($parseQueryString);
     }
 }

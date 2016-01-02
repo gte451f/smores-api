@@ -76,7 +76,19 @@ class Fields extends \PhalconRest\API\BaseModel
      */
     public function beforeValidationOnCreate()
     {
-        
+        $this->detectName();
+    }
+
+    /**
+     * auto detect a value
+     */
+    public function beforeValidationOnUpdate()
+    {
+        $this->detectName();
+    }
+
+    private function detectName()
+    {
         // change space to underscore
         $value = str_replace(' ', '_', $this->display);
         // change hyphen to underscore
@@ -96,7 +108,7 @@ class Fields extends \PhalconRest\API\BaseModel
     }
 
     /**
-     * validation owern data
+     * validation owener data
      */
     public function validation()
     {
@@ -115,7 +127,8 @@ class Fields extends \PhalconRest\API\BaseModel
             'domain' => array(
                 'string',
                 'number',
-                'date'
+                'utcdate',
+                'boolean'
             )
         )));
         
@@ -126,7 +139,9 @@ class Fields extends \PhalconRest\API\BaseModel
                 'textarea',
                 'select',
                 'radio',
-                'checkbox'
+                'single-check',
+                'multi-check',
+                'date'
             )
         )));
         

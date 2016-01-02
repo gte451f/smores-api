@@ -71,20 +71,6 @@ class Attendees extends \PhalconRest\API\BaseModel
         
         $this->hasOne('user_id', "PhalconRest\Models\CustomAttendeeFields", 'user_id', [
             'alias' => 'CustomAttendeeFields'
-        ]);        
-    }
-
-    /**
-     * hide user_id in favor of parent id
-     *
-     * {@inheritDoc}
-     *
-     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
-     */
-    public function loadBlockColumns()
-    {
-        $this->setBlockColumns([
-            'user_id'
         ]);
     }
 
@@ -97,6 +83,6 @@ class Attendees extends \PhalconRest\API\BaseModel
      */
     public function getPrimaryKeyName()
     {
-        return 'id';
+        return 'user_id';
     }
 }
