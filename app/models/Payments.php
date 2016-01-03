@@ -107,7 +107,7 @@ class Payments extends \PhalconRest\API\BaseModel
             'alias' => 'Cards'
         ));
         
-        $this->belongsTo('payment_batch_id', 'PhalconRest\Models\PaymentBatches', 'id', array(
+        $this->belongsTo('payment_batch_id', 'PhalconRest\Models\PaymentBatches', 'batch_id', array(
             'alias' => 'PaymenttBatches'
         ));
     }
