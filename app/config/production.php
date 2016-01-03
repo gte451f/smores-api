@@ -14,8 +14,10 @@ $production = [
         // where to store ephemeral files
         'tempDir' => '##tempDir##',
         // where to store system logs
-        'loggingDir' => '##loggingDir##'
-    ],    
+        'loggingDir' => '##loggingDir##',
+        // what is the path after the FQDN?
+        'baseUri' => '##partialurl##/v1/'
+    ],
     // enable security for controllers marked as secure?
     'security' => true,
     // standard database configuration values
@@ -31,13 +33,12 @@ $production = [
     'fileStorage' => [
         'basePath' => '##fileDir##'
     ]
-    
-];
+]
+;
 
 // Define APPNAME if this is production environment
 // - must be defined on each deployed PRODUCTION version
-//  useful when the production code is deployed in multiple configurations ie. portal or admin
+// useful when the production code is deployed in multiple configurations ie. portal or admin
 defined('APPLICATION_NAME') || define('APPLICATION_NAME', 'admin');
-
 
 return $production;

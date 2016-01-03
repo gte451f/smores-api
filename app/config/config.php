@@ -22,6 +22,7 @@ $config = [
         "responsesDir" => APPLICATION_PATH . 'responses/',
         "exceptionsDir" => APPLICATION_PATH . 'exceptions/',
         "librariesDir" => APPLICATION_PATH . 'libraries/',
+        // base string after FQDN.../api/v1 or some such
         'baseUri' => '/',
         'basePath' => '/'
     ],

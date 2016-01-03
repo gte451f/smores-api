@@ -17,7 +17,9 @@ $development = [
         // where should system temp files go?
         'tempDir' => '/tmp/',
         // where should app generated logs be stored?
-        'loggingDir' => '/tmp/'
+        'loggingDir' => '/tmp/',
+        // what is the path after the FQDN?
+        'baseUri' => '##partialurl##/v1/'       
     ],
     // standard database configuration values
     'database' => [
@@ -29,8 +31,8 @@ $development = [
         'charset' => 'utf8'
     ],
     // enable security for controllers marked as secure?
-//     'security' => true,
-    'security' => false,
+    'security' => true,
+    // 'security' => false,
     
     // if secuirty is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
