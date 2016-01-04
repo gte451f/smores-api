@@ -56,11 +56,9 @@ class Owners extends \PhalconRest\API\BaseModel
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
-        
         $this->hasMany("user_id", "PhalconRest\Models\OwnerNumbers", "owner_id", array(
             'alias' => 'OwnerNumbers'
         ));
-        
         $this->hasOne('user_id', "PhalconRest\Models\CustomOwnerFields", 'user_id', [
             'alias' => 'CustomOwnerFields'
         ]);

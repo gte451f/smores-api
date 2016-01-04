@@ -80,7 +80,7 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
 
     /**
      * point to parent id
-     * 
+     *
      * {@inheritDoc}
      *
      * @see \PhalconRest\API\BaseModel::getPrimaryKeyName()

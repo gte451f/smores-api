@@ -6,19 +6,17 @@ $payment_batch = '{"payment_batch":
                     {
                     "min_type":"Outstanding",
                     "min_amount":"25",
-                    "selectedAccounts":["95"]
+                    "selectedAccounts":["100"]
                     }
                   }';
 
 // attempt to login as Owner first
 $user = $I->login('Employee');
 
-// disable for now
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
 $I->sendPOST('payment_batches', $payment_batch);
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
-// $newEmployeeID = $I->grabDataFromResponse('$.employee[0].id');
 $newBatchID = $I->grabDataFromResponseByJsonPath('$.payment_batch[0].id');
 
 // load a particular employee
@@ -28,7 +26,8 @@ $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$.payment_batch[0].id');
 
-// now remove an employee
+// now attempt to remove the batch
+// hopefully it will NOT fail, but might if there is a real payment on the batch
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
 $I->sendDELETE('payment_batches/' . $newBatchID[0]);
 $I->seeResponseCodeIs(204);
