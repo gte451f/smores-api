@@ -116,7 +116,7 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
             ->get('auth')
             ->getProfile();
         // add custom filter
-        $query->where("PhalconRest\Models\Attendees.account_id = $currentUser->accountId");
+        $query->where("Attendees.account_id = $currentUser->accountId");
         
         return true;
     }

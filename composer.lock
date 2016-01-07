@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "dbfe67fa730a768d3870f8a3e6bede22ef77fd2f"
+                "reference": "e1651b368430581cc88362876e27de87c75ecf7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/dbfe67fa730a768d3870f8a3e6bede22ef77fd2f",
-                "reference": "dbfe67fa730a768d3870f8a3e6bede22ef77fd2f",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/e1651b368430581cc88362876e27de87c75ecf7a",
+                "reference": "e1651b368430581cc88362876e27de87c75ecf7a",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
             "keywords": [
                 "gte451f phalcon json api rest"
             ],
-            "time": "2015-12-28 00:20:02"
+            "time": "2016-01-07 02:43:16"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -186,16 +186,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "0ec0ce46278db7d9d35df72a236c3490b713f028"
+                "reference": "9e07df45bceb4a720fd65c4bd5d11c5876b3942f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0ec0ce46278db7d9d35df72a236c3490b713f028",
-                "reference": "0ec0ce46278db7d9d35df72a236c3490b713f028",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/9e07df45bceb4a720fd65c4bd5d11c5876b3942f",
+                "reference": "9e07df45bceb4a720fd65c4bd5d11c5876b3942f",
                 "shasum": ""
             },
             "require": {
@@ -237,7 +237,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2015-12-02 00:11:27"
+            "time": "2016-01-05 20:35:28"
         }
     ],
     "packages-dev": [
