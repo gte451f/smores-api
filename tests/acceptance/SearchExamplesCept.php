@@ -79,5 +79,22 @@ $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$.accounts[*].id');
 $I->seeResponseJsonMatchesJsonPath('$.owners[*].id');
 
+// previously failed search
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->sendGet('/registrations?attendees%3Aaccount_id=95&with=all');
+$I->seeResponseCodeIs(200);
+$I->seeResponseIsJson();
+$I->seeResponseJsonMatchesJsonPath('$.registrations[*].id');
+$count = $I->grabDataFromResponseByJsonPath('$.meta[0].total_record_count');
+
+// previously failed search
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->sendGet('/registrations?page=1&per_page=10&sortField=id&with=users');
+$I->seeResponseCodeIs(200);
+$I->seeResponseIsJson();
+$I->seeResponseJsonMatchesJsonPath('$.registrations[*].id');
+$count = $I->grabDataFromResponseByJsonPath('$.meta[0].total_record_count');
+
+
 // attempt to logout as Owner
 $I->logout($user['token']);

@@ -127,7 +127,7 @@ class RequestEntity extends \PhalconRest\Libraries\API\Entity
             ->get('auth')
             ->getProfile();
         // add custom filter
-        $query->where("PhalconRest\Models\Attendees.account_id = $currentUser->accountId");
+        $query->where("Attendees.account_id = $currentUser->accountId");
         
         // only add needed join if it isn't already in place
         $applyJoin = true;
@@ -138,11 +138,11 @@ class RequestEntity extends \PhalconRest\Libraries\API\Entity
             }
         }
         if ($applyJoin) {
-            $query->join("PhalconRest\Models\Registrations");
+            $query->join("PhalconRest\Models\Registrations", "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
         }
         
         // use registration to reach attendees for the filter
-        $query->join("PhalconRest\Models\Attendees", "PhalconRest\Models\Registrations.attendee_id = PhalconRest\Models\Attendees.user_id", "Attendees");
+        $query->join("PhalconRest\Models\Attendees", "Registrations.attendee_id = Attendees.user_id", "Attendees");
         return $query;
     }
 }
