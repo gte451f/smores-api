@@ -9,5 +9,9 @@
     "require-dev": {
         "codeception/codeception": "*",
         "flow/jsonpath": "dev-master"
-    } 
+    },
+    "scripts": {
+        "post-install-cmd": "composer dump-autoload -o",
+        "post-update-cmd": "composer dump-autoload -o"
+    }
 }

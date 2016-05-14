@@ -9,6 +9,9 @@
 # zend debugger file
 /dummy.php
 
+#phpstorm
+/.idea
+
 /deployment.properties
 /deployment.xml
 
