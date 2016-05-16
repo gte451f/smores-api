@@ -2,7 +2,7 @@
     "require": {
     	"raveren/kint": "0.9",
 		"jsanc623/phpbenchtime": "dev-master",
-        "gte451f/phalcon-json-api-package": "dev-master",
+        "gte451f/phalcon-json-api-package": "dev-dev",
         "stripe/stripe-php": "3.*",
         "inacho/php-credit-card-validator": "1.*"
     },

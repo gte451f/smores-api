@@ -26,7 +26,7 @@ class CustomRegistrationFields extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->belongsTo("registration_id", "PhalconRest\Models\Registrations", "id", array(
+        $this->belongsTo("registration_id", "PhalconRest\\Models\\Registrations", "id", array(
             'alias' => 'Registrations'
         ));
     }

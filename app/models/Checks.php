@@ -54,12 +54,12 @@ class Checks extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
         
         // written as a has one because the api wants to save the parent but that's not how ember works
-        $this->hasMany("id", "PhalconRest\Models\Payments", "check_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Payments", "check_id", array(
             'alias' => 'Payments'
         ));
     }

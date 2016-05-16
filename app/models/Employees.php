@@ -33,7 +33,7 @@ class Employees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
+        $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
     }

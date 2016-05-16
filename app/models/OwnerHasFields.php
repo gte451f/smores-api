@@ -38,7 +38,7 @@ class OwnerHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("user_id", "PhalconRest\Models\Users", "id", array(
+        $this->belongsTo("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
         

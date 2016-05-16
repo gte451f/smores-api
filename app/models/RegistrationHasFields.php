@@ -38,7 +38,7 @@ class RegistrationHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("registration_id", "PhalconRest\Models\Registration", "id", array(
+        $this->hasOne("registration_id", "PhalconRest\\Models\\Registration", "id", array(
             'alias' => 'Registrations'
         ));
         

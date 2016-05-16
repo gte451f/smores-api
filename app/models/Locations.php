@@ -69,7 +69,7 @@ class Locations extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->hasMany("id", "PhalconRest\Models\Events", "program_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Events", "program_id", array(
             'alias' => 'Events'
         ));
     }

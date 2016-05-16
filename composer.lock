@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e2744ae78457aab616d242622f93d0d0",
-    "content-hash": "5bc8c7e1d5d37066e97b02bbcca97caf",
+    "hash": "136992c740460f611443a9d7a536f6c1",
+    "content-hash": "126c989663c417eb764c792927b8d0f8",
     "packages": [
         {
             "name": "gte451f/phalcon-json-api-package",
-            "version": "dev-master",
+            "version": "dev-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "fc97ae15b33c8b02bcfb52b452a020ebb294df84"
+                "reference": "2422309102b01d3aea1608df77ca9458bf2c826f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/fc97ae15b33c8b02bcfb52b452a020ebb294df84",
-                "reference": "fc97ae15b33c8b02bcfb52b452a020ebb294df84",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/2422309102b01d3aea1608df77ca9458bf2c826f",
+                "reference": "2422309102b01d3aea1608df77ca9458bf2c826f",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
             "keywords": [
                 "gte451f phalcon json api rest"
             ],
-            "time": "2016-05-10 14:03:26"
+            "time": "2016-05-16 01:26:13"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -1027,16 +1027,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.3.2",
+            "version": "5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2c6da3536035617bae3fe3db37283c9e0eb63ab3"
+                "reference": "00dd95ffb48805503817ced06399017df315fe5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2c6da3536035617bae3fe3db37283c9e0eb63ab3",
-                "reference": "2c6da3536035617bae3fe3db37283c9e0eb63ab3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/00dd95ffb48805503817ced06399017df315fe5c",
+                "reference": "00dd95ffb48805503817ced06399017df315fe5c",
                 "shasum": ""
             },
             "require": {
@@ -1098,7 +1098,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-04-12 16:20:08"
+            "time": "2016-05-11 13:28:45"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

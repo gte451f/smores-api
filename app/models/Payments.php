@@ -95,15 +95,15 @@ class Payments extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
         
-        $this->belongsTo("check_id", "PhalconRest\Models\Checks", "id", array(
+        $this->belongsTo("check_id", "PhalconRest\\Models\\Checks", "id", array(
             'alias' => 'Checks'
         ));
         
-        $this->belongsTo("card_id", "PhalconRest\Models\Cards", "id", array(
+        $this->belongsTo("card_id", "PhalconRest\\Models\\Cards", "id", array(
             'alias' => 'Cards'
         ));
         

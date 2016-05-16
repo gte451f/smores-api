@@ -58,7 +58,7 @@ class Batches extends \PhalconRest\API\BaseModel
         
         parent::initialize();
         
-        $this->belongsTo("created_by_id", "PhalconRest\Models\Users", "id", array(
+        $this->belongsTo("created_by_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
         

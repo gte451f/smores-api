@@ -66,11 +66,11 @@ class Charges extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
         
-        $this->belongsTo("fee_id", "PhalconRest\Models\Fees", "id", array(
+        $this->belongsTo("fee_id", "PhalconRest\\Models\\Fees", "id", array(
             'alias' => 'Fees'
         ));
     }

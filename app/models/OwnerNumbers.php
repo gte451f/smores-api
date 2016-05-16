@@ -48,7 +48,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("owner_id", "PhalconRest\Models\Owners", "user_id", array(
+        $this->belongsTo("owner_id", "PhalconRest\\Models\\Owners", "user_id", array(
             'alias' => 'Owners'
         ));
     }

@@ -26,7 +26,7 @@ class CustomAttendeeFields extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->belongsTo("user_id", "PhalconRest\Models\Attendees", "id", array(
+        $this->belongsTo("user_id", "PhalconRest\\Models\\Attendees", "id", array(
             'alias' => 'Attendees'
         ));
     }

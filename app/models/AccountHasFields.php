@@ -38,7 +38,7 @@ class AccountHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->hasOne("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
         

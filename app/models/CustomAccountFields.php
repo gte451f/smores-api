@@ -26,7 +26,7 @@ class CustomAccountFields extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->belongsTo("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
     }

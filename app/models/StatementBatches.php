@@ -33,7 +33,7 @@ class StatementBatches extends \PhalconRest\API\BaseModel
         
         parent::initialize();
         
-        $this->hasOne("batch_id", "PhalconRest\Models\Batches", "id", array(
+        $this->hasOne("batch_id", "PhalconRest\\Models\\Batches", "id", array(
             'alias' => 'Batches'
         ));
     }

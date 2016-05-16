@@ -57,7 +57,7 @@ class Attendees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
+        $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
         
@@ -65,11 +65,11 @@ class Attendees extends \PhalconRest\API\BaseModel
             'alias' => 'Accounts'
         ));
         
-        $this->hasMany("user_id", "PhalconRest\Models\Registrations", "attendee_id", array(
+        $this->hasMany("user_id", "PhalconRest\\Models\\Registrations", "attendee_id", array(
             'alias' => 'Registrations'
         ));
         
-        $this->hasOne('user_id', "PhalconRest\Models\CustomAttendeeFields", 'user_id', [
+        $this->hasOne('user_id', "PhalconRest\\Models\\CustomAttendeeFields", 'user_id', [
             'alias' => 'CustomAttendeeFields'
         ]);
     }

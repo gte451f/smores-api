@@ -8,7 +8,7 @@ use PhalconRest\Util\HTTPException;
  * or to fill in profile object with specific data
  *
  * @author jjenkins
- *        
+ *
  */
 class UserProfile extends \PhalconRest\Authentication\UserProfile
 {
@@ -69,9 +69,9 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
         } else {
             $search .= " and active = 1";
         }
-        
+
         $users = \PhalconRest\Models\Users::find($search);
-        
+
         switch (count($users)) {
             case 0:
                 throw new HTTPException("No user found", 401, array(
@@ -79,7 +79,7 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
                     'code' => '347589347598'
                 ));
                 break;
-            
+
             case 1:
                 foreach ($users as $user) {
                     $this->id = $user->id;
@@ -87,17 +87,17 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
                     $this->lastName = $user->last_name;
                     $this->email = $user->email;
                     $this->userType = $user->user_type;
-                    
+
                     if ($user->user_type == 'Owner') {
                         $this->accountId = $user->owners->account_id;
                     }
-                    
+
                     $this->gender = $user->gender;
                     $this->expiresOn = $this->generateExpiration();
                     $this->token = $user->token;
                 }
                 break;
-            
+
             default:
                 throw new HTTPException("Multiple users found!", 401, array(
                     'dev' => "More than one user was found, when only one was expected.",
@@ -115,15 +115,13 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
     {
         $search = "email = '{$this->email}' and active = '1'";
         $user = \PhalconRest\Models\Users::findFirst($search);
-        
-        if (! $user) {
+        if (!$user) {
             throw new HTTPException("No valid user account was found", 401, array(
                 'dev' => "This has to be a bug to have made it this far.",
                 'internalCode' => '760708898897686'
             ));
-            break;
         }
-        
+
         if ($wipe) {
             $this->token = $user->token = null;
             $this->expiresOn = $user->token_expires = null;
@@ -133,7 +131,6 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
             $this->expiresOn = $user->token_expires = $this->generateExpiration();
             // last login
         }
-        
         return $user->save();
     }
 }

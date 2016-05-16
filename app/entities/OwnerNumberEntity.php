@@ -3,7 +3,7 @@ namespace PhalconRest\Entities;
 
 class OwnerNumberEntity extends \PhalconRest\Libraries\API\Entity
 {
-    
+
     /**
      * custom implimentation of account filter
      * must filter through related owner records
@@ -19,8 +19,8 @@ class OwnerNumberEntity extends \PhalconRest\Libraries\API\Entity
             ->get('auth')
             ->getProfile();
         // add custom filter
-        $query->where("PhalconRest\Models\Owners.account_id = $currentUser->accountId");
-        
+        $query->where("PhalconRest\\Models\\Owners.account_id = $currentUser->accountId");
+
         // only add needed join if it isn't already in place
         // 1 = hasOne 0 = belongsTo 2 = hasMany
         $applyJoin = true;
@@ -31,7 +31,7 @@ class OwnerNumberEntity extends \PhalconRest\Libraries\API\Entity
             }
         }
         if ($applyJoin) {
-            $query->join("PhalconRest\Models\Owners");
+            $query->join("PhalconRest\\Models\\Owners");
         }
         return $query;
     }

@@ -26,7 +26,7 @@ class CustomOwnerFields extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
         
-        $this->belongsTo("user_id", "PhalconRest\Models\Owners", "id", array(
+        $this->belongsTo("user_id", "PhalconRest\\Models\\Owners", "id", array(
             'alias' => 'Owners'
         ));
     }

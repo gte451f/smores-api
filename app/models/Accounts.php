@@ -56,29 +56,29 @@ class Accounts extends \PhalconRest\API\BaseModel
      */
     public function initialize()
     {
-        $this->hasMany("id", "PhalconRest\Models\Owners", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Owners", "account_id", array(
             'alias' => 'Owners'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Attendees", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Attendees", "account_id", array(
             'alias' => 'Attendees'
         ));
-        $this->hasMany("id", "PhalconRest\Models\AccountAddrs", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\AccountAddrs", "account_id", array(
             'alias' => 'AccountAddrs'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Checks", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Checks", "account_id", array(
             'alias' => 'Checks'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Cards", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Cards", "account_id", array(
             'alias' => 'Cards'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Payments", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Payments", "account_id", array(
             'alias' => 'Payments'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Charges", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Charges", "account_id", array(
             'alias' => 'Charges'
         ));
         
-        $this->hasOne('id', "PhalconRest\Models\CustomAccountFields", 'account_id', [
+        $this->hasOne('id', "PhalconRest\\Models\\CustomAccountFields", 'account_id', [
             'alias' => 'CustomAccountFields'
         ]);
     }
