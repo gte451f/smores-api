@@ -11,8 +11,12 @@ define("ADMIN_USER", "System - Administrator");
  */
 require_once APPLICATION_PATH . 'helpers/base.php';
 
-// your main aplication config file
-// app/config/config.php
+// set to the user defined error handler
+set_error_handler("customErrorHandler");
+// provide function to catch fatal errors
+register_shutdown_function('shutDownFunction');
+
+// your main application config file
 $config = [
     'application' => [
         'appDir' => APPLICATION_PATH,
@@ -41,7 +45,7 @@ if (file_exists($overridePath)) {
     $config = array_merge_recursive_replace($config, require ($overridePath));
 } else {
     throw new HTTPException("Fatal Exception Caught.", 500, array(
-        'dev' => "Invalid Envronmental Config!  Could not load the specific config file.",
+        'dev' => "Invalid Environmental Config!  Could not load the specific config file.",
         'code' => '23897293759275'
     ));
 }

@@ -12,4 +12,4 @@ modules:
         - \Helper\Acceptance
         - REST:
             depends: PhpBrowser
-            url: 'http://smores.dev/v1/'         
+            url: 'http://172.17.0.1:8080/v1/'

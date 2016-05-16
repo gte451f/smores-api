@@ -11,11 +11,11 @@ class EmployeeEntity extends \PhalconRest\Libraries\API\Entity
      *
      * @see \PhalconRest\API\Entity::beforeSave()
      */
-    public function beforeSave($object, $id)
+    public function beforeSave($object, $id = null)
     {
         // extend me in child class
         $object->user_type = 'Employee';
-        
+
         return $object;
     }
 

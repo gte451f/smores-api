@@ -6,15 +6,12 @@ defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', str_replace('/public', '/app/', __DIR__));
 
 use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Util\DatabaseException;
+
+// use output buffer to manage what is actually sent to the client...or clean it out before it's sent
+ob_start();
 
 try {
-
-    /**
-     * load low level helpers
-     * comment out since it's loaded in config instead
-     */
-    // require_once APPLICATION_PATH . 'helpers/base.php';
-
     /**
      * read in config values
      */
@@ -40,19 +37,17 @@ try {
      */
     $app->handle();
 } catch (Phalcon\Exception $e) {
-    // now what do i do?
-    // echo $e->getMessage();
-    // print_r($e->getTrace());
-
-    throw new HTTPException("Fatal Exception Caught.", 500, array(
-        'dev' => $e->getMessage(),
-        'internalCode' => '6846846846161'
+    // process an uncaught exception as a generic HTTP exception
+    throw new HTTPException("Phalcon Exception Caught.", 500, array(
+        'dev' => $e->getTrace(),
+        'more' => $e->getMessage(),
+        'code' => '89798414618968161'
     ));
-
-    // d($e->getTrace());
 } catch (PDOException $e) {
-    echo "<h3>Error:" . $e->getMessage() . "</h3>";
-    echo "<hr /> <pre>";
-    print_r($e->getTrace());
-    echo "</pre>";
+    // catch any unexpected database exceptions
+    throw new DatabaseException("Fatal Database Exception Caught.", 500, array(
+        'dev' => $e->getTrace(),
+        'more' => $e->getMessage(),
+        'code' => '313519613516184'
+    ));
 }

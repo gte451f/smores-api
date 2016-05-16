@@ -15,7 +15,7 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
      *
      * @see \PhalconRest\API\Entity::afterSave()
      */
-    function beforeSave($object, $id)
+    function beforeSave($object, $id = null)
     {
         $processor = $this->getDI()->get('paymentProcessor');
         $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
@@ -24,7 +24,7 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
         } else {
             $accountExternalId = $account->external_id;
         }
-        
+
         // run credit card through a series of validation tests
         $result = CreditCard::validCreditCard($object->number, $object->vendor);
         if ($result['valid'] == false) {
@@ -37,7 +37,7 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
         } else {
             $object->number = $result['number'];
         }
-        
+
         $result = CreditCard::validDate($object->expiration_year, $object->expiration_month);
         if ($result == false) {
             throw new ValidationException("Bad Expiration Date Supplied", [
@@ -48,17 +48,17 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
                 'expiration_year' => 'The supplied expiration year is invalid.'
             ]);
         }
-        
+
         // put this in until we better populate the credit card form
         // TODO fix CVC in app
         // $object->cvc = '123';
-        
+
         $object->external_id = $processor->createCard($accountExternalId, $object);
-        
+
         // clear out data we do NOT want to store
         $object->number = substr($object->number, strlen($object->number) - 4, 4);
         unset($object->cvc);
-        
+
         return $object;
     }
 

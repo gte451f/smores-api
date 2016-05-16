@@ -10,7 +10,7 @@ $docker = [
         'cacheDir' => '/tmp/',
         // FQDN
         'publicUrl' => 'http://localhost:8080',
-        // probalby the same FQDN
+        // probably the same FQDN
         'corsOrigin' => 'https://localhost:8080',
         // should the api return additional meta data and enable additional server logging?
         'debugApp' => true,
@@ -31,8 +31,8 @@ $docker = [
         'charset' => 'utf8'
     ],
     // enable security for controllers marked as secure?
-    //'security' => true,
-    'security' => false,
+    'security' => true,
+//    'security' => false,
 
     // if secuirty is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing

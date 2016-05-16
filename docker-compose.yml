@@ -15,7 +15,8 @@ php:
   volumes:
         - .:/var/www
         - ./docker/file_storage:/file_storage/
-        - ./docker/php5/php.ini:/etc/php5/fpm/php.ini
+        - ./docker/php5/fpm/php.ini:/etc/php5/fpm/php.ini
+        - ./docker/php5/cli/php.ini:/etc/php5/cli/php.ini
         - ./docker/php5/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
         - ./docker/php5/fpm/pool.d:/etc/php5/fpm/pool.d
   links:

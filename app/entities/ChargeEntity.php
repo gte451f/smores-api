@@ -11,7 +11,7 @@ class ChargeEntity extends \PhalconRest\Libraries\API\Entity
      *
      * @see \PhalconRest\API\Entity::beforeSave()
      */
-    function beforeSave($object, $id)
+    function beforeSave($object, $id = null)
     {
         // auto populate a name if fee is specified
         if ($object->fee_id > 0 and strlen($object->name) == 0) {

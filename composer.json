@@ -1,4 +1,4 @@
-{   
+{
     "require": {
     	"raveren/kint": "0.9",
 		"jsanc623/phpbenchtime": "dev-master",
@@ -11,7 +11,7 @@
         "flow/jsonpath": "dev-master"
     },
     "scripts": {
-        "post-install-cmd": "composer dump-autoload -o",
-        "post-update-cmd": "composer dump-autoload -o"
+        "post-install-cmd": "composer dumpautoload -o",
+        "post-update-cmd": "composer dumpautoload -o"
     }
 }
