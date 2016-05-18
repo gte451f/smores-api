@@ -15,13 +15,13 @@ use PhalconRest\Libraries\Security\SecureUser;
  * user has access to particular resources.
  *
  * @author jking
- *        
+ *
  */
 final class SecurityService extends Injectable
 {
     // Phalcon\Acl object
     private $acl;
-    
+
     // array of all routes in the system
     private $routes;
 
@@ -31,10 +31,10 @@ final class SecurityService extends Injectable
      * @var object PhalconRest\Libraries\Security\SecureUser
      */
     private $user;
-    
+
     // read, write, or delete - these will be derived from the rest verbs listed in the route
     private $requestType;
-    
+
     // the resource that was requested i.e. /v1/appl_lists -- $requestedResource = 'appl_lists'
     private $requestedResource;
 
@@ -44,7 +44,7 @@ final class SecurityService extends Injectable
      * @boolean
      */
     public $enforceAccountFilter = false;
-    
+
     // array of security rules to apply. defined in a config file.
     private $security_rules;
 
@@ -56,10 +56,10 @@ final class SecurityService extends Injectable
     {
         $config = $this->getDI()->get('config');
         $this->security_rules = $config['security_rules'];
-        
+
         $this->acl = new AclList();
         $this->acl->setDefaultAction(Acl::DENY);
-        
+
         $this->setRoleList();
         $this->setResourceList();
         $this->setTypeAndResource();
@@ -76,7 +76,7 @@ final class SecurityService extends Injectable
     {
         $role = new Role(ADMIN_USER);
         $this->acl->addRole($role);
-        
+
         $role = new Role(PORTAL_USER);
         $this->acl->addRole($role);
     }
@@ -90,13 +90,13 @@ final class SecurityService extends Injectable
         foreach ($this->di->get('collections') as $collection) {
             $prefix = $collection->getPrefix();
             $route = $this->routes[] = str_replace('/v1/', '', $prefix);
-            
+
             $operations = array(
                 'read',
                 'write',
                 'delete'
             );
-            
+
             $this->acl->addResource($route, $operations);
         }
     }
@@ -110,9 +110,9 @@ final class SecurityService extends Injectable
         $matchedRoute = $router->getMatchedRoute();
         $pattern = $matchedRoute->getPattern();
         $method = $matchedRoute->getHttpMethods();
-        
+
         $this->requestType = $this->translateRestVerbs($method);
-        
+
         $pattern = preg_replace('/\/v1\//', '', $pattern);
         $this->requestedResource = preg_replace('/\/.*/', '', $pattern);
     }
@@ -121,7 +121,7 @@ final class SecurityService extends Injectable
      * traslate the actual Action names in the controller to the pared down list of actions we
      * support for security - read, write, delete
      *
-     * @param string $method            
+     * @param string $method
      * @return string
      */
     private function translateRestVerbs($method)
@@ -133,13 +133,13 @@ final class SecurityService extends Injectable
             case "optionsOne":
                 return 'read';
                 break;
-            
+
             case "post":
             case "put":
             case "patch":
                 return 'write';
                 break;
-            
+
             case "delete":
                 return 'delete';
                 break;
@@ -155,11 +155,11 @@ final class SecurityService extends Injectable
             if (isset($this->security_rules['read'])) {
                 $this->setAccessRules('read');
             }
-            
+
             if (isset($this->security_rules['write'])) {
                 $this->setAccessRules('write');
             }
-            
+
             if (isset($this->security_rules['delete'])) {
                 $this->setAccessRules('delete');
             }
@@ -179,14 +179,14 @@ final class SecurityService extends Injectable
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
      * based on a given requestType, use security roles defined in config and set rules for that given request type
      *
-     * @param unknown $requestType            
+     * @param unknown $requestType
      */
     private function setAccessRules($requestType)
     {
@@ -201,7 +201,7 @@ final class SecurityService extends Injectable
     /**
      * setter method boolean determining whether matter level security will be enforced on the requested resource
      *
-     * @param unknown $bool            
+     * @param unknown $bool
      */
     public function setEnforceAccountFilter($bool)
     {

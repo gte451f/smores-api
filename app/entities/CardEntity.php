@@ -19,7 +19,7 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
     {
         $processor = $this->getDI()->get('paymentProcessor');
         $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
-        if (! $account->external_id or $account->external_id == null) {
+        if (!$account->external_id or $account->external_id == null) {
             $accountExternalId = $processor->createCustomer($account);
         } else {
             $accountExternalId = $account->external_id;

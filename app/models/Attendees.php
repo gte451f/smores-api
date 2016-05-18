@@ -60,15 +60,15 @@ class Attendees extends \PhalconRest\API\BaseModel
         $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
-        
+
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
-        
+
         $this->hasMany("user_id", "PhalconRest\\Models\\Registrations", "attendee_id", array(
             'alias' => 'Registrations'
         ));
-        
+
         $this->hasOne('user_id', "PhalconRest\\Models\\CustomAttendeeFields", 'user_id', [
             'alias' => 'CustomAttendeeFields'
         ]);

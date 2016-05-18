@@ -74,14 +74,14 @@ class AccountBillingSummaries extends \PhalconRest\API\BaseModel
     {
         // set the PKID since this is a view
         $this->primaryKeyName = 'id';
-        
+
         // set these since plural is slightly non-standard
         $this->pluralName = 'AccountBillingSummaries';
         $this->singularName = 'AccountBillingSummary';
-        
+
         $this->pluralTableName = 'account_billing_summaries';
         $this->singularTableName = 'account_billing_summary';
-        
+
         parent::initialize();
         $this->belongsTo("id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'

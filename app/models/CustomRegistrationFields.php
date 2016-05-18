@@ -6,7 +6,7 @@ namespace PhalconRest\Models;
  * see Fields controller for more
  *
  * @author jjenkins
- *        
+ *
  */
 class CustomRegistrationFields extends \PhalconRest\API\BaseModel
 {
@@ -25,7 +25,7 @@ class CustomRegistrationFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->belongsTo("registration_id", "PhalconRest\\Models\\Registrations", "id", array(
             'alias' => 'Registrations'
         ));

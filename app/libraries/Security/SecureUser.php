@@ -7,16 +7,16 @@ use Phalcon\DI\Injectable;
  * This is a class which represents a user from the standpoint of group membership and matter assignments
  *
  * @author jking
- *        
+ *
  */
 final class SecureUser extends Injectable
 {
     // this is the user object that was established by the auth service
     private $logged_in_user;
-    
+
     // an array representing all of the groups to which the logged in user has been assigned
     private $user_groups = array();
-    
+
     // an array representing all of the accounts to which the logged in user has been assigned
     private $user_accounts = array();
 
@@ -24,7 +24,7 @@ final class SecureUser extends Injectable
     {
         $auth = $this->getDI()->get('auth');
         $this->logged_in_user = $user = $auth->getProfile();
-        
+
         // assign user groups and accounts
         switch ($user->userType) {
             case 'Attendee':
@@ -34,19 +34,19 @@ final class SecureUser extends Injectable
                     'code' => '7984685186161'
                 ));
                 break;
-            
+
             case 'Employee':
                 $this->user_groups = [
                     ADMIN_USER
                 ];
                 break;
-            
+
             case 'Owner':
                 $this->user_groups = [
                     PORTAL_USER
                 ];
                 break;
-            
+
             default:
                 // freak out!
                 throw new \PhalconRest\Util\HTTPException('Attempted hack by user of unknown user type!', 404, array(
@@ -55,7 +55,7 @@ final class SecureUser extends Injectable
                 ));
                 break;
         }
-        
+
         return $this;
     }
 
@@ -63,7 +63,7 @@ final class SecureUser extends Injectable
      * This method returns the list of the matters to which the logged in user has been assigned.
      * It received an argument which is a string representing the format in which the data should be returned.
      *
-     * @param string $format            
+     * @param string $format
      * @return multitype:
      */
     public function getUserMatters($format = null)
@@ -77,18 +77,18 @@ final class SecureUser extends Injectable
                     if ($i != count($this->user_matters)) {
                         $result .= ',';
                     }
-                    $i ++;
+                    $i++;
                 }
                 break;
-            
+
             default:
                 $result = $this->user_matters;
                 break;
         }
-        
+
         return $result;
     }
-    
+
     // getter method for user groups
     public function getUserGroups()
     {

@@ -47,11 +47,11 @@ class Registrations extends \PhalconRest\API\BaseModel
         $this->hasMany("id", "PhalconRest\\Models\\Requests", "registration_id", [
             'alias' => 'Requests'
         ]);
-        
+
         $this->hasOne("attendee_id", "PhalconRest\\Models\\Attendees", "user_id", [
             'alias' => 'Attendees'
         ]);
-        
+
         $this->hasOne('id', "PhalconRest\\Models\\CustomRegistrationFields", 'registration_id', [
             'alias' => 'CustomRegistrationFields'
         ]);

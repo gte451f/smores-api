@@ -65,7 +65,7 @@ class Fields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->belongsTo("registration_id", "PhalconRest\\Models\\Registrations", "id", array(
             'alias' => 'Registrations'
         ));
@@ -93,16 +93,16 @@ class Fields extends \PhalconRest\API\BaseModel
         $value = str_replace(' ', '_', $this->display);
         // change hyphen to underscore
         $value = str_replace('-', '_', $value);
-        
+
         // Remove all special characters a
         $value = preg_replace("/[^A-Za-z0-9\_]/", "", $value);
         $value = trim($value);
-        
+
         // change multiple underscores to single underscore
         $value = str_replace('__', '_', $value);
         // just in case there were three
         $value = str_replace('__', '_', $value);
-        
+
         // all accounts start as "Inactive" and require activation
         $this->name = strtolower($value);
     }
@@ -121,7 +121,7 @@ class Fields extends \PhalconRest\API\BaseModel
                 'owners'
             )
         )));
-        
+
         $this->validate(new InclusionInValidator(array(
             'field' => 'allowed_data',
             'domain' => array(
@@ -131,7 +131,7 @@ class Fields extends \PhalconRest\API\BaseModel
                 'boolean'
             )
         )));
-        
+
         $this->validate(new InclusionInValidator(array(
             'field' => 'input',
             'domain' => array(
@@ -144,7 +144,7 @@ class Fields extends \PhalconRest\API\BaseModel
                 'date'
             )
         )));
-        
+
         $this->validate(new InclusionInValidator(array(
             'field' => 'private',
             'domain' => array(
@@ -152,12 +152,12 @@ class Fields extends \PhalconRest\API\BaseModel
                 0
             )
         )));
-        
+
         $this->validate(new Uniqueness(array(
             "field" => "name",
             "message" => "Display Name must be unique from all other custom fields"
         )));
-        
+
         $this->validate(new StringLengthValidator(array(
             "field" => 'display',
             'max' => 35,
@@ -165,7 +165,7 @@ class Fields extends \PhalconRest\API\BaseModel
             'messageMaximum' => 'Display name is too long, please enter a value less than 35 characters in length',
             'messageMinimum' => 'Display name is too short, please enter a value 4 characters or greater in length'
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 }

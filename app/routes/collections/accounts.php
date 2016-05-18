@@ -6,13 +6,13 @@
  */
 return call_user_func(function () {
     $routes = new \Phalcon\Mvc\Micro\Collection();
-    
+
     // VERSION NUMBER SHOULD BE FIRST URL PARAMETER, ALWAYS
     // setHandler MUST be a string in order to support lazy loading
     $routes->setPrefix('/v1/accounts')
         ->setHandler('\PhalconRest\Controllers\AccountController')
         ->setLazy(true);
-    
+
     $routes->options('/', 'optionsBase');
     $routes->options('/{id}', 'optionsOne');
     $routes->get('/', 'get');
@@ -27,6 +27,6 @@ return call_user_func(function () {
     // custom routes
     // return any accounts elligble to be billed
     $routes->get('/billable', 'getBillable');
-    
+
     return $routes;
 });

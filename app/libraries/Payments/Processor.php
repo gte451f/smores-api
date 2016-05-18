@@ -6,7 +6,7 @@ namespace PhalconRest\Libraries\Payments;
  * acts as the glue connecting a smores account with the processor's data on a card holder
  *
  * @author jjenkins
- *        
+ *
  */
 interface Processor
 {
@@ -19,7 +19,7 @@ interface Processor
      *
      * include logic to search for this account in stripe before attempting to make a brand new one
      *
-     * @param \PhalconRest\Models\Accounts $account            
+     * @param \PhalconRest\Models\Accounts $account
      * @return mixed external_id otherwise false
      */
     public function createCustomer(\PhalconRest\Models\Accounts $account);
@@ -67,7 +67,7 @@ interface Processor
      * @param object $card
      *            a stdObject that holds common card data
      * @return string external card id
-     *        
+     *
      */
     public function createCard($accountExternalId, $card);
 

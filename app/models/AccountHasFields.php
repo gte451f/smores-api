@@ -41,7 +41,7 @@ class AccountHasFields extends \PhalconRest\API\BaseModel
         $this->hasOne("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
-        
+
         $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
             'alias' => 'Fields'
         ));

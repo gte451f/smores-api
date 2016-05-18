@@ -41,7 +41,7 @@ class Programs extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->hasMany("id", "PhalconRest\\Models\\Events", "program_id", array(
             'alias' => 'Events'
         ));
@@ -52,14 +52,14 @@ class Programs extends \PhalconRest\API\BaseModel
         $this->validate(new NumericalityValidator(array(
             'field' => 'fee'
         )));
-        
+
         $this->validate(new Uniqueness(array(
             "field" => "name",
             "message" => "The program name must be unique"
         )));
-        
+
         // $result = $this->validationHasFailed();
-        
+
         if ($this->validationHasFailed() == true) {
             return false;
         }

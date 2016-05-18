@@ -32,11 +32,11 @@ class AccountStatements extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
-        
+
         $this->belongsTo('statement_batch_id', 'PhalconRest\Models\StatementBatches', 'id', array(
             'alias' => 'StatementBatches'
         ));

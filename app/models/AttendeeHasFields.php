@@ -41,11 +41,11 @@ class AttendeeHasFields extends \PhalconRest\API\BaseModel
         $this->belongsTo("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
-        
+
         $this->belongsTo('attendee_id', 'PhalconRest\Models\Attendees', 'id', array(
             'alias' => 'Attendees'
         ));
-        
+
         $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
             'alias' => 'Fields'
         ));

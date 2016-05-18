@@ -25,8 +25,8 @@ class OwnerEntity extends \PhalconRest\Libraries\API\Entity
         // treat updates/adds the same
         $fieldService = new \PhalconRest\Libraries\CustomFields\Util();
         $fieldService->saveFields($object, 'owners', $id);
-    }    
-    
+    }
+
     /**
      * auto assign user_type to form
      *
@@ -38,7 +38,7 @@ class OwnerEntity extends \PhalconRest\Libraries\API\Entity
     {
         // extend me in child class
         $object->user_type = 'Owner';
-        
+
         return $object;
     }
 

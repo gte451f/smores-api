@@ -27,12 +27,12 @@ class StatementBatches extends \PhalconRest\API\BaseModel
         // set these since plural is slightly non-standard
         $this->pluralName = 'StatementBatches';
         $this->singularName = 'StatementBatch';
-        
+
         $this->pluralTableName = 'statements_batches';
         $this->singularTableName = 'statements_batch';
-        
+
         parent::initialize();
-        
+
         $this->hasOne("batch_id", "PhalconRest\\Models\\Batches", "id", array(
             'alias' => 'Batches'
         ));

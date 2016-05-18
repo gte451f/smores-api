@@ -50,7 +50,7 @@ class Cabins extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->hasMany("id", "PhalconRest\\Models\\Events", "program_id", array(
             'alias' => 'Events'
         ));

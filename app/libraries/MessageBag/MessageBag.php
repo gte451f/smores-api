@@ -6,7 +6,7 @@ namespace PhalconRest\Libraries\MessageBag;
  * error, validation, alerts, success
  *
  * @author jjenkins
- *        
+ *
  */
 class MessageBag
 {
@@ -22,7 +22,7 @@ class MessageBag
 
     /**
      *
-     * @param string $message            
+     * @param string $message
      */
     public function set($message)
     {

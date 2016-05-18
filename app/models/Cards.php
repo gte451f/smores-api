@@ -86,7 +86,7 @@ class Cards extends \PhalconRest\API\BaseModel
         $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
-        
+
         $this->hasMany("id", "PhalconRest\\Models\\Payments", "card_id", array(
             'alias' => 'Payments'
         ));
@@ -114,7 +114,7 @@ class Cards extends \PhalconRest\API\BaseModel
             'messageMinimum' => 'Name on card is to short, it must be at least 2 characters long.',
             'messageMaximum' => 'Name on card is to long, it must be shorter than 45 characters long'
         )));
-        
+
         $this->validate(new InclusionIn(array(
             "field" => 'vendor',
             'message' => 'Card vendor must be one of the following: American Express, Visa or Master Card',
@@ -127,7 +127,7 @@ class Cards extends \PhalconRest\API\BaseModel
                 'jcb'
             ]
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 
@@ -144,7 +144,7 @@ class Cards extends \PhalconRest\API\BaseModel
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType != 'Employee') {
             $blockColumns[] = 'external_id';
         }

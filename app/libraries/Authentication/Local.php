@@ -12,7 +12,7 @@ use \PhalconRest\Models\PhalconRest\Models;
  * into the PhalconREST API
  *
  * @author jjenkins
- *        
+ *
  */
 final class Local extends Injectable implements \PhalconRest\Authentication\AdapterInterface
 {
@@ -37,8 +37,8 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
     /**
      * check the username & password against the local user table source
      *
-     * @param string $email            
-     * @param false $password            
+     * @param string $email
+     * @param false $password
      * @return boolean
      */
     function authenticate($email, $password)
@@ -58,8 +58,8 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
                 } else {
                     return false;
                 }
-                break;                          
-                
+                break;
+
             default:
                 // to many user accounts found
                 return false;

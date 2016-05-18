@@ -48,12 +48,12 @@ class Fees extends \PhalconRest\API\BaseModel
         $this->validate(new NumericalityValidator(array(
             'field' => 'amount'
         )));
-        
+
         $this->validate(new Uniqueness(array(
             "field" => "name",
             "message" => "The fee name must be unique"
         )));
-        
+
         if ($this->validationHasFailed() == true) {
             return false;
         }

@@ -7,7 +7,7 @@ use \PhalconRest\Util\HTTPException;
  * This class extends the PhalconRest\API\Entity class and adds app specific logic *
  *
  * @author jking
- *        
+ *
  */
 class Entity extends \PhalconRest\API\Entity
 {
@@ -25,11 +25,11 @@ class Entity extends \PhalconRest\API\Entity
     {
         // check to see whether the controller has set the security_service to enforce account level security for this resource
         $securityService = $this->getDI()->get('securityService');
-        
+
         if ($securityService->getEnforceAccountFilter()) {
             $this->applyAccountFilter($query);
         }
-        
+
         return $query;
     }
 
@@ -40,7 +40,7 @@ class Entity extends \PhalconRest\API\Entity
      *
      * @param
      *            phalcon query object
-     *            
+     *
      * @return phalcon query object
      */
     public function applyAccountFilter($query)
@@ -49,19 +49,19 @@ class Entity extends \PhalconRest\API\Entity
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         // figure out best way to filter by default
         $model = $this->model->getModelNamespace();
         switch ($model) {
             case 'PhalconRest\Models\Accounts':
                 $id = 'id';
                 break;
-            
+
             default:
                 $id = 'account_id';
                 break;
         }
-        
+
         // apply generic account filter assuming column is present in query
         $query->where("$model.$id = $currentUser->accountId");
         return $query;

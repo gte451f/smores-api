@@ -41,11 +41,11 @@ class OwnerHasFields extends \PhalconRest\API\BaseModel
         $this->belongsTo("user_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
-        
+
         $this->belongsTo('owner_id', 'PhalconRest\Models\Owners', 'id', array(
             'alias' => 'Owners'
         ));
-        
+
         $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
             'alias' => 'Fields'
         ));

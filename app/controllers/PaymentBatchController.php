@@ -7,7 +7,7 @@ class PaymentBatchController extends \PhalconRest\Libraries\API\SecureController
     /**
      * set names since plural is slightly different
      *
-     * @param string $parseQueryString            
+     * @param string $parseQueryString
      */
     public function __construct($parseQueryString = true)
     {

@@ -15,10 +15,10 @@ class AuthController extends \Phalcon\DI\Injectable
     {
         $di = \Phalcon\DI::getDefault();
         $this->setDI($di);
-        
+
         // what type of auth is the client requesting be performed?
         $type = $this->request->getPost('type');
-        
+
         // load the default auth library, pass in the client requested type employee | account
         $this->auth = $this->getDI()->get('auth', [
             $type
@@ -35,10 +35,10 @@ class AuthController extends \Phalcon\DI\Injectable
             "email"
         ));
         $password = $this->request->getPost('password');
-        
+
         // $userName = 'foo';
         // $password = '123456789';
-        
+
         if (strlen($password) < 8 or strlen($email) < 3) {
             throw new ValidationException("Bad Credentials Supplied", [
                 'dev' => "Supplied credentials were not valid. UserName: $email",
@@ -48,10 +48,10 @@ class AuthController extends \Phalcon\DI\Injectable
                 'email' => 'The email must be greater than 3 characters'
             ]);
         }
-        
+
         // let's try local auth instead
         $result = $this->auth->authenticate($email, $password);
-        
+
         if ($result == false) {
             throw new HTTPException("Bad credentials supplied.", 401, array(
                 'dev' => "Supplied credentials were not valid. Email: $email",
@@ -60,10 +60,10 @@ class AuthController extends \Phalcon\DI\Injectable
         } else {
             $profile = $this->auth->getProfile();
         }
-        
+
         // return the basic data needed to authenticate future requests
         // in our case, a token and expiration date
-        return (array) $profile;
+        return (array)$profile;
     }
 
     /**
@@ -75,7 +75,7 @@ class AuthController extends \Phalcon\DI\Injectable
     {
         $request = $this->getDI()->get('request');
         $post = $request->getPost();
-        
+
         // check that the requisite fields exist
         $fieldList = array(
             'last_name',
@@ -89,10 +89,10 @@ class AuthController extends \Phalcon\DI\Injectable
             'phone_type',
             'relationship'
         );
-        
+
         // verify that all the required fields are present before continuing
         foreach ($fieldList as $field) {
-            if (! isset($post[$field])) {
+            if (!isset($post[$field])) {
                 throw new ValidationException("Incomplete account data submitted.", 400, array(
                     'dev' => "Not all required data fields were supplied.  Missing: $field",
                     'code' => '891316819464749684'
@@ -101,12 +101,12 @@ class AuthController extends \Phalcon\DI\Injectable
                 ]);
             }
         }
-        
+
         // attempt to create account
         // use transaction here?
         $account = new \PhalconRest\Models\Accounts();
         $account->name = $post['last_name'];
-        if (! $account->create()) {
+        if (!$account->create()) {
             throw new ValidationException("Internal error adding new account", array(
                 'code' => '78498119519',
                 'dev' => 'Error while attempting to create a brand new account'
@@ -120,7 +120,7 @@ class AuthController extends \Phalcon\DI\Injectable
             $user->gender = $post['gender'];
             $user->email = $post['email'];
             $user->password = $post['password'];
-            if (! $user->create()) {
+            if (!$user->create()) {
                 throw new ValidationException("Internal error adding new user", array(
                     'code' => '7891351889184',
                     'dev' => 'Error while attempting to create a brand new user'
@@ -135,7 +135,7 @@ class AuthController extends \Phalcon\DI\Injectable
                 $owner->relationship = $post['relationship'];
                 // always make the first owner created the primary
                 $owner->primary_contact = 1;
-                if (! $owner->create()) {
+                if (!$owner->create()) {
                     throw new ValidationException("Internal error adding new owner", array(
                         'code' => '98616381',
                         'dev' => 'Error while attempting to create a brand new owner'
@@ -151,7 +151,7 @@ class AuthController extends \Phalcon\DI\Injectable
                     $number->phone_type = $post['phone_type'];
                     $number->number = $post['number'];
                     $number->primary = 1;
-                    if (! $number->create()) {
+                    if (!$number->create()) {
                         throw new ValidationException("Internal error adding new phone number", array(
                             'code' => '8941351968151313546494',
                             'dev' => 'Error while attempting to create a brand new phone number'
@@ -184,7 +184,7 @@ class AuthController extends \Phalcon\DI\Injectable
         $token = $this->request->getHeader("X_AUTHORIZATION");
         $token = str_ireplace("Token: ", '', $token);
         $token = trim($token);
-        
+
         $this->auth = $this->getDI()->get('auth');
         // $token = "LWHb27fjRW80ccymhb1mfOeSmaefl7H6vcXaTUw52cLJHc0MeaE5A01bM6bfWagd";
         $result = $this->auth->logUserOut($token);
@@ -199,7 +199,7 @@ class AuthController extends \Phalcon\DI\Injectable
     public function session_check()
     {
         $token = "LWHb27fjRW80ccymhb1mfOeSmaefl7H6vcXaTUw52cLJHc0MeaE5A01bM6bfWagd";
-        
+
         if ($this->auth->isLoggedIn($token)) {
             $profile = $this->auth->getProfile();
             $profileArray = array(
@@ -240,7 +240,7 @@ class AuthController extends \Phalcon\DI\Injectable
             "string",
             "alphanum"
         ));
-        
+
         if (strlen($code) < 25 or strlen($email) < 6) {
             throw new ValidationException("Bad activation data supplied", [
                 'dev' => "Supplied activation email or code were not valid. Email: $email",
@@ -250,32 +250,32 @@ class AuthController extends \Phalcon\DI\Injectable
                 'email' => 'The email must be greater than 5 characters'
             ]);
         }
-        
+
         $search = array(
             'email' => $email,
             'code' => $code
         );
-        
+
         $users = \PhalconRest\Models\Users::query()->where("email = :email:")
             ->andWhere("active = 0")
             ->andWhere("code = :code:")
             ->bind($search)
             ->execute();
-        
+
         $user = $users->getFirst();
-        
+
         if ($user) {
             $user->active = 1;
             $user->code = NULL;
             $result = $user->save();
-            
+
             // update account as well
             if ($user->user_type == 'Owner') {
                 $owner = $user->Owners;
                 $account = $owner->Accounts;
                 $account->active = 1;
                 $result = $account->save();
-                
+
                 if ($result) {
                     return array(
                         'status' => 'Active',
@@ -288,7 +288,7 @@ class AuthController extends \Phalcon\DI\Injectable
                     ), $account->getMessages());
                 }
             }
-            
+
             return array(
                 'status' => 'Active',
                 'result' => $result
@@ -324,7 +324,7 @@ class AuthController extends \Phalcon\DI\Injectable
             "string",
             "alphanum"
         ));
-        
+
         if ($password != $password_confirm) {
             throw new ValidationException("Passwords do not match.", array(
                 'dev' => "Confirm & Password values did not match.",
@@ -333,7 +333,7 @@ class AuthController extends \Phalcon\DI\Injectable
                 'password' => "Password and Confirmation do not match"
             ]);
         }
-        
+
         $result = \PhalconRest\Libraries\Authentication\Util::reset($password, $code);
         return array(
             'status' => 'Active',
@@ -354,10 +354,10 @@ class AuthController extends \Phalcon\DI\Injectable
         $email = $this->request->getPost("email", array(
             "email"
         ));
-        
+
         // $email = $this->request->get('email');
         $result = \PhalconRest\Libraries\Authentication\Util::reminder($email, false);
-        
+
         return array(
             'status' => 'Reset',
             'result' => $result
@@ -373,10 +373,10 @@ class AuthController extends \Phalcon\DI\Injectable
         $processor = $this->getDI()->get('paymentProcessor');
         $account = \PhalconRest\Models\Accounts::findFirst(103);
         $accountExternalId = $processor->createCustomer($account);
-        
+
         $card = \PhalconRest\Models\Cards::findFirst(4);
         $cardExternalId = $processor->createCard($accountExternalId, $card, '4242424242424242', '123');
-        
+
         return [
             'accountExternalId' => $accountExternalId,
             'cardExternalId' => $cardExternalId

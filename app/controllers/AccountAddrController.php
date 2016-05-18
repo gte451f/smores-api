@@ -16,11 +16,11 @@ class AccountAddrController extends \PhalconRest\Libraries\API\SecureController
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType == 'Owner') {
             $securityService->setEnforceAccountFilter(true);
         }
-        
+
         return parent::securityCheck($securityService);
     }
 }

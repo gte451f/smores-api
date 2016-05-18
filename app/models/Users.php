@@ -99,15 +99,15 @@ class Users extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->hasOne('id', 'PhalconRest\Models\Employees', 'user_id', array(
             'alias' => 'Employees'
         ));
-        
+
         $this->hasOne('id', 'PhalconRest\Models\Owners', 'user_id', array(
             'alias' => 'Owners'
         ));
-        
+
         $this->hasOne('id', 'PhalconRest\Models\Attendees', 'user_id', array(
             'alias' => 'Attendees'
         ));
@@ -118,17 +118,17 @@ class Users extends \PhalconRest\API\BaseModel
      */
     public function beforeValidationOnCreate()
     {
-        
+
         // all employees or owner accounts start as invactive
         // if they wish to login to either admin or portal, they must be activated
         if ($this->user_type == 'Employee' or $this->user_type == 'Owner') {
             $this->active = 0;
         }
-        
+
         // all user accounts have this type
         // this is not true!
         // $this->user_type = 'Employee';
-        
+
         // encrypt password if one is provided
         // from the existance of a password we infer that it is either an owner or an employee
         // of course we could just watch the user_type field right?
@@ -137,7 +137,7 @@ class Users extends \PhalconRest\API\BaseModel
             $this->password = $security->hash($this->password);
             // also set a code when we infer a password
             $this->code = substr(md5(rand()) . md5(rand()), 0, 45);
-            
+
             // why set the account to inactive when the password changes?
             // is this a specific password reset? THen do this in the auth controller
             // $this->active = 0;
@@ -168,12 +168,12 @@ class Users extends \PhalconRest\API\BaseModel
             'field' => 'email',
             'allowEmpty' => true
         )));
-        
+
         $this->validate(new Uniqueness(array(
             "field" => 'email',
             'allowEmpty' => true
         )));
-        
+
         // check length for first/last namespace
         $this->validate(new StringLengthValidator(array(
             "field" => 'last_name',
@@ -182,7 +182,7 @@ class Users extends \PhalconRest\API\BaseModel
             'messageMaximum' => 'Last Name should be less than 45 characters in length',
             'messageMinimum' => 'Last Name should be greater than 2 characters in length'
         )));
-        
+
         // check length for first/last namespace
         $this->validate(new StringLengthValidator(array(
             "field" => 'first_name',
@@ -191,7 +191,7 @@ class Users extends \PhalconRest\API\BaseModel
             'messageMaximum' => 'First Name should be less than 45 characters in length',
             'messageMinimum' => 'First Name should be greater than 2 characters in length'
         )));
-        
+
         $this->validate(new InclusionInValidator(array(
             'field' => 'gender',
             'domain' => array(
@@ -199,7 +199,7 @@ class Users extends \PhalconRest\API\BaseModel
                 'Female'
             )
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 
@@ -221,7 +221,7 @@ class Users extends \PhalconRest\API\BaseModel
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType != 'Employee') {
             $blockColumns[] = 'dob';
             $blockColumns[] = 'active';

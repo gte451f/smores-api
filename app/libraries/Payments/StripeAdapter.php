@@ -9,7 +9,7 @@ use \PhalconRest\Models\PhalconRest\Models;
 /**
  *
  * @author jjenkins
- *        
+ *
  */
 final class StripeAdapter extends Injectable implements Processor
 {
@@ -32,7 +32,7 @@ final class StripeAdapter extends Injectable implements Processor
     {
         $di = \Phalcon\DI::getDefault();
         $this->di = $di;
-        
+
         // init stripe access
         \Stripe\Stripe::setApiKey($key);
     }
@@ -46,19 +46,19 @@ final class StripeAdapter extends Injectable implements Processor
      */
     public function createCustomer(\PhalconRest\Models\Accounts $account)
     {
-        
+
         // check that this customer doesn't already exist
         // skip cache to be sure the latest record is pulled
         if ($account->external_id) {
             $customer = $this->findCustomer($account->external_id);
-            
+
             // match found, no need to create a new customer record
             if ($customer) {
                 $this->cachedCustomers[$account->external_id] = $customer;
                 return $account->external_id;
             }
         }
-        
+
         try {
             $result = \Stripe\Customer::create(array(
                 "description" => $account->id
@@ -66,9 +66,9 @@ final class StripeAdapter extends Injectable implements Processor
         } catch (\Stripe\Error\Base $e) {
             $this->handleStripeError($e);
         }
-        
+
         $account->external_id = $result->id;
-        if (! $account->save()) {
+        if (!$account->save()) {
             throw new HTTPException("Could not save Payment Information for account", 404, array(
                 'code' => 1872391762862,
                 'dev' => 'StripeAdapter->createCustomer failed to save external_id: ' . $result->id
@@ -90,18 +90,18 @@ final class StripeAdapter extends Injectable implements Processor
         if ($data['amount'] < 1) {
             throw new \Exception('Charge amount must exceed $1.');
         }
-        
+
         // convert amount to decimal
         // then convert to cents cuz that is what stripe wants
         $amount = bcmul(number_format($data['amount'], 2), 100);
-        
+
         // set base charge data, add card on file or new card
         $chargeData = [
             "amount" => $amount,
             "currency" => "usd",
             "description" => "SMORES Payment"
         ];
-        
+
         if (isset($data['card_id'])) {
             // verify that the external_id exists in the database
             $card = $this->findCard($data['card_id']);
@@ -121,7 +121,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'address_line1' => $data['address']
             ];
         }
-        
+
         try {
             $result = \Stripe\Charge::create($chargeData);
             return $result->id;
@@ -155,7 +155,7 @@ final class StripeAdapter extends Injectable implements Processor
      */
     public function createCard($accountExternalId, $card)
     {
-        
+
         // validate some credit card data
         if (strlen($card->name_on_card) < 2 or strlen($card->name_on_card) > 45) {
             throw new ValidationException("Could not save card information", array(
@@ -164,7 +164,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'name_on_card' => 'The name on the card should be between 2 and 45 characters in length'
             ]);
         }
-        
+
         if ($card->expiration_year < date("Y")) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
@@ -172,7 +172,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'expiration_year' => 'Expiration Year must be greater than or equal to current year'
             ]);
         }
-        
+
         if (strlen($card->expiration_month) <= 1) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
@@ -180,7 +180,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'expiration_month' => 'Expiration Month must be included'
             ]);
         }
-        
+
         if ($card->expiration_year == date("Y")) {
             if ($card->expiration_month <= date("m")) {
                 throw new ValidationException("Could not save card information", array(
@@ -190,7 +190,7 @@ final class StripeAdapter extends Injectable implements Processor
                 ]);
             }
         }
-        
+
         if (strlen($card->number) < 7) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
@@ -198,7 +198,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'number' => 'Please check your card number'
             ]);
         }
-        
+
         // fail if the card record already contains an external id
         if ($card->external_id) {
             throw new HTTPException("Could not save card information", 404, array(
@@ -206,9 +206,9 @@ final class StripeAdapter extends Injectable implements Processor
                 'dev' => 'This card record already has an external_id'
             ));
         }
-        
+
         $customer = $this->findCustomer($accountExternalId);
-        
+
         if ($customer) {
             // pull card data from storage and temp data
             $cardData = [
@@ -221,7 +221,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'address_line1' => $card->address,
                 'address_zip' => $card->zip
             ];
-            
+
             try {
                 $result = $customer->sources->create(array(
                     "source" => $cardData
@@ -253,21 +253,21 @@ final class StripeAdapter extends Injectable implements Processor
         if (strlen($external_id) < 5) {
             throw new \Exception('external_id is not long enough');
         }
-        if (! strstr($external_id, 'cus_')) {
+        if (!strstr($external_id, 'cus_')) {
             throw new \Exception('invalid stripe external_id');
         }
-        
+
         // consult w/ cache first
-        if (! $force_api_call) {
+        if (!$force_api_call) {
             if (isset($this->cachedCustomers[$external_id])) {
                 return $this->cachedCustomers[$external_id];
             }
         }
-        
+
         // either force is true or the cache missed, pull from api
         try {
             $customer = \Stripe\Customer::retrieve($external_id);
-            
+
             if ($customer and $customer->delete != true) {
                 $this->cachedCustomers[$customer->id] = $customer;
                 return $customer;
@@ -275,7 +275,7 @@ final class StripeAdapter extends Injectable implements Processor
         } catch (\Stripe\Error\Base $e) {
             $this->handleStripeError($e);
         }
-        
+
         // if a customer record is not found, return false
         return false;
     }
@@ -293,27 +293,27 @@ final class StripeAdapter extends Injectable implements Processor
         if (strlen($external_id) < 5) {
             throw new \Exception('external_id is not long enough');
         }
-        if (! strstr($external_id, 'card_')) {
+        if (!strstr($external_id, 'card_')) {
             throw new \Exception('invalid stripe external_id');
         }
-        
+
         // consult w/ cache first
-        if (! $force_api_call) {
+        if (!$force_api_call) {
             if (isset($this->cachedCustomers[$external_id])) {
                 return $this->cachedCustomers[$external_id];
             }
         }
-        
+
         // either force is true or the cache missed, pull from api
         try {
             // load customer record in order to request related card record
             $card = \PhalconRest\Models\Cards::findFirst("external_id = '$external_id'");
             $account = $card->Accounts;
-            
+
             $customer = $this->findCustomer($account->external_id);
-            
+
             $card = $customer->sources->retrieve($external_id);
-            
+
             if ($card and $card->delete != true) {
                 $this->cachedCards[$card->id] = $card;
                 return $card;
@@ -321,7 +321,7 @@ final class StripeAdapter extends Injectable implements Processor
         } catch (\Stripe\Error\Base $e) {
             $this->handleStripeError($e);
         }
-        
+
         // if a customer record is not found, return false
         return false;
     }
@@ -338,14 +338,14 @@ final class StripeAdapter extends Injectable implements Processor
     public function deleteCard($externalId)
     {
         $mm = $this->di->get('modelsManager');
-        
+
         $cardList = $mm->createBuilder()
             ->from('PhalconRest\\Models\\Cards')
             ->join('PhalconRest\\Models\\Accounts')
             ->where("PhalconRest\\Models\\Cards.external_id = '$externalId'")
             ->getQuery()
             ->execute();
-        
+
         // remove all cards..in case there are 0 or N
         foreach ($cardList as $card) {
             // load customer from model
@@ -369,7 +369,8 @@ final class StripeAdapter extends Injectable implements Processor
      * @see \PhalconRest\Libraries\Payments\Processor::deleteCustomer()
      */
     public function deleteCustomer($externalId)
-    {}
+    {
+    }
 
     /**
      * deal with incoming stripe errors in one function
@@ -380,7 +381,7 @@ final class StripeAdapter extends Injectable implements Processor
      */
     private function handleStripeError($e)
     {
-        
+
         // Since it's a decline, \Stripe\Error\Card will be caught
         $body = $e->getJsonBody();
         if ($body == null) {
@@ -393,7 +394,7 @@ final class StripeAdapter extends Injectable implements Processor
             $devMessage .= 'Param: ' . $err['param'] . "\n";
             $devMessage .= 'Message: ' . $err['message'] . "\n";
         }
-        
+
         // treat as validation error
         if ($err['type'] == 'card_error') {
             throw new ValidationException("Error: " . $err['message'], [
@@ -403,7 +404,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'field' => $err['message']
             ]);
         } else {
-            
+
             throw new HTTPException("Could not save Payment Information for account", 404, array(
                 'code' => 123123923847,
                 'dev' => $devMessage

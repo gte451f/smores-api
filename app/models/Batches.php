@@ -36,7 +36,7 @@ class Batches extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $min_amount;
-    
+
     /**
      * @var string
      */
@@ -52,20 +52,20 @@ class Batches extends \PhalconRest\API\BaseModel
         // set these since plural is slightly non-standard
         $this->pluralName = 'Batches';
         $this->singularName = 'Batch';
-        
+
         $this->pluralTableName = 'batches';
         $this->singularTableName = 'batch';
-        
+
         parent::initialize();
-        
+
         $this->belongsTo("created_by_id", "PhalconRest\\Models\\Users", "id", array(
             'alias' => 'Users'
         ));
-        
+
         $this->hasOne('id', 'PhalconRest\Models\PaymentBatches', 'batch_id', array(
             'alias' => 'PaymentBatches'
         ));
-        
+
         $this->hasOne('id', 'PhalconRest\Models\StatementBatches', 'batch_id', array(
             'alias' => 'StatementBatches'
         ));
@@ -74,13 +74,13 @@ class Batches extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d H:i:s');
-        
+
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
         $this->created_by_id = $currentUser->id;
-        
-        if (! isset($this->status)) {
+
+        if (!isset($this->status)) {
             $this->status = 'New';
         }
     }
@@ -99,11 +99,11 @@ class Batches extends \PhalconRest\API\BaseModel
                 "Flat"
             ]
         )));
-        
+
         $this->validate(new NumericalityValidator(array(
             "field" => 'min_amount'
         )));
-        
+
         $this->validate(new InclusionIn(array(
             "field" => 'status',
             'message' => 'Status must be one of the following:',
@@ -113,7 +113,7 @@ class Batches extends \PhalconRest\API\BaseModel
                 "Complete"
             ]
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 }

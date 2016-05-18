@@ -17,7 +17,7 @@ class Util extends Injectable
     /**
      * init
      *
-     * @param unknown $key            
+     * @param unknown $key
      */
     function __construct()
     {
@@ -31,7 +31,7 @@ class Util extends Injectable
      * supports:
      * attendees, accounts, owners, registrations
      *
-     * @param string $view            
+     * @param string $view
      */
     public static function rebuildView($view)
     {
@@ -40,12 +40,12 @@ class Util extends Injectable
                 $singular = 'registration';
                 $foreignKey = 'registration_id';
                 break;
-            
+
             case 'accounts':
                 $singular = 'account';
                 $foreignKey = 'account_id';
                 break;
-            
+
             case 'owners':
                 $singular = 'owner';
                 $foreignKey = 'user_id';
@@ -62,7 +62,7 @@ class Util extends Injectable
                 ));
                 break;
         }
-        
+
         // gather a list of fields for the given table
         $fieldString = '';
         $fieldList = [];
@@ -73,7 +73,7 @@ class Util extends Injectable
         if (count($fieldList) > 0) {
             $fieldString = ',' . implode(", ", $fieldList);
         }
-        
+
         // default view txt
         $sql = "CREATE OR REPLACE VIEW `custom_" . $singular . "_fields` AS
                 ( SELECT 
@@ -84,11 +84,11 @@ class Util extends Injectable
                     JOIN
                     `fields` AS f ON f.id = thf.field_id
                     GROUP BY thf.$foreignKey );";
-        
+
         $di = \Phalcon\DI::getDefault();
         $db = $di->get('db');
         $result = $db->query($sql);
-        
+
         // now wipe cache so future request to api will pull latest fields
         $file = new FileUtil();
         $file->clearCache();
@@ -98,31 +98,31 @@ class Util extends Injectable
      * for a given list of fields (with data) and the table they are related to
      * save each individual field into the correct *_has_fields table
      *
-     * @param object $object            
-     * @param string $table            
+     * @param object $object
+     * @param string $table
      * @param int $id
      *            the pkid of the parent record
      */
     function saveFields($object, $table, $id)
     {
         $customFields = \PhalconRest\Models\Fields::find("table = '$table'");
-        
+
         $metaValues = $this->detectModel($table);
         $tableModel = $metaValues['model'];
         $foreignKey = $metaValues['key'];
-        
+
         foreach ($customFields as $customField) {
             // see if any data is present for each field
             $customFieldName = $customField->name;
             if (isset($object->$customFieldName)) {
                 $newField = $tableModel::findFirst("field_id=$customField->id AND $foreignKey=$id");
-                if (! $newField) {
+                if (!$newField) {
                     $newField = new $tableModel();
                     $newField->field_id = $customField->id;
                     $newField->$foreignKey = $id;
                 }
                 $newField->value = $object->$customFieldName;
-                
+
                 // persist to database
                 if ($newField->save() == false) {
                     throw new ValidationException("Could not save custom value", array(
@@ -137,7 +137,7 @@ class Util extends Injectable
     /**
      * for a given table, return a string pointing to the correct *HadFields
      *
-     * @param unknown $table            
+     * @param unknown $table
      * @throws HTTPException
      */
     private function detectModel($table)
@@ -148,22 +148,22 @@ class Util extends Injectable
                 $tableModel = "\\PhalconRest\\Models\\AttendeeHasFields";
                 $foreignKey = 'user_id';
                 break;
-            
+
             case 'registrations':
                 $tableModel = "\\PhalconRest\\Models\\RegistrationHasFields";
                 $foreignKey = 'registration_id';
                 break;
-            
+
             case 'accounts':
                 $tableModel = "\\PhalconRest\\Models\\AccountHasFields";
                 $foreignKey = 'account_id';
                 break;
-            
+
             case 'owners':
                 $tableModel = "\\PhalconRest\\Models\\OwnerHasFields";
                 $foreignKey = 'user_id';
                 break;
-            
+
             default:
                 throw new HTTPException("Unknown table supplied", 400, array(
                     'dev' => "Supplied table was: $table",
@@ -171,7 +171,7 @@ class Util extends Injectable
                 ));
                 break;
         }
-        
+
         return [
             'model' => $tableModel,
             'key' => $foreignKey

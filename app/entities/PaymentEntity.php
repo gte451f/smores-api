@@ -14,20 +14,20 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
      *
      * @see \PhalconRest\API\Entity::beforeSave()
      */
-    function beforeSave($object, $id=null)
+    function beforeSave($object, $id = null)
     {
         if ($object->mode == 'Credit') {
             $processor = $this->getDI()->get('paymentProcessor');
-            
+
             if ($object->card_id > 0) {
                 $card = \PhalconRest\Models\Cards::findFirst($object->card_id);
                 $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
-                if (! $card->external_id or $card->external_id == null) {
+                if (!$card->external_id or $card->external_id == null) {
                     // error, need a valid external_id in order to process the credit card
                     // consider adding the card on the fly?
                     throw new \Exception('Selected card does not have enough information to process.');
                 }
-                
+
                 $object->external_id = $processor->chargeCard([
                     'card_id' => $card->external_id,
                     'amount' => $object->amount,
@@ -35,14 +35,14 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
                 ]);
             } else {
                 // must be a new card to charge
-                $object->external_id = $processor->chargeCard((array) $object);
+                $object->external_id = $processor->chargeCard((array)$object);
             }
         }
-        
+
         if ($object->mode == 'Refund' and isset($id)) {
             // see if the save is going FROM card to refund and apply refund logic
             $payment = \PhalconRest\Models\Payments::findFirst($id);
-            
+
             if ($payment->mode == 'Credit') {
                 $processor = $this->getDI()->get('paymentProcessor');
                 $refund_id = $processor->refundCharge([
@@ -52,7 +52,7 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
                 $object->refunded_on = date('Y-m-d');
             }
         }
-        
+
         return $object;
     }
 
@@ -70,7 +70,7 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
         if ($model->mode == 'Refund') {
             throw new \Exception('Blocked attempt to delete credit card charge that was refunded');
         }
-        
+
         // prevent delete of non-refunded credit card payment
         if ($model->mode == 'Credit' and $model->external_id != NULL) {
             throw new \Exception('Blocked attempt to delete payment with valid charge');
@@ -90,7 +90,7 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
         // extend me in child class
         if ($model->check_id > 0) {
             $check = \PhalconRest\Models\Checks::findFirst($model->check_id);
-            if (! $check->delete()) {
+            if (!$check->delete()) {
                 throw new ValidationException("Internal error removing check record", array(
                     'code' => '29629674',
                     'dev' => 'Error while attempting to delete a check after the related payment was removed.'

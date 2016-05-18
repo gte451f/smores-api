@@ -98,15 +98,15 @@ class Payments extends \PhalconRest\API\BaseModel
         $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
             'alias' => 'Accounts'
         ));
-        
+
         $this->belongsTo("check_id", "PhalconRest\\Models\\Checks", "id", array(
             'alias' => 'Checks'
         ));
-        
+
         $this->belongsTo("card_id", "PhalconRest\\Models\\Cards", "id", array(
             'alias' => 'Cards'
         ));
-        
+
         $this->belongsTo('payment_batch_id', 'PhalconRest\Models\PaymentBatches', 'batch_id', array(
             'alias' => 'PaymenttBatches'
         ));
@@ -140,7 +140,7 @@ class Payments extends \PhalconRest\API\BaseModel
                 'Refund'
             ]
         )));
-        
+
         $this->validate(new InclusionIn(array(
             "field" => 'status',
             'message' => 'Payment Status must be a specific value from the list.',
@@ -150,19 +150,19 @@ class Payments extends \PhalconRest\API\BaseModel
                 "Refunded"
             ]
         )));
-        
+
         if ($this->amount < 1 or $this->amount > 5000) {
             $message = new Message("Payment amount must be between 1 and 5,000", "amount", "InvalidValue");
             $this->appendMessage($message);
             return false;
         }
-        
+
         if ($this->mode == 'check' and $this->check_id <= 0) {
             $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");
             $this->appendMessage($message);
             return false;
         }
-        
+
         return $this->validationHasFailed() != true;
     }
 
@@ -179,7 +179,7 @@ class Payments extends \PhalconRest\API\BaseModel
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType != 'Employee') {
             $blockColumns[] = 'external_id';
         }

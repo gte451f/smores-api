@@ -51,15 +51,15 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
         // set these since plural is slightly non-standard
         $this->pluralName = 'PaymentBatches';
         $this->singularName = 'PaymentBatch';
-        
+
         $this->pluralTableName = 'payment_batches';
         $this->singularTableName = 'payment_batch';
-        
+
         parent::initialize();
         $this->hasMany("batch_id", "PhalconRest\\Models\\Payments", "payment_batch_id", array(
             'alias' => 'Payments'
         ));
-        
+
         $this->hasOne("batch_id", "PhalconRest\\Models\\Batches", "id", array(
             'alias' => 'Batches'
         ));

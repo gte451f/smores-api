@@ -5,7 +5,7 @@ namespace PhalconRest\Controllers;
  * extend from account specific controller
  *
  * @author jjenkins
- *        
+ *
  */
 class AccountBillingSummaryController extends \PhalconRest\Libraries\API\SecureAccountController
 {
@@ -13,7 +13,7 @@ class AccountBillingSummaryController extends \PhalconRest\Libraries\API\SecureA
     /**
      * set names since plural is slightly different
      *
-     * @param string $parseQueryString            
+     * @param string $parseQueryString
      */
     public function __construct($parseQueryString = true)
     {

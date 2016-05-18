@@ -23,7 +23,7 @@ class AttendeeEntity extends \PhalconRest\Libraries\API\Entity
     {
         // extend me in child class
         $object->user_type = 'Attendee';
-        
+
         return $object;
     }
 
@@ -38,7 +38,7 @@ class AttendeeEntity extends \PhalconRest\Libraries\API\Entity
     {
         // extend me in child class
         $object->user_type = 'Attendee';
-        
+
         // process custom fields as part of general save
         // treat updates/adds the same
         $fieldService = new \PhalconRest\Libraries\CustomFields\Util();

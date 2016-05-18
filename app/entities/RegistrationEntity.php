@@ -9,7 +9,7 @@ use PhalconRest\API\Entity;
  * undocumented side affect is ability to filter by account_id through attendee table
  *
  * @author jjenkins
- *        
+ *
  */
 class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
 {
@@ -35,24 +35,24 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
      */
     public function afterSave($object, $id)
     {
-        
+
         // process custom fields as part of general save
         // treat updates/adds the same
         $fieldService = new \PhalconRest\Libraries\CustomFields\Util();
         $fieldService->saveFields($object, 'owners', $id);
-        
+
         // only apply system wide fees on insert
         if ($this->saveMode == 'update') {
             return;
         }
-        
+
         // pull system fees based around registraton
         $regFees = \PhalconRest\Models\Fees::find(array(
             "basis = 'Registration'"
         ));
-        
+
         $attendee = \PhalconRest\Models\Attendees::findFirst($object->attendee_id);
-        
+
         if ($attendee) {
             // create a charge fee for each one found
             foreach ($regFees as $fee) {
@@ -61,7 +61,7 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
                 $charge->name = $fee->name;
                 $charge->amount = $fee->amount;
                 $charge->account_id = $attendee->account_id;
-                
+
                 if ($charge->create() == false) {
                     throw new ValidationException("Internal error creating a registration", array(
                         'code' => '34534657',
@@ -117,7 +117,7 @@ class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
             ->getProfile();
         // add custom filter
         $query->where("Attendees.account_id = $currentUser->accountId");
-        
+
         return true;
     }
 }

@@ -52,7 +52,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
             'alias' => 'Owners'
         ));
     }
-    
+
     /**
      * validatoni owern data
      */
@@ -67,7 +67,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
                 'Other'
             )
         )));
-        
+
         $this->validate(new StringLengthValidator(array(
             "field" => 'number',
             'max' => 15,
@@ -75,7 +75,7 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
             'messageMaximum' => 'A phone number must be less than 15',
             'messageMinimum' => 'A phone number must be greater than 9'
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 
@@ -90,7 +90,6 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
             'phone_type' => 'phone_type',
             'primary' => 'primary',
             'number' => 'number'
-        )
-        ;
+        );
     }
 }

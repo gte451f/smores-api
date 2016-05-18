@@ -5,7 +5,7 @@ namespace PhalconRest\Controllers;
  * extend from account specific controller
  *
  * @author jjenkins
- *        
+ *
  */
 class PaymentController extends \PhalconRest\Libraries\API\SecureAccountController
 {
@@ -22,17 +22,17 @@ class PaymentController extends \PhalconRest\Libraries\API\SecureAccountControll
     {
         $request = $this->getDI()->get('request');
         $post = $request->getJson($this->getControllerName('singular'));
-        
+
         // maybe hand to the library first?
-        
+
         // then run the rest of a normal post action
-        
+
         // This record only must be created
         $id = $this->entity->save($post);
-        
+
         // now fetch the record so we can return it
         $search_result = $this->entity->findFirst($id);
-        
+
         if ($search_result == false) {
             // This is bad. Throw a 500. Responses should always be objects.
             throw new HTTPException("There was an error retreiving the newly created record.", 500, array(

@@ -57,11 +57,11 @@ class Requests extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        
+
         $this->belongsTo('registration_id', 'PhalconRest\Models\Registrations', 'id', array(
             'alias' => 'Registrations'
         ));
-        
+
         $this->belongsTo('event_id', 'PhalconRest\Models\Events', 'id', array(
             'alias' => 'Events'
         ));
@@ -84,13 +84,11 @@ class Requests extends \PhalconRest\API\BaseModel
      */
     public function loadBlockColumns()
     {
-        $blockColumns = []
-
-        ;
+        $blockColumns = [];
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType != 'Employee') {
             $blockColumns[] = 'attending';
         }

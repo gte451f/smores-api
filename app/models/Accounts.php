@@ -51,7 +51,7 @@ class Accounts extends \PhalconRest\API\BaseModel
      * @var int
      */
     public $active;
-    
+
     /**
      */
     public function initialize()
@@ -77,7 +77,7 @@ class Accounts extends \PhalconRest\API\BaseModel
         $this->hasMany("id", "PhalconRest\\Models\\Charges", "account_id", array(
             'alias' => 'Charges'
         ));
-        
+
         $this->hasOne('id', "PhalconRest\\Models\\CustomAccountFields", 'account_id', [
             'alias' => 'CustomAccountFields'
         ]);
@@ -89,7 +89,7 @@ class Accounts extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d');
-        
+
         // all accounts start as "Inactive" and require activation
         $this->active = 0;
     }
@@ -114,7 +114,7 @@ class Accounts extends \PhalconRest\API\BaseModel
             'messageMaximum' => 'Notes field is too long, please enter a value less than 500 characters in length',
             'messageMinimum' => 'This should never display'
         )));
-        
+
         return $this->validationHasFailed() != true;
     }
 
@@ -131,7 +131,7 @@ class Accounts extends \PhalconRest\API\BaseModel
         $currentUser = $this->getDI()
             ->get('auth')
             ->getProfile();
-        
+
         if ($currentUser->userType != 'Employee') {
             $blockColumns[] = 'external_id';
         }

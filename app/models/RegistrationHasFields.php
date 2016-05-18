@@ -41,7 +41,7 @@ class RegistrationHasFields extends \PhalconRest\API\BaseModel
         $this->hasOne("registration_id", "PhalconRest\\Models\\Registration", "id", array(
             'alias' => 'Registrations'
         ));
-        
+
         $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
             'alias' => 'Fields'
         ));
