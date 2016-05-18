@@ -32,7 +32,7 @@ $docker = [
     ],
     // enable security for controllers marked as secure?
     'security' => true,
-//    'security' => false,
+    //'security' => false,
 
     // if secuirty is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
@@ -47,4 +47,5 @@ $docker = [
     ]
 ];
 
-return $docker;
+// load defined security rules based on current environment
+return array_merge_recursive_replace($docker, require('security_rules/docker.php'));

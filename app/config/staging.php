@@ -35,4 +35,5 @@ $staging = [
     ]
 ];
 
-return $staging;
+// load defined security rules based on current environment
+return array_merge_recursive_replace($staging, require('security_rules/staging.php'));

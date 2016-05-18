@@ -34,7 +34,7 @@ $development = [
     'security' => true,
     // 'security' => false,
 
-    // if secuirty is false, which user id to impersonate?
+    // if security is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // owner access
     // 'securityUserId' => 595,
@@ -47,4 +47,6 @@ $development = [
     ]
 ];
 
-return $development;
+
+// load defined security rules based on current environment
+return array_merge_recursive_replace($development, require('security_rules/development.php'));

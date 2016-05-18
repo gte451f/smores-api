@@ -33,12 +33,12 @@ $production = [
     'fileStorage' => [
         'basePath' => '##fileDir##'
     ]
-]
-;
+];
 
 // Define APPNAME if this is production environment
 // - must be defined on each deployed PRODUCTION version
 // useful when the production code is deployed in multiple configurations ie. portal or admin
 defined('APPLICATION_NAME') || define('APPLICATION_NAME', 'admin');
 
-return $production;
+// load defined security rules based on current environment
+return array_merge_recursive_replace($production, require('security_rules/production.php'));
