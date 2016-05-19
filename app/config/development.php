@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 
 // Override production configs for development environment
+// this development environemnt is configured for docker usage
 // app/config/development.php
 
 $development = [
@@ -10,7 +11,7 @@ $development = [
         'cacheDir' => '/tmp/',
         // FQDN
         'publicUrl' => 'http://localhost:8080',
-        // probalby the same FQDN
+        // probably the same FQDN
         'corsOrigin' => 'https://localhost:8080',
         // should the api return additional meta data and enable additional server logging?
         'debugApp' => true,
@@ -24,7 +25,7 @@ $development = [
     // standard database configuration values
     'database' => [
         'adapter' => 'Mysql',
-        'host' => 'localhost',
+        'host' => 'db',
         'username' => 'api',
         'password' => 'api',
         'dbname' => 'smores',
@@ -32,9 +33,9 @@ $development = [
     ],
     // enable security for controllers marked as secure?
     'security' => true,
-    // 'security' => false,
+//    'security' => false,
 
-    // if security is false, which user id to impersonate?
+    // if secuirty is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // owner access
     // 'securityUserId' => 595,
@@ -43,10 +44,9 @@ $development = [
 
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [
-        'basePath' => '/tmp/'
+        'basePath' => '/file_storage/'
     ]
 ];
-
 
 // load defined security rules based on current environment
 return array_merge_recursive_replace($development, require('security_rules/development.php'));

@@ -26,6 +26,7 @@ class Util
      * check that a path is valid and writeable
      *
      * @param string $path
+     * @throws HTTPException
      * @return boolean
      */
     function checkPath($path)
@@ -60,6 +61,7 @@ class Util
      * checks that the last part of the path is writeable
      *
      * @param string $path
+     * @throws HTTPException
      * @return boolean
      */
     function createDirectoryTree($path)

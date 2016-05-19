@@ -7,6 +7,7 @@
 // used for logging sql commands
 use Phalcon\Logger;
 use Phalcon\Events\Manager as EventsManager;
+use Phalcon\Db\Profiler as DbProfiler;
 use Phalcon\Logger\Adapter\File as FileLogger;
 use Phalcon\Db\Adapter\Pdo\Mysql as Connection;
 use PhalconRest\Libraries\MessageBag as MessageBag;
@@ -78,19 +79,26 @@ $di->set('db', function () use ($config, $di) {
     if ($config['application']['debugApp']) {
         $registry = $di->get('registry');
         $registry->dbCount = 0;
+        $registry->dbTimer = 0;
 
         // config the event and log services
         $eventsManager = new EventsManager();
+        $profiler = new DbProfiler();
+
         $fileName = date("d_m_y");
         $logger = new FileLogger($config['application']['loggingDir'] . "$fileName-db-query.log");
 
-        $eventsManager->attach('db', function ($event, $connection) use ($logger, $registry) {
+        $eventsManager->attach('db', function ($event, $connection) use ($logger, $registry, $profiler) {
             if ($event->getType() == 'beforeQuery') {
                 $count = $registry->dbCount;
                 $count++;
                 $registry->dbCount = $count;
 
                 $logger->log($connection->getSQLStatement(), Logger::INFO);
+
+                // Start a profile with the active connection
+                $profiler->startProfile($connection->getSQLStatement());
+
                 $vars = $connection->getSQLVariables();
                 if (count($vars) > 0) {
                     $variableList = 'Variables: ';
@@ -99,6 +107,15 @@ $di->set('db', function () use ($config, $di) {
                     }
                     $logger->log($variableList, Logger::INFO);
                 }
+            }
+
+            if ($event->getType() == 'afterQuery') {
+                // Stop the active profile
+                $profiler->stopProfile();
+
+
+                $profile = $profiler->getLastProfile();
+                $registry->dbTimer = $registry->dbTimer + round($profile->getTotalElapsedSeconds() * 1000, 2);
             }
         });
     }

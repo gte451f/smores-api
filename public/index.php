@@ -1,6 +1,6 @@
 <?php
 // let apache tell us what environment we are in
-defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'docker'));
+defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
 // Define path to application directory
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', str_replace('/public', '/app/', __DIR__));
@@ -16,11 +16,6 @@ use \PhalconRest\Util\DatabaseException;
 ob_start();
 
 try {
-    /**
-     * read in config values
-     */
-    require_once API_PATH . 'bin/config.php';
-
     /**
      * bootstrap Phalcon Auto Loader with composer libraries as well
      * a bit of a hack, but it provides an entry point down to the core API files

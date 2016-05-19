@@ -12,7 +12,6 @@ return call_user_func(function () {
 
     foreach ($collectionFiles as $collectionFile) {
         $pathinfo = pathinfo($collectionFile);
-
         // Only include php files
         if ($pathinfo['extension'] === 'php') {
 
