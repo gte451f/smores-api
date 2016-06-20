@@ -42,7 +42,9 @@ $security_rules = [
             ADMIN_USER => [
                 "account_addrs",
                 "accounts",
+                "account_statements",
                 "attendees",
+                "batches",
                 "cabins",
                 "cards",
                 "charges",

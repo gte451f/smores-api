@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Libraries\Authentication;
 
-use PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 
 /**
  * extend to provide application specific data to the profile object
@@ -132,5 +132,21 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
             // last login
         }
         return $user->save();
+    }
+
+    /**
+     * take an array of profile data and return something the API can use
+     * @param array $profile
+     * @return \PhalconRest\Result\Result
+     */
+    public function getResult($profile = [])
+    {
+        $profile['id'] = $this->id;
+        $profile['email'] = $this->email;
+        $profile['last_name'] = $this->lastName;
+        $profile['first_name'] = $this->firstName;
+        $profile['account_id'] = $this->accountId;
+        $profile['user_type'] = $this->userType;
+        return parent::getResult($profile);
     }
 }

@@ -1,10 +1,12 @@
 <?php
 error_reporting(E_ALL);
 
-// Override production configs for development environment
-// this development environemnt is configured for docker usage
-// app/config/development.php
+// define security roles
+define("PORTAL_USER", "Portal - User");
+define("ADMIN_USER", "System - Administrator");
 
+// Override production configs for development environment
+// this development environment is configured for docker usage
 $development = [
     'application' => [
         // where to store cache related files
@@ -32,10 +34,9 @@ $development = [
         'charset' => 'utf8'
     ],
     // enable security for controllers marked as secure?
-    'security' => true,
-//    'security' => false,
+    'security' => false,
 
-    // if secuirty is false, which user id to impersonate?
+    // if security is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // owner access
     // 'securityUserId' => 595,
@@ -45,6 +46,11 @@ $development = [
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [
         'basePath' => '/file_storage/'
+    ],
+    // a series of experimental features
+    'feature_flags' => [
+        'fastBelongsTo' => true,
+        'fastHasMany' => true,
     ]
 ];
 

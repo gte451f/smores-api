@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Libraries\File;
 
-use PhalconRest\Util\HTTPException;
+use PhalconRest\Exception\HTTPException;
 
 /**
  * helper functions needed when dealing with a file

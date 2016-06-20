@@ -2,9 +2,9 @@
 namespace PhalconRest\Libraries\Payments;
 
 use Phalcon\DI\Injectable;
-use \PhalconRest\Util\HTTPException;
-use PhalconRest\Util\ValidationException;
-use \PhalconRest\Models\PhalconRest\Models;
+use \PhalconRest\Exception\HTTPException;
+use \PhalconRest\Exception\ValidationException;
+use \PhalconRest\Models;
 
 /**
  *

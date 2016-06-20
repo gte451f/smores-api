@@ -1,8 +1,8 @@
 <?php
 namespace PhalconRest\Controllers;
 
-use PhalconRest\Util\HTTPException;
-use PhalconRest\Util\ValidationException;
+use \PhalconRest\Exception\HTTPException;
+use \PhalconRest\Exception\ValidationException;
 
 /**
  */
@@ -36,8 +36,8 @@ class AuthController extends \Phalcon\DI\Injectable
         ));
         $password = $this->request->getPost('password');
 
-        // $userName = 'foo';
-        // $password = '123456789';
+        $email = 'demo@smores.camp';
+        $password = 'password1234';
 
         if (strlen($password) < 8 or strlen($email) < 3) {
             throw new ValidationException("Bad Credentials Supplied", [
@@ -58,12 +58,12 @@ class AuthController extends \Phalcon\DI\Injectable
                 'code' => '304958034850'
             ));
         } else {
-            $profile = $this->auth->getProfile();
+            $profile = $this->auth->getProfile()->getResult();
         }
 
         // return the basic data needed to authenticate future requests
         // in our case, a token and expiration date
-        return (array)$profile;
+        return $profile;
     }
 
     /**

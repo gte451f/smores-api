@@ -1,7 +1,8 @@
 <?php
 namespace PhalconRest\Entities;
 
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
+use \PhalconRest\Exception\ValidationException;
 
 class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
 {
@@ -119,7 +120,7 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
 
                 $processedRunningTotal = $processedRunningTotal + $inputs->amount;
                 $processCount++;
-            } catch (\PhalconRest\Util\ValidationException $e) {
+            } catch (ValidationException $e) {
                 $this->batch_log[] = "Attempt to save payment for account #$accountId failed:";
                 foreach ($e->errorStore->validationList as $message) {
                     $this->batch_log[] = '--' . $message->getMessage();

@@ -2,6 +2,7 @@
 namespace PhalconRest\Libraries\Security;
 
 use Phalcon\DI\Injectable;
+use \PhalconRest\Exception\HTTPException;
 
 /**
  * This is a class which represents a user from the standpoint of group membership and matter assignments
@@ -29,7 +30,7 @@ final class SecureUser extends Injectable
         switch ($user->userType) {
             case 'Attendee':
                 // freak out!
-                throw new \PhalconRest\Util\HTTPException('Attempted hack by user of type Attendee!', 404, array(
+                throw new HTTPException('Attempted hack by user of type Attendee!', 404, array(
                     'dev' => "User: $user->id  | Name: $user->firstName $user->lastName",
                     'code' => '7984685186161'
                 ));
@@ -49,7 +50,7 @@ final class SecureUser extends Injectable
 
             default:
                 // freak out!
-                throw new \PhalconRest\Util\HTTPException('Attempted hack by user of unknown user type!', 404, array(
+                throw new HTTPException('Attempted hack by user of unknown user type!', 404, array(
                     'dev' => "User: $user->id  | Name: $user->firstName $user->lastName  | Type: $user->userType",
                     'code' => '7984685186161'
                 ));

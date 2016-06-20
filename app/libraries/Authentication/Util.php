@@ -2,8 +2,8 @@
 namespace PhalconRest\Libraries\Authentication;
 
 use Phalcon\DI\Injectable;
-use PhalconRest\Util\HTTPException;
-use PhalconRest\Util\ValidationException;
+use \PhalconRest\Exception\HTTPException;
+use \PhalconRest\Exception\ValidationException;
 
 /**
  * A few helpful tools to work with a user account
@@ -11,7 +11,7 @@ use PhalconRest\Util\ValidationException;
  * @author jjenkins
  *
  */
-class Util extends \Phalcon\DI\Injectable
+class Util extends Injectable
 {
 
     public static function reset($password, $code)

@@ -1,9 +1,10 @@
 <?php
 namespace PhalconRest\Entities;
 
-use \PhalconRest\Util\ValidationException;
+use \PhalconRest\Libraries\API\Entity;
+use \PhalconRest\Exception\ValidationException;
 
-class PaymentEntity extends \PhalconRest\Libraries\API\Entity
+class PaymentEntity extends Entity
 {
 
     /**

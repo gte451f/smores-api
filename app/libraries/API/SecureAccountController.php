@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Libraries\API;
 
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 
 /**
  * A specific secure controller for "account" oriented endpoints

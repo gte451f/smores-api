@@ -9,8 +9,8 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', str_replace('/public',
 defined('COMPOSER_PATH') || define('COMPOSER_PATH', str_replace('/public', '/vendor/', __DIR__));
 defined('API_PATH') || define('API_PATH', COMPOSER_PATH . 'gte451f/phalcon-json-api-package/src/');
 
-use \PhalconRest\Util\HTTPException;
-use \PhalconRest\Util\DatabaseException;
+use \PhalconRest\Exception\HTTPException;
+use \PhalconRest\Exception\DatabaseException;
 
 // use output buffer to manage what is actually sent to the client...or clean it out before it's sent
 ob_start();

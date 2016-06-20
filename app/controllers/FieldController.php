@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Controllers;
 
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 use \PhalconRest\Libraries\CustomFields\Util;
 
 /**

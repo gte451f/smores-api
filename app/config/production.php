@@ -1,6 +1,9 @@
 <?php
-// Ensure production specific settings
-// app/config/production.php
+// define security roles
+define("PORTAL_USER", "Portal - User");
+define("ADMIN_USER", "System - Administrator");
+
+// override default configs with production
 $production = [
     'application' => [
         // where to store cache

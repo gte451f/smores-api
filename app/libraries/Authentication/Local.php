@@ -3,7 +3,7 @@ namespace PhalconRest\Libraries\Authentication;
 
 use Phalcon\DI\Injectable;
 use \PhalconRest\Libraries\Authentication\UserProfile;
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 use \PhalconRest\Models\Users;
 use \PhalconRest\Models\PhalconRest\Models;
 
@@ -23,8 +23,6 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
      * @var string
      */
     public $errorMessage;
-
-    private $params;
 
     private $di;
 

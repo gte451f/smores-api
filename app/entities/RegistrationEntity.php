@@ -1,8 +1,8 @@
 <?php
 namespace PhalconRest\Entities;
 
-use \PhalconRest\Util\ValidationException;
-use PhalconRest\API\Entity;
+use \PhalconRest\Exception\ValidationException;
+use \PhalconRest\Libraries\API\Entity;
 
 /**
  * unusual in that is always joins in the attendee record
@@ -11,7 +11,7 @@ use PhalconRest\API\Entity;
  * @author jjenkins
  *
  */
-class RegistrationEntity extends \PhalconRest\Libraries\API\Entity
+class RegistrationEntity extends Entity
 {
 
     /**

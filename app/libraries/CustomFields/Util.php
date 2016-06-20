@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Libraries\CustomFields;
 
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 use Phalcon\DI\Injectable;
 use \PhalconRest\Models\PhalconRest\Models;
 use \PhalconRest\Libraries\File\Util as FileUtil;

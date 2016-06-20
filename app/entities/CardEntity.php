@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Entities;
 
-use \PhalconRest\Util\ValidationException;
+use \PhalconRest\Exception\ValidationException;
 use Inacho\CreditCard;
 
 class CardEntity extends \PhalconRest\Libraries\API\Entity

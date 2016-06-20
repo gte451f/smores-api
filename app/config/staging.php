@@ -1,8 +1,11 @@
 <?php
 error_reporting(E_ALL);
 
-// Override production configs for staging environment
-// app/config/staging.php
+// define security roles
+define("PORTAL_USER", "Portal - User");
+define("ADMIN_USER", "System - Administrator");
+
+// Override default configs for staging environment
 $staging = [
     'application' => [
         // where to store cache related files
