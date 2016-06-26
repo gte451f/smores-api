@@ -36,8 +36,8 @@ class AuthController extends \Phalcon\DI\Injectable
         ));
         $password = $this->request->getPost('password');
 
-        $email = 'demo@smores.camp';
-        $password = 'password1234';
+//        $email = 'demo@smores.camp';
+//        $password = 'password1234';
 
         if (strlen($password) < 8 or strlen($email) < 3) {
             throw new ValidationException("Bad Credentials Supplied", [
@@ -163,10 +163,11 @@ class AuthController extends \Phalcon\DI\Injectable
                         // roll back owner
                         $owner->delete();
                     } else {
-                        // success!
-                        return array(
-                            'status' => 'Success'
-                        );
+
+                        $result = $this->getDI()->get('result');
+                        $result->addMeta('result', 'success');
+                        return $result;
+
                     }
                 }
             }
@@ -174,27 +175,67 @@ class AuthController extends \Phalcon\DI\Injectable
     }
 
     /**
-     * wipe the token
+     * wipe the token and retun an empty response
      *
-     * @return multitype:
+     * @return boolean
+     * @throws HTTPException
      */
     public function logout()
     {
         // TODO wipe session data here
-        $token = $this->request->getHeader("X_AUTHORIZATION");
-        $token = str_ireplace("Token: ", '', $token);
-        $token = trim($token);
+        // $token = $this->request->getHeader("X_AUTHORIZATION");
+        // $token = str_ireplace("Token: ", '', $token);
+
+
+        $headerToken = $this->request->getHeader("X_AUTHORIZATION");
+        $queryParamToken = $this->getDI()
+            ->get('request')
+            ->getQuery("token");
+
+        $postedParamToken = $this->getDI()
+            ->get('request')
+            ->getPost("token");
+
+        // try to read in from header first, otherwise attempt to read in from query param
+        if ($headerToken !== "") {
+            $token = $headerToken;
+        } elseif (!is_null($queryParamToken)) {
+            $token = $queryParamToken;
+        } elseif (!is_null($postedParamToken)) {
+            $token = $postedParamToken;
+            unset($_POST["token"]);
+        } else {
+            $token = "";
+        }
+
+        $token = trim(str_ireplace("Token: ", '', $token));
+        if (strlen($token) < 30) {
+            throw new HTTPException("Bad token supplied", 401, array(
+                'dev' => 'Supplied Token: ' . $token,
+                'code' => '0273497957'
+            ));
+        }
 
         $this->auth = $this->getDI()->get('auth');
         // $token = "LWHb27fjRW80ccymhb1mfOeSmaefl7H6vcXaTUw52cLJHc0MeaE5A01bM6bfWagd";
         $result = $this->auth->logUserOut($token);
-        return array();
+
+        // return an empty result
+        if ($result) {
+            return $this->getDI()->get('result');
+        } else {
+            // logout logic failed, throw an error
+            throw new HTTPException("Attempt to logout failed!", 401, array(
+                'code' => '98146186818941318618664'
+            ));
+        }
     }
 
     /**
      * temp function to see the stored session
      *
-     * @return multitype:unknown
+     * @return array
+     * @throws HTTPException
      */
     public function session_check()
     {
@@ -229,6 +270,7 @@ class AuthController extends \Phalcon\DI\Injectable
      * ....switch the account from inactive to active
      *
      * @throws HTTPException
+     * @throws ValidationException
      * @return array
      */
     public function activate()

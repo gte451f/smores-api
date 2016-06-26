@@ -31,17 +31,17 @@ $deniedEndpoints = [
 ];
 
 foreach ($allowedEndpoints as $endpoint) {
-    $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['token']}");
+    $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['attributes']['token']}");
     $I->sendGet("$endpoint?limit=2");
     $I->seeResponseIsJson();
     $I->seeResponseCodeIs(200);
 }
 
 foreach ($deniedEndpoints as $endpoint) {
-    $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['token']}");
+    $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['attributes']['token']}");
     $I->sendGet("$endpoint?limit=2");
     $I->seeResponseIsJson();
     $I->seeResponseCodeIs(404);
 }
 
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);

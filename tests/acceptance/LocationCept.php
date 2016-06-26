@@ -6,7 +6,7 @@ $I->wantTo('test basic Location operations');
 $user = $I->login('Employee');
 
 // load a subsect of locations
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->wantTo('load a group of locations');
 $I->sendGet('/locations?page=1&per_page=5');
 $I->seeResponseCodeIs(200);
@@ -14,4 +14,4 @@ $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$.locations[*].name');
 
 // attempt to logout as Owner
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);

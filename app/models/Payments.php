@@ -173,7 +173,7 @@ class Payments extends \PhalconRest\API\BaseModel
      *
      * @see \PhalconRest\API\BaseModel::loadBlockColumns()
      */
-    public function loadBlockColumns()
+    public function loadBlockColumns($withParents = true)
     {
         $blockColumns = [];
         $currentUser = $this->getDI()

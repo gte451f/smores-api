@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('Test AUTH related functions and exercise adding/removeing members of the account');
+$I->wantTo('Test AUTH related functions and exercise adding/removing members of the account');
 
 // in case you need it
 // application/x-www-form-urlencoded
@@ -28,17 +28,17 @@ $newAccount = [
 $user = $I->login('Employee');
 
 // create a brand new account
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendPOST('auth/create', $newAccount);
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
 
 // now load the owner and pull the account in as well
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['token']}");
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user['attributes']['token']}");
 $I->sendGet("owners?email=$email");
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(200);
-$newAccountID = $I->grabDataFromResponseByJsonPath('$.owners[0].account_id');
+$newAccountID = $I->grabDataFromResponseByJsonPath("$.data[0].attributes.['account-id']");
 
 /**
  * add a 2nd owner to this account
@@ -56,16 +56,30 @@ $owner = [
     'account_id' => $newAccountID[0]
 ];
 
+
+//{"data":{"attributes":{
+//    "primary-contact":null,
+//    "relationship":"Mother",
+//    "email":"foo@smith.com",
+//    "last-name":"Last",
+//    "first-name":"First",
+//    "user-name":null,
+//    "user-type":"Owner",
+//    "gender":"Female",
+//    "foobar":null},
+//    "relationships":{"account":{"data":{"type":"accounts","id":"95"}}},"type":"owners"}
+//}
+
 $I->sendPOST('owners', json_encode([
     'owner' => $owner
 ]));
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
-$newOwnerID = $I->grabDataFromResponseByJsonPath('$.owner[0].id');
+$newOwnerID = $I->grabDataFromResponseByJsonPath('$.data[0].id');
 
 // attempt to edit newly added firm record
 $owner['last_name'] = 'A New Last Name';
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendPUT("owners/$newOwnerID[0]", json_encode([
     'owner' => $owner
 ]));
@@ -98,11 +112,11 @@ $I->sendPOST('attendees', json_encode([
 ]));
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
-$newAttendeeID = $I->grabDataFromResponseByJsonPath('$.attendee[0].id');
+$newAttendeeID = $I->grabDataFromResponseByJsonPath('$.data[0].id');
 
 // attempt to edit newly added firm record
 $attendee['gender'] = 'Female';
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendPUT("attendees/$newAttendeeID[0]", json_encode([
     'attendee' => $attendee
 ]));
@@ -121,4 +135,4 @@ $I->sendDELETE('accounts/' . $newAccountID[0]);
 $I->seeResponseCodeIs(204);
 
 // attempt to logout as Owner
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);

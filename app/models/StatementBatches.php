@@ -44,7 +44,7 @@ class StatementBatches extends \PhalconRest\API\BaseModel
      *
      * @see \PhalconRest\API\BaseModel::loadBlockColumns()
      */
-    public function loadBlockColumns()
+    public function loadBlockColumns($withParents = true)
     {
         $this->setBlockColumns([
             'batch_id'

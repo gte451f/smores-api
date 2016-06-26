@@ -22,7 +22,7 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Define custom actions here
      */
-    
+
     /**
      * login action to generate a token for a user
      * choose a user "TYPE" and this action will login as that user
@@ -30,6 +30,8 @@ class AcceptanceTester extends \Codeception\Actor
      *
      * @param string $userType
      *            Employee|Owner
+     *
+     * @return array
      */
     public function login($userType)
     {
@@ -38,40 +40,41 @@ class AcceptanceTester extends \Codeception\Actor
                 $password = 'password1234';
                 $username = 'demo@smores.camp';
                 break;
-            
+
             case 'Employee':
                 $password = 'password1234';
                 $username = 'admin@smores.camp';
                 break;
-            
+
             default:
                 // uh oh, unknown type!
                 return false;
                 break;
         }
-        
+
         $I = $this;
-        
+
         $I->sendPOST('auth/login', [
             'email' => $username,
             'password' => $password
         ]);
-        
+
         $I->seeResponseCodeIs(201);
         $I->seeResponseIsJson();
-        $authData = $I->grabDataFromResponseByJsonPath('$');
+        $authData = $I->grabDataFromResponseByJsonPath('$.data');
+        print_r ($authData);
         return $authData[0];
     }
 
     /**
      * for a given token, log the user out
      *
-     * @param string $token            
+     * @param string $token
      */
     public function logout($token)
     {
         $I = $this;
-        
+
         $I->haveHttpHeader('X_AUTHORIZATION', "Token: $token");
         $I->sendGet("auth/logout");
         $I->seeResponseCodeIs(200);

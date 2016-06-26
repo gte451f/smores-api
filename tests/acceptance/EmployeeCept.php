@@ -17,7 +17,7 @@ $employee = '{"employee":
 $user = $I->login('Employee');
 
 // disable for now
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendPOST('employees', $employee);
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
@@ -25,16 +25,16 @@ $I->seeResponseCodeIs(201);
 $newEmployeeID = $I->grabDataFromResponseByJsonPath('$.employee[0].id');
 
 // load a particular employee
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendGet("/employees/{$newEmployeeID[0]}");
 $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
 $I->seeResponseJsonMatchesJsonPath('$.employee[0].id');
 
 // now remove an employee
-$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendDELETE('employees/' . $newEmployeeID[0]);
 $I->seeResponseCodeIs(204);
 
 // attempt to logout as Owner
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);

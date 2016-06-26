@@ -42,11 +42,11 @@ $endpoints = array(
 $user = $I->login('Employee');
 
 foreach ($endpoints as $endpoint) {
-    $I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['token']);
+    $I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
     $I->sendGet("$endpoint?limit=2");
     $I->seeResponseCodeIs(200);
     $I->seeResponseIsJson();
 }
 
 // attempt to logout as Owner
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);

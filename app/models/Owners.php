@@ -51,16 +51,16 @@ class Owners extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
+        $this->hasOne("user_id", 'PhalconRest\Models\Users', "id", array(
             'alias' => 'Users'
         ));
-        $this->belongsTo('account_id', 'PhalconRest\\Models\\Accounts', 'id', array(
+        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
             'alias' => 'Accounts'
         ));
-        $this->hasMany("user_id", "PhalconRest\\Models\\OwnerNumbers", "owner_id", array(
+        $this->hasMany("user_id", 'PhalconRest\Models\OwnerNumbers', "owner_id", array(
             'alias' => 'OwnerNumbers'
         ));
-        $this->hasOne('user_id', "PhalconRest\\Models\\CustomOwnerFields", 'user_id', [
+        $this->hasOne('user_id', 'PhalconRest\Models\CustomOwnerFields', 'user_id', [
             'alias' => 'CustomOwnerFields'
         ]);
     }

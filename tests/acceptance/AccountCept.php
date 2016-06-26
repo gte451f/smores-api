@@ -6,4 +6,4 @@ $I->wantTo('test basic Account operations');
 $user = $I->login('Owner');
 
 // attempt to logout as Owner
-$I->logout($user['token']);
+$I->logout($user['attributes']['token']);
