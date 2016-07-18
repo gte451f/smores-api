@@ -223,9 +223,9 @@ class Users extends \PhalconRest\API\BaseModel
             ->getProfile();
 
         if ($currentUser->userType != 'Employee') {
-            $blockColumns[] = 'dob';
+            // $blockColumns[] = 'dob';
+            // $blockColumns[] = 'email';
             $blockColumns[] = 'active';
-            $blockColumns[] = 'email';
         }
         $this->setBlockColumns($blockColumns, true);
     }
