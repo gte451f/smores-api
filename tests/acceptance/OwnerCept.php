@@ -27,7 +27,7 @@ $newRecord = [
 // load specific account
 $accountId = $user->attributes->{'account-id'};
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
-$I->sendGet("owners/$accountId?include=all");
+$I->sendGet("owners/1?include=all");
 $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
 
