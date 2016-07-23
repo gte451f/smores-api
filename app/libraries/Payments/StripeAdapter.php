@@ -117,7 +117,7 @@ final class StripeAdapter extends Injectable implements Processor
                 'cvc' => $data['cvc'],
                 'exp_year' => $data['expiration_year'],
                 'exp_month' => $data['expiration_month'],
-                'name' => $data['name'],
+                'name' => $data['name_on_card'],
                 'address_line1' => $data['address']
             ];
         }
@@ -173,7 +173,7 @@ final class StripeAdapter extends Injectable implements Processor
             ]);
         }
 
-        if (strlen($card->expiration_month) <= 1) {
+        if (strlen($card->expiration_month) <= 0) {
             throw new ValidationException("Could not save card information", array(
                 'code' => 216894194189464684
             ), [
@@ -200,7 +200,7 @@ final class StripeAdapter extends Injectable implements Processor
         }
 
         // fail if the card record already contains an external id
-        if ($card->external_id) {
+        if (isset($card->external_id) and $card->external_id) {
             throw new HTTPException("Could not save card information", 404, array(
                 'code' => 216894194189464684,
                 'dev' => 'This card record already has an external_id'
@@ -217,10 +217,17 @@ final class StripeAdapter extends Injectable implements Processor
                 'name' => $card->name_on_card,
                 'exp_month' => $card->expiration_month,
                 'exp_year' => $card->expiration_year,
-                'object' => 'card',
-                'address_line1' => $card->address,
-                'address_zip' => $card->zip
+                'object' => 'card'
             ];
+
+            //if address data is available, include it
+            if (isset($card->address)) {
+                $cardData['address_line1'] = $card->address;
+            }
+            if (isset($card->zip)) {
+                $cardData['address_zip'] = $card->zip;
+            }
+
 
             try {
                 $result = $customer->sources->create(array(

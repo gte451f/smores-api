@@ -76,7 +76,10 @@ class Charges extends \PhalconRest\API\BaseModel
     }
 
     public function beforeValidationOnCreate()
-    {
-        $this->created_on = date('Y-m-d H:i:s');
+    {       
+        if (! isset($this->created_on)) {
+            $this->created_on = date('Y-m-d H:i:s');
+        }
+	return $this->validationHasFailed() != true;
     }
 }

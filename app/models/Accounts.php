@@ -88,8 +88,10 @@ class Accounts extends \PhalconRest\API\BaseModel
      */
     public function beforeValidationOnCreate()
     {
-        $this->created_on = date('Y-m-d');
-
+        if (! isset($this->created_on)) {
+            $this->created_on = date('Y-m-d');
+        }
+        
         // all accounts start as "Inactive" and require activation
         $this->active = 0;
     }
@@ -112,7 +114,8 @@ class Accounts extends \PhalconRest\API\BaseModel
             'max' => 500,
             'min' => 0,
             'messageMaximum' => 'Notes field is too long, please enter a value less than 500 characters in length',
-            'messageMinimum' => 'This should never display'
+            'messageMinimum' => 'This should never display',
+            'allowEmpty' => true
         )));
 
         return $this->validationHasFailed() != true;

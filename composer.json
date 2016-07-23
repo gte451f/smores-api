@@ -1,17 +1,27 @@
 {
-    "require": {
-    	"raveren/kint": "0.9",
-		"jsanc623/phpbenchtime": "dev-master",
-        "gte451f/phalcon-json-api-package": "dev-jsonapi",
-        "stripe/stripe-php": "3.*",
-        "inacho/php-credit-card-validator": "1.*"
-    },
-    "require-dev": {
-        "codeception/codeception": "*",
-        "flow/jsonpath": "dev-master"
-    },
-    "scripts": {
-        "post-install-cmd": "composer dumpautoload -o",
-        "post-update-cmd": "composer dumpautoload -o"
+  "require": {
+    "raveren/kint": "0.9",
+    "jsanc623/phpbenchtime": "dev-master",
+    "gte451f/phalcon-json-api-package": "dev-jsonapi",
+    "stripe/stripe-php": "3.*",
+    "inacho/php-credit-card-validator": "1.*",
+    "php": ">=5.5",
+    "ext-curl": "*",
+    "authorizenet/authorizenet": "1.8.9",
+    "jms/serializer": "serializer-master-dev as 1.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "*",
+    "flow/jsonpath": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/goetas/serializer.git"
     }
+  ],
+  "scripts": {
+    "post-install-cmd": "composer dumpautoload -o",
+    "post-update-cmd": "composer dumpautoload -o"
+  }
 }

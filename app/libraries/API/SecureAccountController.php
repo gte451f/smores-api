@@ -27,7 +27,7 @@ class SecureAccountController extends \PhalconRest\API\SecureController
             $securityService->setEnforceAccountFilter(true);
         }
 
-        // pull from \PahclonRest\Libraries\API\SecureController
+        // pull from \PhaclonRest\Libraries\API\SecureController
         // run the security service's checkUserPermissions method and thow an error if it returns false
         if (!$securityService->checkUserPermissions()) {
             // This is bad. Throw a 500. Responses should always be objects.

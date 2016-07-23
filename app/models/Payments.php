@@ -113,13 +113,19 @@ class Payments extends \PhalconRest\API\BaseModel
     }
 
     /**
-     * set a standard create date
+     * attempt to always populate these values if they exist
      */
     public function beforeValidationOnCreate()
     {
-        $this->created_on = date('Y-m-d H:i:s');
-        // set a default status
-        $this->status = 'Paid';
+        // assign a few default values if they aren't provided
+        if (! isset($this->created_on)) {
+            $this->created_on = date('Y-m-d H:i:s');
+        }
+        
+        // set a default status if not defined
+        if (! isset($this->status)) {
+            $this->status = 'Paid';
+        }
     }
 
     /**

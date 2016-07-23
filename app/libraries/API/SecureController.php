@@ -13,6 +13,8 @@ class SecureController extends \PhalconRest\API\SecureController
      * Determine whether the user can access the requested resource
      *
      * @return bool
+     * @param object $securityService
+     * @throws HTTPException
      */
     protected function securityCheck($securityService)
     {

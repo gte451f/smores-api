@@ -4,8 +4,13 @@ namespace PhalconRest\Entities;
 use \PhalconRest\Libraries\API\Entity;
 use \PhalconRest\Exception\ValidationException;
 
-class PaymentEntity extends Entity
+// required for trait
+use Inacho\CreditCard;
+
+class PaymentEntity extends \PhalconRest\Libraries\API\Entity
 {
+    // include payment validation logic
+    use \PhalconRest\Libraries\Payments\Validate;
 
     /**
      * before a new payment, process credit card payments with 3rd party processor
@@ -17,10 +22,12 @@ class PaymentEntity extends Entity
      */
     function beforeSave($object, $id = null)
     {
-        if ($object->mode == 'Credit') {
-            $processor = $this->getDI()->get('paymentProcessor');
+        // filter out stray characters from amount
+        $object->amount = preg_replace("/[^0-9,.]/", "", $object->amount);
 
-            if ($object->card_id > 0) {
+        if ($object->mode == 'Credit' and $this->saveMode == 'insert') {
+            $processor = $this->getDI()->get('paymentProcessor');
+            if (isset($object->card_id) and $object->card_id > 0) {
                 $card = \PhalconRest\Models\Cards::findFirst($object->card_id);
                 $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
                 if (!$card->external_id or $card->external_id == null) {
@@ -35,21 +42,59 @@ class PaymentEntity extends Entity
                     'account_id' => $account->external_id
                 ]);
             } else {
-                // must be a new card to charge
-                $object->external_id = $processor->chargeCard((array)$object);
+                // must be a new card, so charge this card for a one time payment
+                // perform some basic validation
+                $this->validateCardData($object);
+                try {
+                    $cardData = (array)$object;
+                    // attempt to detect a valid email address for payment
+                    if (isset($object->account_id)) {
+                        $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
+                        $primaryEmail = $billingEmail = false;
+                        foreach ($account->Owners as $owner) {
+                            if ($owner->billing_contact == 1) {
+                                $billingEmail = $owner->Users->email;
+                            }
+                            if ($owner->primary_contact == 1) {
+                                $primaryEmail = $owner->Users->email;
+                            }
+                        }
+                        if ($billingEmail) {
+                            $cardData['email'] = $billingEmail;
+                        } elseif ($primaryEmail) {
+                            $cardData['email'] = $primaryEmail;
+                        }
+
+                    }
+                    $object->external_id = $processor->chargeCard($cardData);
+                } catch (Exception $e) {
+                    // what happens here?
+                }
             }
         }
 
         if ($object->mode == 'Refund' and isset($id)) {
             // see if the save is going FROM card to refund and apply refund logic
             $payment = \PhalconRest\Models\Payments::findFirst($id);
+            $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
 
             if ($payment->mode == 'Credit') {
                 $processor = $this->getDI()->get('paymentProcessor');
+                // include additional details here since processors require different data
                 $refund_id = $processor->refundCharge([
-                    'charge_id' => $object->external_id
+                    'charge_id' => $object->external_id,
+                    'account_id' => $account->external_id,
+                    'amount' => $object->amount
                 ]);
                 $object->refund_id = $refund_id;
+
+                // this is an auth.net special rule that detects between a Refund and Voided transaction
+                // we'll see how much mileage we get out of this
+                if ($object->external_id === $refund_id) {
+                    $object->status = 'Voided';
+                } else {
+                    $object->status = 'Refunded';
+                }
                 $object->refunded_on = date('Y-m-d');
             }
         }

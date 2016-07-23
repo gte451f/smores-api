@@ -63,7 +63,12 @@ class Entity extends \PhalconRest\API\Entity
         }
 
         // apply generic account filter assuming column is present in query
-        $query->where("$model.$id = $currentUser->accountId");
+        // $query->andWhere("$model.$id = $currentUser->accountId");
+        $randomName = 'rand' . rand(1, 1000000);
+        $query->andWhere("$model.$id = :$randomName:", [
+            $randomName => $currentUser->accountId
+        ]);
+
         return $query;
     }
 }
