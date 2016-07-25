@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * test common credit card related operations such as
+ * - create a new credit card (and indirectly test the remote API)
+ * - test creating a payment based on an existing card
+ *
+ */
+
 $I = new AcceptanceTester($scenario);
 $I->wantTo('test basic Card operations like GET/POST/PUT/DELETE from the perspective of an owner');
 
@@ -42,6 +50,46 @@ $I->seeResponseIsJson();
 // verify the api side loads expected data
 $I->seeResponseJsonMatchesJsonPath('$.data.relationships.account.data.id');
 $I->seeResponseJsonMatchesJsonPath('$.included.[0].id');
+
+
+// while we are here submit a payment with an existing card
+// the base card record on which we'll modify before attempting various saves
+
+//{"data":{"attributes":{"amount":10,"mode":"Credit"},
+//"relationships":{
+//        "account":{"data":{"type":"accounts","id":"1"}},
+// "card":{"data":{"type":"cards","id":"30"}},
+//  "check":{"data":null},
+//  "payment-batch":{"data":null}
+//  },
+//"type":"payments"}}
+
+$newRecord = [
+    'data' => [
+        'attributes' => [
+            'amount' => 10,
+            'mode' => 'Credit'
+        ],
+        'relationships' => [
+            'account' => ['data' => ['id' => $user->attributes->{'account-id'}, 'accounts']],
+            'card' => ['data' => ['id' => $newCardID[0], 'cards']],
+            'check' => ['data' => null],
+            'payment-batch' => ['data' => null]
+        ],
+        'type' => 'payments'
+    ]
+];
+
+// add new payment to an existing card
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
+$I->sendPOST('payments', json_encode($newRecord));
+$I->seeResponseIsJson();
+$I->seeResponseCodeIs(201);
+$newPaymentID = $I->grabDataFromResponseByJsonPath('$.data.id');
+
+
+// now attempt to refund the payment
+// TODO... hold off since it doesn't look like refunds are implemented in the system yet
 
 
 // delete the newly created card record

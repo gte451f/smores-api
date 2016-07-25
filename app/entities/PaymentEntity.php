@@ -47,30 +47,12 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
                 $this->validateCardData($object);
                 try {
                     $cardData = (array)$object;
-                    // attempt to detect a valid email address for payment
-                    if (isset($object->account_id)) {
-                        $account = \PhalconRest\Models\Accounts::findFirst($object->account_id);
-                        $primaryEmail = $billingEmail = false;
-                        foreach ($account->Owners as $owner) {
-                            if ($owner->billing_contact == 1) {
-                                $billingEmail = $owner->Users->email;
-                            }
-                            if ($owner->primary_contact == 1) {
-                                $primaryEmail = $owner->Users->email;
-                            }
-                        }
-                        if ($billingEmail) {
-                            $cardData['email'] = $billingEmail;
-                        } elseif ($primaryEmail) {
-                            $cardData['email'] = $primaryEmail;
-                        }
-
-                    }
                     $object->external_id = $processor->chargeCard($cardData);
                 } catch (Exception $e) {
                     // what happens here?
                 }
             }
+            return $object;
         }
 
         if ($object->mode == 'Refund' and isset($id)) {
