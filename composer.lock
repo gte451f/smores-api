@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3842c329c4afa59e2ae7b9bd2cb11103",
-    "content-hash": "4f747be2a8263a773136ea26c77536ff",
+    "hash": "6c700a2d83abeaa685aeed4437079807",
+    "content-hash": "16e9f696a1430fb5e8fe5420752f0bfc",
     "packages": [
         {
             "name": "authorizenet/authorizenet",
@@ -341,17 +341,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "1859d2f1c133da41b7674d2d0e6e06b2561e6c69"
+                "reference": "1d27bc5a30cd5444733ce38b7e7af6294a13f9aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/1859d2f1c133da41b7674d2d0e6e06b2561e6c69",
-                "reference": "1859d2f1c133da41b7674d2d0e6e06b2561e6c69",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/1d27bc5a30cd5444733ce38b7e7af6294a13f9aa",
+                "reference": "1d27bc5a30cd5444733ce38b7e7af6294a13f9aa",
                 "shasum": ""
             },
             "require": {
-                "jsanc623/phpbenchtime": "dev-master",
-                "php": ">=5.5.0"
+                "jsanc623/phpbenchtime": "2.*",
+                "php": ">=5.6.0"
             },
             "type": "library",
             "autoload": {
@@ -379,7 +379,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2016-07-21 12:37:06"
+            "time": "2016-07-27 01:21:44"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -597,16 +597,16 @@
         },
         {
             "name": "jsanc623/phpbenchtime",
-            "version": "dev-master",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsanc623/PHPBenchTime.git",
-                "reference": "63314d9a2bd1c96e740b61ce47e819fe3d656060"
+                "reference": "dc9980ffd85ef42a23183dda75ab4684801a5564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsanc623/PHPBenchTime/zipball/63314d9a2bd1c96e740b61ce47e819fe3d656060",
-                "reference": "63314d9a2bd1c96e740b61ce47e819fe3d656060",
+                "url": "https://api.github.com/repos/jsanc623/PHPBenchTime/zipball/dc9980ffd85ef42a23183dda75ab4684801a5564",
+                "reference": "dc9980ffd85ef42a23183dda75ab4684801a5564",
                 "shasum": ""
             },
             "type": "library",
@@ -633,7 +633,7 @@
                 "stopwatch",
                 "timer"
             ],
-            "time": "2015-07-06 18:43:53"
+            "time": "2015-07-06 16:36:27"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -898,16 +898,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "2.2.2",
+            "version": "2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6"
+                "reference": "34c268ae5872105c0c218296487650ab08e3991b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
-                "reference": "8d80bb4ec7470e8df5de0e4c401785bc3fa1f4f6",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/34c268ae5872105c0c218296487650ab08e3991b",
+                "reference": "34c268ae5872105c0c218296487650ab08e3991b",
                 "shasum": ""
             },
             "require": {
@@ -985,7 +985,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2016-06-29 00:59:28"
+            "time": "2016-07-24 19:31:22"
         },
         {
             "name": "facebook/webdriver",
@@ -1492,16 +1492,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "900370c81280cc0d942ffbc5912d80464eaee7e9"
+                "reference": "5f3f7e736d6319d5f1fc402aff8b026da26709a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/900370c81280cc0d942ffbc5912d80464eaee7e9",
-                "reference": "900370c81280cc0d942ffbc5912d80464eaee7e9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/5f3f7e736d6319d5f1fc402aff8b026da26709a3",
+                "reference": "5f3f7e736d6319d5f1fc402aff8b026da26709a3",
                 "shasum": ""
             },
             "require": {
@@ -1510,7 +1510,7 @@
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-token-stream": "^1.4.2",
                 "sebastian/code-unit-reverse-lookup": "~1.0",
-                "sebastian/environment": "^1.3.2",
+                "sebastian/environment": "^1.3.2 || ^2.0",
                 "sebastian/version": "~1.0|~2.0"
             },
             "require-dev": {
@@ -1551,7 +1551,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-06-03 05:03:56"
+            "time": "2016-07-26 14:39:29"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1736,16 +1736,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.4.7",
+            "version": "5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6c8a756c17a1a92a066c99860eb57922e8b723da"
+                "reference": "3132365e1430c091f208e120b8845d39c25f20e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6c8a756c17a1a92a066c99860eb57922e8b723da",
-                "reference": "6c8a756c17a1a92a066c99860eb57922e8b723da",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3132365e1430c091f208e120b8845d39c25f20e6",
+                "reference": "3132365e1430c091f208e120b8845d39c25f20e6",
                 "shasum": ""
             },
             "require": {
@@ -1757,7 +1757,7 @@
                 "myclabs/deep-copy": "~1.3",
                 "php": "^5.6 || ^7.0",
                 "phpspec/prophecy": "^1.3.1",
-                "phpunit/php-code-coverage": "^4.0",
+                "phpunit/php-code-coverage": "^4.0.1",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-timer": "^1.0.6",
@@ -1810,7 +1810,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-07-21 06:55:27"
+            "time": "2016-07-26 14:48:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2936,7 +2936,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "jsanc623/phpbenchtime": 20,
         "gte451f/phalcon-json-api-package": 20,
         "jms/serializer": 20,
         "flow/jsonpath": 20
@@ -2944,7 +2943,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5",
+        "php": ">=5.6",
         "ext-curl": "*"
     },
     "platform-dev": []

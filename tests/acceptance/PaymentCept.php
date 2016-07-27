@@ -81,5 +81,9 @@ $I->seeResponseJsonMatchesJsonPath('$.included.[0].id');
 //$newPaymentID = $I->grabDataFromResponseByJsonPath('$.data.id');
 
 
+// don't forget to push a one time charge or card+payment
+// {"data":{"attributes":{"amount":"78","mode":"Credit","cvc":"897","name_on_card":"lkjlkjlkjl jlkjlkj","expiration_month":3,"expiration_year":2019,"number":"4012888888881881","vendor":"visa","address":"123 strange","zip":"12345"},"relationships":{"account":{"type":"accounts","id":"1"}},"type":"payments"}}
+
+
 // now attempt to refund the payment
 // TODO... hold off since it doesn't look like refunds are implemented in the system yet
