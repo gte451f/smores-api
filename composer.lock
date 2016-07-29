@@ -233,16 +233,16 @@
         },
         {
             "name": "goetas-webservices/xsd-reader",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/goetas-webservices/xsd-reader.git",
-                "reference": "229e31a6b25fa265a31e6f91e141208f0a31150b"
+                "reference": "9a29bdf88eeab6631cb223d5dc602574fb99d6a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/goetas-webservices/xsd-reader/zipball/229e31a6b25fa265a31e6f91e141208f0a31150b",
-                "reference": "229e31a6b25fa265a31e6f91e141208f0a31150b",
+                "url": "https://api.github.com/repos/goetas-webservices/xsd-reader/zipball/9a29bdf88eeab6631cb223d5dc602574fb99d6a7",
+                "reference": "9a29bdf88eeab6631cb223d5dc602574fb99d6a7",
                 "shasum": ""
             },
             "require": {
@@ -281,20 +281,20 @@
                 "xmlschema",
                 "xsd"
             ],
-            "time": "2016-05-14 12:52:17"
+            "time": "2016-07-27 08:52:32"
         },
         {
             "name": "goetas-webservices/xsd2php-runtime",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/goetas-webservices/xsd2php-runtime.git",
-                "reference": "b2f3e69a0a75dc8aff9807572edcc50ce035c2d4"
+                "reference": "33984b53310398dd817be36cbbd36f82aaf37455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/goetas-webservices/xsd2php-runtime/zipball/b2f3e69a0a75dc8aff9807572edcc50ce035c2d4",
-                "reference": "b2f3e69a0a75dc8aff9807572edcc50ce035c2d4",
+                "url": "https://api.github.com/repos/goetas-webservices/xsd2php-runtime/zipball/33984b53310398dd817be36cbbd36f82aaf37455",
+                "reference": "33984b53310398dd817be36cbbd36f82aaf37455",
                 "shasum": ""
             },
             "require": {
@@ -333,7 +333,7 @@
                 "xml",
                 "xsd"
             ],
-            "time": "2016-05-16 18:09:10"
+            "time": "2016-07-26 08:45:13"
         },
         {
             "name": "gte451f/phalcon-json-api-package",
@@ -341,12 +341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "1d27bc5a30cd5444733ce38b7e7af6294a13f9aa"
+                "reference": "508ee1ccc3839b8b7bb17020b22596f5d34b5f9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/1d27bc5a30cd5444733ce38b7e7af6294a13f9aa",
-                "reference": "1d27bc5a30cd5444733ce38b7e7af6294a13f9aa",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/508ee1ccc3839b8b7bb17020b22596f5d34b5f9c",
+                "reference": "508ee1ccc3839b8b7bb17020b22596f5d34b5f9c",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +379,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2016-07-27 01:21:44"
+            "time": "2016-07-29 03:25:05"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -783,16 +783,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v3.17.0",
+            "version": "v3.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "982b90dcbc9cfd59057db8819a247c6db18df6cd"
+                "reference": "14e0783e4cdfb549518fc2f73948e34087a18e3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/982b90dcbc9cfd59057db8819a247c6db18df6cd",
-                "reference": "982b90dcbc9cfd59057db8819a247c6db18df6cd",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/14e0783e4cdfb549518fc2f73948e34087a18e3e",
+                "reference": "14e0783e4cdfb549518fc2f73948e34087a18e3e",
                 "shasum": ""
             },
             "require": {
@@ -834,7 +834,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-07-14 17:36:41"
+            "time": "2016-07-28 21:29:00"
         }
     ],
     "packages-dev": [
