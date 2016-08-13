@@ -13,9 +13,11 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
      * this means that some validation must occur before the default model logic since
      * we run it though the remote processor first
      *
-     * (non-PHPdoc)
      *
-     * @see \PhalconRest\API\Entity::afterSave()
+     * @param object $object store common credit card data
+     * @param null $id
+     * @return array
+     * @throws ValidationException
      */
     function beforeSave($object, $id = null)
     {
@@ -88,11 +90,11 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
 
     /**
      * attempt to delete card from remote processor before removing the internal record
-     * (non-PHPdoc)
      *
      * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param BaseModel $model
      */
-    public function beforeDelete($model)
+    public function beforeDelete( \PhalconRest\API\BaseModel $model)
     {
         $processor = $this->getDI()->get('paymentProcessor');
         $processor->deleteCard($model->external_id);

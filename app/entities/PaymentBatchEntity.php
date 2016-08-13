@@ -21,8 +21,10 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
      * {@inheritDoc}
      *
      * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param \PhalconRest\API\BaseModel $model
+     * @throws HTTPException
      */
-    public function beforeDelete($model)
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
         foreach ($model->payments as $payment) {
             if ($payment->status == 'Paid' or $payment->status == 'Refunded') {

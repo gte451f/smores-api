@@ -91,8 +91,10 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
      * (non-PHPdoc)
      *
      * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param \PhalconRest\API\BaseModel $model
+     * @throws \Exception
      */
-    public function beforeDelete($model)
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
         // blocking refunds for the time being
         if ($model->mode == 'Refund') {

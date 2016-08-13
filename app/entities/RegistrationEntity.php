@@ -23,11 +23,11 @@ class RegistrationEntity extends Entity
     }
 
     /**
-     * everytime a new registration is created
+     * every time a new registration is created
      * consult with the fee table and create relevant charges
      * this could be a registration fee
      *
-     * should we apply the "first time" fee for a newly registered camper
+     * TODO should we apply the "first time" fee for a newly registered camper
      *
      * (non-PHPdoc)
      *
@@ -46,7 +46,7 @@ class RegistrationEntity extends Entity
             return;
         }
 
-        // pull system fees based around registraton
+        // pull system fees based around registration
         $regFees = \PhalconRest\Models\Fees::find(array(
             "basis = 'Registration'"
         ));
@@ -70,10 +70,10 @@ class RegistrationEntity extends Entity
                 }
             }
         } else {
-            throw new ValidationException("Internal error creating a registration", array(
-                'code' => '4562456786',
-                'dev' => 'Error while processing RegistratinoEntity->afterSave(). Could not find a valid attendee record.'
-            ), $charge->getMessages());
+            throw new HTTPException("INtenral error creating a registration", 500, array(
+                'dev' => "Error while processing Registration Entity->afterSave().  Could not find valid attendee record",
+                'code' => '2342394509678046587'
+            ));
         }
     }
 
@@ -83,9 +83,9 @@ class RegistrationEntity extends Entity
      *
      * force attendee join for all cases
      *
-     * an undocument side affect is that the api will filter by account_id even if it isn't returned in the registration record
+     * an undocumented side affect is that the api will filter by account_id even if it isn't returned in the registration record
      */
-    public function beforeQueryBuilderHook($query)
+    public function afterQueryBuilderHook($query)
     {
         // only add needed join if it isn't already in place
         $applyJoin = true;
@@ -96,9 +96,9 @@ class RegistrationEntity extends Entity
             }
         }
         if ($applyJoin) {
-            $query->join("PhalconRest\\Models\\Attendees", "Attendees.user_id = PhalconRest\\Models\\Registrations.attendee_id", "Attendees");
+            $query->join('PhalconRest\Models\Attendees', 'Attendees.user_id = PhalconRest\Models\Registrations.attendee_id', "Attendees");
         }
-        return true;
+        return $query;
     }
 
     /**

@@ -35,8 +35,9 @@ class AccountEntity extends \PhalconRest\Libraries\API\Entity
      * {@inheritDoc}
      *
      * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param \PhalconRest\API\BaseModel $model
      */
-    public function beforeDelete($model)
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
         // clean out records via PHP
         $list = [

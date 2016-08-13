@@ -26,8 +26,9 @@ class EmployeeEntity extends \PhalconRest\Libraries\API\Entity
      * {@inheritDoc}
      *
      * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param \PhalconRest\API\BaseModel $model
      */
-    public function beforeDelete($model)
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
         // extend me in child class
         $user = $model->users;
