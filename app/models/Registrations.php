@@ -52,9 +52,9 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Attendees'
         ]);
 
-        $this->belongsTo("attendee_id", "PhalconRest\\Models\\Users", "id", [
-            'alias' => 'Users'
-        ]);
+//        $this->belongsTo("attendee_id", "PhalconRest\\Models\\Users", "id", [
+//            'alias' => 'Users'
+//        ]);
 
         $this->hasOne('id', "PhalconRest\\Models\\CustomRegistrationFields", 'registration_id', [
             'alias' => 'CustomRegistrationFields'
