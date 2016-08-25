@@ -127,22 +127,22 @@ class RequestEntity extends \PhalconRest\Libraries\API\Entity
             ->get('auth')
             ->getProfile();
         // add custom filter
-        $query->where("Attendees.account_id = $currentUser->accountId");
+        $query->andWhere("Attendees.account_id = $currentUser->accountId");
 
         // only add needed join if it isn't already in place
         $applyJoin = true;
         foreach ($this->activeRelations as $alias => $relation) {
-            if ($alias == 'Registration') {
+            if ($alias == 'Registrations') {
                 $applyJoin = false;
                 break;
             }
         }
         if ($applyJoin) {
-            $query->join("PhalconRest\\Models\\Registrations", "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
+            $query->join('PhalconRest\Models\Registrations', "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
         }
 
         // use registration to reach attendees for the filter
-        $query->join("PhalconRest\\Models\\Attendees", "Registrations.attendee_id = Attendees.user_id", "Attendees");
+        $query->join('PhalconRest\Models\Attendees', "Registrations.attendee_id = Attendees.user_id", "Attendees");
         return $query;
     }
 }
