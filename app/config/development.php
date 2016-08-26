@@ -7,7 +7,7 @@ define("ADMIN_USER", "System - Administrator");
 
 // Override production configs for development environment
 // this development environment is configured for docker usage
-$development = [
+$environmentConfig = [
     'application' => [
         // where to store cache related files
         'cacheDir' => '/tmp/',
@@ -54,5 +54,7 @@ $development = [
     ]
 ];
 
-// load defined security rules based on current environment
-return array_merge_recursive_replace($development, require('security_rules/development.php'));
+// Define APPNAME if this is production environment
+// - must be defined on each deployed PRODUCTION version
+// useful when the production code is deployed in multiple configurations ie. portal or admin
+defined('APPLICATION_NAME') || define('APPLICATION_NAME', 'admin');

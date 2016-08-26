@@ -1,8 +1,6 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Behavior\Timestampable as Timestampable;
-
 class Registrations extends \PhalconRest\API\BaseModel
 {
 
@@ -48,15 +46,11 @@ class Registrations extends \PhalconRest\API\BaseModel
             'alias' => 'Requests'
         ]);
 
-        $this->belongsTo("attendee_id", "PhalconRest\\Models\\Attendees", "user_id", [
+        $this->belongsTo("attendee_id", 'PhalconRest\Models\Attendees', "user_id", [
             'alias' => 'Attendees'
         ]);
 
-//        $this->belongsTo("attendee_id", "PhalconRest\\Models\\Users", "id", [
-//            'alias' => 'Users'
-//        ]);
-
-        $this->hasOne('id', "PhalconRest\\Models\\CustomRegistrationFields", 'registration_id', [
+        $this->hasOne('id', 'PhalconRest\Models\CustomRegistrationFields', 'registration_id', [
             'alias' => 'CustomRegistrationFields'
         ]);
     }

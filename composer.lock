@@ -341,12 +341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "d705a03ee9d34ab072d962ce008f05d5603e7ec2"
+                "reference": "a0c6f3403f65d35855b6e26d688f3a9e9e6cfe6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/d705a03ee9d34ab072d962ce008f05d5603e7ec2",
-                "reference": "d705a03ee9d34ab072d962ce008f05d5603e7ec2",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/a0c6f3403f65d35855b6e26d688f3a9e9e6cfe6e",
+                "reference": "a0c6f3403f65d35855b6e26d688f3a9e9e6cfe6e",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +379,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2016-08-16 16:33:25"
+            "time": "2016-08-19 19:23:40"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -781,16 +781,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v3.20.0",
+            "version": "v3.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b"
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b",
-                "reference": "2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
                 "shasum": ""
             },
             "require": {
@@ -832,7 +832,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-08-08 19:50:55"
+            "time": "2016-08-25 22:58:28"
         }
     ],
     "packages-dev": [
@@ -1814,16 +1814,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.2.4",
+            "version": "3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "4e83390f64e7ce04fcaec2ce95cd72823b431d19"
+                "reference": "8f444748e174e49d5bd2bd7a9bebbf44edbb55fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/4e83390f64e7ce04fcaec2ce95cd72823b431d19",
-                "reference": "4e83390f64e7ce04fcaec2ce95cd72823b431d19",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/8f444748e174e49d5bd2bd7a9bebbf44edbb55fb",
+                "reference": "8f444748e174e49d5bd2bd7a9bebbf44edbb55fb",
                 "shasum": ""
             },
             "require": {
@@ -1869,7 +1869,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-08-17 09:33:51"
+            "time": "2016-08-24 16:58:26"
         },
         {
             "name": "psr/http-message",

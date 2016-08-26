@@ -4,7 +4,7 @@ define("PORTAL_USER", "Portal - User");
 define("ADMIN_USER", "System - Administrator");
 
 // override default configs with production
-$production = [
+$environmentConfig = [
     'application' => [
         // where to store cache
         'cacheDir' => '##cacheDir##',
@@ -42,6 +42,3 @@ $production = [
 // - must be defined on each deployed PRODUCTION version
 // useful when the production code is deployed in multiple configurations ie. portal or admin
 defined('APPLICATION_NAME') || define('APPLICATION_NAME', 'admin');
-
-// load defined security rules based on current environment
-return array_merge_recursive_replace($production, require('security_rules/production.php'));

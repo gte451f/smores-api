@@ -1,8 +1,6 @@
 <?php
 namespace PhalconRest\Libraries\API;
 
-use \PhalconRest\Exception\HTTPException;
-
 /**
  * This class extends the PhalconRest\API\Entity class and adds app specific logic *
  *

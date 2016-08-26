@@ -6,7 +6,7 @@ define("PORTAL_USER", "Portal - User");
 define("ADMIN_USER", "System - Administrator");
 
 // Override default configs for staging environment
-$staging = [
+$environmentConfig = [
     'application' => [
         // where to store cache related files
         'cacheDir' => '/tmp/',
@@ -30,8 +30,6 @@ $staging = [
         'dbname' => 'smores',
         'charset' => 'utf8'
     ],
-    // enable security for controllers marked as secure?
-    'security' => false,
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [
         'basePath' => '/tmp/'
