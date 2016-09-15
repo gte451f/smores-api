@@ -57,21 +57,10 @@ class Attendees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
-            'alias' => 'Users'
-        ));
-
-        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
-            'alias' => 'Accounts'
-        ));
-
-        $this->hasMany("user_id", "PhalconRest\\Models\\Registrations", "attendee_id", array(
-            'alias' => 'Registrations'
-        ));
-
-        $this->hasOne('user_id', "PhalconRest\\Models\\CustomAttendeeFields", 'user_id', [
-            'alias' => 'CustomAttendeeFields'
-        ]);
+        $this->hasOne("user_id", Users::class, "id", ['alias' => 'Users']);
+        $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
+        $this->hasMany("user_id", Registrations::class, "attendee_id", ['alias' => 'Registrations']);
+        $this->hasOne('user_id', CustomAttendeeFields::class, 'user_id', ['alias' => 'CustomAttendeeFields']);
     }
 
     /**

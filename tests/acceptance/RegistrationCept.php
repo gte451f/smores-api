@@ -71,6 +71,13 @@ $I->seeResponseCodeIs(201);
 $newRequestID = $I->grabDataFromResponseByJsonPath('$.data.id');
 
 
+// test getting this specific registration w/ all relations like hasManyToMany
+// $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
+$I->sendGet("registrations/" . $newRegistrationID[0] . "?with=all");
+$I->seeResponseCodeIs(200);
+$I->seeResponseIsJson();
+
+
 // delete the newly created request record
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
 $I->sendDELETE('requests/' . $newRequestID[0]);
