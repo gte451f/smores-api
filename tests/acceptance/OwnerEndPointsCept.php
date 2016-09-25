@@ -43,5 +43,3 @@ foreach ($deniedEndpoints as $endpoint) {
     $I->seeResponseIsJson();
     $I->seeResponseCodeIs(404);
 }
-
-$I->logout($user['attributes']['token']);

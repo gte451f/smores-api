@@ -26,8 +26,9 @@ class AuthController extends \Phalcon\DI\Injectable
     }
 
     /**
-     *
-     * @return multitype:string unknown |array
+     * @return mixed
+     * @throws HTTPException
+     * @throws ValidationException
      */
     public function login()
     {

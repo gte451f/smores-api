@@ -31,6 +31,3 @@ $I->seeResponseJsonMatchesJsonPath('$.payment_batch[0].id');
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: " . $user['attributes']['token']);
 $I->sendDELETE('payment_batches/' . $newBatchID[0]);
 $I->seeResponseCodeIs(204);
-
-// attempt to logout as Owner
-$I->logout($user['attributes']['token']);
