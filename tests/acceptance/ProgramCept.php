@@ -11,4 +11,4 @@ $I->wantTo('load a group of programs');
 $I->sendGet('/programs?page=1&per_page=5');
 $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
-$I->seeResponseJsonMatchesJsonPath('$.data[*].name');
+$I->seeResponseJsonMatchesJsonPath('$.data[*].attributes.name');

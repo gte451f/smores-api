@@ -8,7 +8,7 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
-     * store a simple list of noteworth activity as the batch is processed
+     * store a simple list of noteworthy activity as the batch is processed
      *
      * @var array
      */
@@ -116,10 +116,9 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
             }
 
             try {
-                $result = $paymentEntity->save($inputs);
+                $paymentEntity->save($inputs);
                 // reset this other wise subsequent saves fail!
                 $paymentEntity->model->id = null;
-
                 $processedRunningTotal = $processedRunningTotal + $inputs->amount;
                 $processCount++;
             } catch (ValidationException $e) {
