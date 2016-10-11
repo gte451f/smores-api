@@ -10,11 +10,15 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Db\Profiler as DbProfiler;
 use Phalcon\Logger\Adapter\File as FileLogger;
 use Phalcon\Db\Adapter\Pdo\Mysql as Connection;
-use PhalconRest\Libraries\MessageBag as MessageBag;
 
 // for password and credit card encryption
 use Phalcon\Crypt;
 use Phalcon\Security;
+
+
+// set default api behavior regarding general save actions
+\PhalconRest\API\BaseModel::$throwOnSave = true;
+
 
 // load a security service applied to select controllers
 $di->setShared('securityService', function () use ($config) {

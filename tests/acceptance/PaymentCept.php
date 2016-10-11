@@ -8,7 +8,7 @@
  */
 
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test basic Card operations like GET/POST from the perspective of an owner');
+// test basic Card operations like GET/POST from the perspective of an owner
 
 // attempt to login as Owner first
 $user = $I->login('Owner');

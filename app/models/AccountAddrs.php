@@ -1,7 +1,14 @@
 <?php
 namespace PhalconRest\Models;
 
-class AccountAddrs extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
+
+class AccountAddrs extends BaseModel
 {
 
     /**
@@ -75,8 +82,26 @@ class AccountAddrs extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
 
-        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
-            'alias' => 'Accounts'
-        ));
+        $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
     }
+
+    /**
+     * validate various fields
+     */
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            'email',
+            new EmailValidator([
+                'model' => $this,
+                'message' => 'Please enter a valid email address',
+                'allowEmpty' => true
+            ])
+        );
+
+        return $this->validate($validator);
+    }
+
 }

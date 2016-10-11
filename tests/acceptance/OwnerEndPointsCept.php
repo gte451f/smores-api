@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('verify the end points an owner should have access to and should NOT have access to');
+// verify the end points an owner should have access to and should NOT have access to');
 
 $user = $I->login('Owner');
 

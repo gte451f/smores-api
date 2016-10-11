@@ -1,18 +1,22 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class StatementBatchController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+/**
+ * Class StatementBatchController
+ * @package PhalconRest\Controllers
+ */
+class StatementBatchController extends SecureController
 {
 
     /**
      * set names since plural is slightly different
-     *
-     * @param bool $parseQueryString
      */
-    public function __construct($parseQueryString = true)
+    public function onConstruct()
     {
         $this->pluralName = 'StatementBatches';
         $this->singularName = 'StatementBatch';
-        parent::__construct($parseQueryString);
+        parent::onConstruct();
     }
 }

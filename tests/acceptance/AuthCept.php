@@ -1,10 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('Test AUTH related functions and exercise adding/removing members of the account');
-
-// in case you need it
-// application/x-www-form-urlencoded
-// password_confirm=password01*&email=bbarton123@email.com&first_name=billy&last_name=barton&user_type=Owner&gender=Female&relationship=Mother&password=password01*&number=123-456-7890&primary=1&phone_type=Office&
+// Test AUTH related functions and exercise adding/removing and account and then members of the account
 
 $i = rand(1, 9999);
 $email = $i . 'bbarton@email.com';
@@ -64,25 +60,12 @@ $newOwner = [
 ];
 
 
-//{"data":{"attributes":{
-//    "primary-contact":null,
-//    "relationship":"Mother",
-//    "email":"foo@smith.com",
-//    "last-name":"Last",
-//    "first-name":"First",
-//    "user-name":null,
-//    "user-type":"Owner",
-//    "gender":"Female",
-//    "foobar":null},
-//    "relationships":{"account":{"data":{"type":"accounts","id":"95"}}},"type":"owners"}
-//}
-
 $I->sendPOST('owners', json_encode($newOwner));
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
 $newOwnerID = $I->grabDataFromResponseByJsonPath('$.data.id');
 
-// attempt to edit newly added firm record
+// attempt to edit newly added owner record
 $newOwner['data']['attributes']['last_name'] = 'A New Last Name';
 $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
 $I->sendPUT("owners/$newOwnerID[0]", json_encode($newOwner));
@@ -137,6 +120,6 @@ $I->seeResponseCodeIs(204);
 /**
  * clean up account by removing it
  */
-$I->wantTo('remove a particular account');
+// remove a particular account
 $I->sendDELETE('accounts/' . $newAccountID[0]);
 $I->seeResponseCodeIs(204);

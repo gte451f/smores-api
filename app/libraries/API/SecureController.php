@@ -1,12 +1,13 @@
 <?php
 namespace PhalconRest\Libraries\API;
 
+use \PhalconRest\API\SecureController as APISecureController;
 use \PhalconRest\Exception\HTTPException;
 
 /**
  * This class extends the PhalconRest\API\SecureController and adds application specific security logic
  */
-class SecureController extends \PhalconRest\API\SecureController
+class SecureController extends APISecureController
 {
 
     /**

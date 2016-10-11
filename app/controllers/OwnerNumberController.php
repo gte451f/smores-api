@@ -1,12 +1,14 @@
 <?php
 namespace PhalconRest\Controllers;
 
+use PhalconRest\Libraries\API\SecureAccountController;
+
 /**
+ * Class OwnerNumberController
+ * @package PhalconRest\Controllers
+ *
  * extend from account specific controller
- *
- * @author jjenkins
- *
  */
-class OwnerNumberController extends \PhalconRest\Libraries\API\SecureAccountController
+class OwnerNumberController extends SecureAccountController
 {
 }

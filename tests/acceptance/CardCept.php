@@ -8,7 +8,7 @@
  */
 
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test basic Card operations like GET/POST/PUT/DELETE from the perspective of an owner');
+// test basic Card operations like GET/POST/PUT/DELETE from the perspective of an owner
 
 // attempt to login as Owner first
 $user = $I->login('Owner');
@@ -53,17 +53,7 @@ $I->seeResponseJsonMatchesJsonPath('$.included.[0].id');
 
 
 // while we are here submit a payment with an existing card
-// the base card record on which we'll modify before attempting various saves
-
-//{"data":{"attributes":{"amount":10,"mode":"Credit"},
-//"relationships":{
-//        "account":{"data":{"type":"accounts","id":"1"}},
-// "card":{"data":{"type":"cards","id":"30"}},
-//  "check":{"data":null},
-//  "payment-batch":{"data":null}
-//  },
-//"type":"payments"}}
-
+// the base card record on which we'll modify before attempting other tasks
 $newRecord = [
     'data' => [
         'attributes' => [

@@ -1,7 +1,7 @@
 <?php
 // TODO fix this when updating payment batch logic
 $I = new AcceptanceTester($scenario);
-$I->wantTo('Test Payment Batch CRUD');
+// Test Payment Batch CRUD');
 
 $newRecord = [
     'data' => [

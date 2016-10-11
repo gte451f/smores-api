@@ -1,25 +1,25 @@
 <?php
 namespace PhalconRest\Controllers;
 
-use \PhalconRest\Exception\HTTPException;
-use \PhalconRest\Libraries\CustomFields\Util;
+use PhalconRest\Exception\HTTPException;
+use PhalconRest\Libraries\CustomFields\Util;
+use PhalconRest\Libraries\API\SecureController;
 
 /**
+ * Class FieldController
+ * @package PhalconRest\Controllers
+ *
  * extend from account specific controller
- *
- * @author jjenkins
- *
  */
-class FieldController extends \PhalconRest\Libraries\API\SecureController
+class FieldController extends SecureController
 {
 
     /**
      * allow public requests to the fields end point
      * blocking this causes bugs when users attempt to load the app and this data seems harmless to show
      *
-     * @param string $parseQueryString
      */
-    public function __construct($parseQueryString = true)
+    public function onConstruct()
     {
         // allow through basic fields request, secure the rest
         if ($this->request->isGet()) {
@@ -37,8 +37,7 @@ class FieldController extends \PhalconRest\Libraries\API\SecureController
                 return;
             }
         }
-
-        return parent::__construct($parseQueryString);
+        parent::onConstruct();
     }
 
     /**

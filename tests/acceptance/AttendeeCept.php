@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test basic Attendee operations like GET/POST/PUT/DELETE from the perspective of an owner');
+// test basic Attendee operations like GET/POST/PUT/DELETE from the perspective of an owner
 
 // attempt to login as Owner first
 $user = $I->login('Owner');

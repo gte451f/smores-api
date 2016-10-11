@@ -1,10 +1,13 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Behavior\Timestampable as Timestampable;
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
 
-class Accounts extends \PhalconRest\API\BaseModel
+
+class Accounts extends BaseModel
 {
 
     /**
@@ -56,31 +59,14 @@ class Accounts extends \PhalconRest\API\BaseModel
      */
     public function initialize()
     {
-        $this->hasMany("id", "PhalconRest\\Models\\Owners", "account_id", array(
-            'alias' => 'Owners'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\Attendees", "account_id", array(
-            'alias' => 'Attendees'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\AccountAddrs", "account_id", array(
-            'alias' => 'AccountAddrs'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\Checks", "account_id", array(
-            'alias' => 'Checks'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\Cards", "account_id", array(
-            'alias' => 'Cards'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\Payments", "account_id", array(
-            'alias' => 'Payments'
-        ));
-        $this->hasMany("id", "PhalconRest\\Models\\Charges", "account_id", array(
-            'alias' => 'Charges'
-        ));
-
-        $this->hasOne('id', "PhalconRest\\Models\\CustomAccountFields", 'account_id', [
-            'alias' => 'CustomAccountFields'
-        ]);
+        $this->hasMany("id", Owners::class, "account_id", ['alias' => 'Owners']);
+        $this->hasMany("id", Attendees::class, "account_id", ['alias' => 'Attendees']);
+        $this->hasMany("id", AccountAddrs::class, "account_id", ['alias' => 'AccountAddrs']);
+        $this->hasMany("id", Checks::class, "account_id", ['alias' => 'Checks']);
+        $this->hasMany("id", Cards::class, "account_id", ['alias' => 'Cards']);
+        $this->hasMany("id", Payments::class, "account_id", ['alias' => 'Payments']);
+        $this->hasMany("id", Charges::class, "account_id", ['alias' => 'Charges']);
+        $this->hasOne('id', CustomAccountFields::class, 'account_id', ['alias' => 'CustomAccountFields']);
     }
 
     /**
@@ -88,10 +74,10 @@ class Accounts extends \PhalconRest\API\BaseModel
      */
     public function beforeValidationOnCreate()
     {
-        if (! isset($this->created_on)) {
+        if (!isset($this->created_on)) {
             $this->created_on = date('Y-m-d');
         }
-        
+
         // all accounts start as "Inactive" and require activation
         $this->active = 0;
     }
@@ -105,20 +91,35 @@ class Accounts extends \PhalconRest\API\BaseModel
     }
 
     /**
-     * validate that notes isn't too long
+     * validate various fields
      */
     public function validation()
     {
-        $this->validate(new StringLengthValidator(array(
-            "field" => 'notes',
+        $validator = new Validation();
+
+        $validator->add('notes', new StringLengthValidator([
             'max' => 500,
             'min' => 0,
             'messageMaximum' => 'Notes field is too long, please enter a value less than 500 characters in length',
             'messageMinimum' => 'This should never display',
             'allowEmpty' => true
-        )));
+        ]));
 
-        return $this->validationHasFailed() != true;
+        $validator->add('name', new StringLengthValidator([
+            'max' => 45,
+            'min' => 3,
+            'messageMaximum' => 'Name field is too long, please enter a value less than 45 characters in length',
+            'messageMinimum' => 'Name field is too short, please enter a value more than three characters'
+        ]));
+
+        $validator->add(
+            'name',
+            new UniquenessValidator([
+                "message" => "The Account name must be unique"
+            ])
+        );
+
+        return $this->validate($validator);
     }
 
     /**

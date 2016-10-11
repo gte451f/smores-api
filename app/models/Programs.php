@@ -1,10 +1,14 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\Uniqueness;
-use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\Numericality as NumericalityValidator;
 
-class Programs extends \PhalconRest\API\BaseModel
+
+class Programs extends BaseModel
 {
 
     /**
@@ -49,19 +53,19 @@ class Programs extends \PhalconRest\API\BaseModel
 
     public function validation()
     {
-        $this->validate(new NumericalityValidator(array(
-            'field' => 'fee'
-        )));
+        $validator = new Validation();
 
-        $this->validate(new Uniqueness(array(
-            "field" => "name",
-            "message" => "The program name must be unique"
-        )));
+        $validator->add('fee', new NumericalityValidator([
+            'allowEmpty' => true
+        ]));
 
-        // $result = $this->validationHasFailed();
+        $validator->add(
+            'name',
+            new UniquenessValidator([
+                "message" => "The program name must be unique"
+            ])
+        );
 
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
+        return $this->validate($validator);
     }
 }

@@ -1,12 +1,14 @@
 <?php
 namespace PhalconRest\Controllers;
 
+use PhalconRest\Libraries\API\SecureController;
+
 /**
+ * Class UserController
+ * @package PhalconRest\Controllers
+ *
  * should I even have this end point?
- *
- * @author jjenkins
- *
  */
-class UserController extends \PhalconRest\Libraries\API\SecureController
+class UserController extends SecureController
 {
 }

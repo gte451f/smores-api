@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test various search examples');
+// test various search examples');
 
 // attempt to login as Owner first
 $user = $I->login('Employee');

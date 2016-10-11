@@ -1,13 +1,16 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\Email as Email;
-use Phalcon\Mvc\Model\Validator\PresenceOf;
-use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
-use Phalcon\Mvc\Model\Validator\Uniqueness;
 
-class Users extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
+
+
+class Users extends BaseModel
 {
 
     /**
@@ -130,7 +133,7 @@ class Users extends \PhalconRest\API\BaseModel
         // $this->user_type = 'Employee';
 
         // encrypt password if one is provided
-        // from the existance of a password we infer that it is either an owner or an employee
+        // from the existence of a password we infer that it is either an owner or an employee
         // of course we could just watch the user_type field right?
         if (strlen($this->password) >= 8) {
             $security = $this->getDI()->get('security');
@@ -163,44 +166,47 @@ class Users extends \PhalconRest\API\BaseModel
      */
     public function validation()
     {
-        // check for valid email
-        $this->validate(new Email(array(
-            'field' => 'email',
-            'allowEmpty' => true
-        )));
+        $validator = new Validation();
 
-        $this->validate(new Uniqueness(array(
-            "field" => 'email',
-            'allowEmpty' => true
-        )));
+        $validator->add(
+            'email',
+            new EmailValidator([
+                'model' => $this,
+                'message' => 'Please enter a valid email address',
+                'allowEmpty' => true
+            ])
+        );
+
+        $validator->add(
+            'email',
+            new UniquenessValidator([
+                'allowEmpty' => 'true'
+            ])
+        );
 
         // check length for first/last namespace
-        $this->validate(new StringLengthValidator(array(
-            "field" => 'last_name',
+        $validator->add('last_name', new StringLengthValidator([
             'max' => 45,
             'min' => 2,
             'messageMaximum' => 'Last Name should be less than 45 characters in length',
             'messageMinimum' => 'Last Name should be greater than 2 characters in length'
-        )));
+        ]));
 
-        // check length for first/last namespace
-        $this->validate(new StringLengthValidator(array(
-            "field" => 'first_name',
+        $validator->add('first_name', new StringLengthValidator([
             'max' => 45,
             'min' => 2,
-            'messageMaximum' => 'First Name should be less than 45 characters in length',
-            'messageMinimum' => 'First Name should be greater than 2 characters in length'
-        )));
+            'messageMaximum' => 'Last Name should be less than 45 characters in length',
+            'messageMinimum' => 'Last Name should be greater than 2 characters in length'
+        ]));
 
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'gender',
-            'domain' => array(
+        $validator->add('gender', new InclusionInValidator([
+            'domain' => [
                 'Male',
                 'Female'
-            )
-        )));
+            ]
+        ]));
 
-        return $this->validationHasFailed() != true;
+        return $this->validate($validator);
     }
 
     /**

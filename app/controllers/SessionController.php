@@ -1,12 +1,14 @@
 <?php
 namespace PhalconRest\Controllers;
 
+use PhalconRest\Libraries\API\SecureController;
+
 /**
+ * Class SessionController
+ * @package PhalconRest\Controllers
+ *
  * extend from account specific controller
- *
- * @author jjenkins
- *
  */
-class SessionController extends \PhalconRest\Libraries\API\SecureController
+class SessionController extends SecureController
 {
 }

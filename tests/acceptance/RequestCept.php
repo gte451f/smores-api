@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('maybe test some specific GETS but the PUT/POST is done from Registrations');
+// maybe test some specific GETS but the PUT/POST is done from Registrations
 
 // attempt to login as Owner first
 $user = $I->login('Owner');

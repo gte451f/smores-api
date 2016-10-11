@@ -48,36 +48,39 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
+
+        // had some trouble with this....
+        // $this->belongsTo("owner_id", Owners::class, "user_id", ['alias' => 'Owners']);
         $this->belongsTo("owner_id", "PhalconRest\\Models\\Owners", "user_id", array(
             'alias' => 'Owners'
         ));
     }
 
     /**
-     * validatoni owern data
+     * validate number data
      */
-    public function validation()
-    {
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'phone_type',
-            'domain' => array(
-                'Mobile',
-                'Office',
-                'Home',
-                'Other'
-            )
-        )));
-
-        $this->validate(new StringLengthValidator(array(
-            "field" => 'number',
-            'max' => 15,
-            'min' => 10,
-            'messageMaximum' => 'A phone number must be less than 15',
-            'messageMinimum' => 'A phone number must be greater than 9'
-        )));
-
-        return $this->validationHasFailed() != true;
-    }
+//    public function validation()
+//    {
+//        $this->validate(new InclusionInValidator(array(
+//            'field' => 'phone_type',
+//            'domain' => array(
+//                'Mobile',
+//                'Office',
+//                'Home',
+//                'Other'
+//            )
+//        )));
+//
+//        $this->validate(new StringLengthValidator(array(
+//            "field" => 'number',
+//            'max' => 15,
+//            'min' => 10,
+//            'messageMaximum' => 'A phone number must be less than 15',
+//            'messageMinimum' => 'A phone number must be greater than 9'
+//        )));
+//
+//        return $this->validationHasFailed() != true;
+//    }
 
     /**
      * Independent Column Mapping.

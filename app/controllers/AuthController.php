@@ -3,15 +3,18 @@ namespace PhalconRest\Controllers;
 
 use \PhalconRest\Exception\HTTPException;
 use \PhalconRest\Exception\ValidationException;
+use Phalcon\Mvc\Controller;
 
 /**
+ * Class AuthController
+ * @package PhalconRest\Controllers
  */
-class AuthController extends \Phalcon\DI\Injectable
+class AuthController extends Controller
 {
 
     private $auth;
 
-    public function __construct()
+    public function onConstruct()
     {
         $di = \Phalcon\DI::getDefault();
         $this->setDI($di);
@@ -309,7 +312,7 @@ class AuthController extends \Phalcon\DI\Injectable
 
         if ($user) {
             $user->active = 1;
-            $user->code = NULL;
+            $user->code = null;
             $result = $user->save();
 
             // update account as well

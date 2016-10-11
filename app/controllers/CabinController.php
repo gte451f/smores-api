@@ -1,6 +1,12 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class CabinController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+/**
+ * Class CabinController
+ * @package PhalconRest\Controllers
+ */
+class CabinController extends SecureController
 {
 }

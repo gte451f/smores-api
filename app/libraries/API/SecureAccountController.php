@@ -1,13 +1,15 @@
 <?php
 namespace PhalconRest\Libraries\API;
 
+
+use \PhalconRest\API\SecureController as APISecureController;
 use \PhalconRest\Exception\HTTPException;
 
 /**
  * A specific secure controller for "account" oriented endpoints
  * includes a single function to enable account level security if the current user is of type "owner"
  */
-class SecureAccountController extends \PhalconRest\API\SecureController
+class SecureAccountController extends APISecureController
 {
 
     /**

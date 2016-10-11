@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class PaymentBatchController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+class PaymentBatchController extends SecureController
 {
 
     /**
@@ -9,10 +11,10 @@ class PaymentBatchController extends \PhalconRest\Libraries\API\SecureController
      *
      * @param string $parseQueryString
      */
-    public function __construct($parseQueryString = true)
+    public function onConstruct()
     {
         $this->pluralName = 'PaymentBatches';
         $this->singularName = 'PaymentBatch';
-        parent::__construct($parseQueryString);
+        parent::onConstruct();
     }
 }

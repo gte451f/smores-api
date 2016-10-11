@@ -1,12 +1,13 @@
 <?php
 namespace PhalconRest\Controllers;
 
+use PhalconRest\Libraries\API\SecureAccountController;
 /**
+ * Class ChargeController
+ * @package PhalconRest\Controllers
+ *
  * extend from account specific controller
- *
- * @author jjenkins
- *
  */
-class ChargeController extends \PhalconRest\Libraries\API\SecureAccountController
+class ChargeController extends SecureAccountController
 {
 }

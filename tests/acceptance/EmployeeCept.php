@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('Test Employee CRUD');
+// Test Employee CRUD
 
 $email = 'test' . rand(1, 8888) . '@test.com';
 

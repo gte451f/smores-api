@@ -1,6 +1,12 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class ProgramController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+/**
+ * Class ProgramController
+ * @package PhalconRest\Controllers
+ */
+class ProgramController extends SecureController
 {
 }

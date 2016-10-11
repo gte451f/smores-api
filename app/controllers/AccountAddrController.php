@@ -1,7 +1,13 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class AccountAddrController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+/**
+ * Class AccountAddrController
+ * @package PhalconRest\Controllers
+ */
+class AccountAddrController extends SecureController
 {
 
     /**

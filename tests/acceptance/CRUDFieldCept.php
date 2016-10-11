@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test Field CRUD operations');
+// test Field CRUD operations
 
 // attempt to login as Employee first
 $user = $I->login('Employee');

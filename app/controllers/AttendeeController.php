@@ -1,13 +1,14 @@
 <?php
 namespace PhalconRest\Controllers;
 
-/**
- * extend from account specific controller
- *
- * @author jjenkins
- *
- */
-class AttendeeController extends \PhalconRest\Libraries\API\SecureAccountController
-{
+use PhalconRest\Libraries\API\SecureAccountController;
 
+/**
+ * Class AttendeeController
+ * @package PhalconRest\Controllers
+ *
+ * extend from account specific controller
+ */
+class AttendeeController extends SecureAccountController
+{
 }

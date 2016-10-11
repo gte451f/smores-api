@@ -1,11 +1,13 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator;
-use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
-use Phalcon\Mvc\Model\Validator\Email as EmailValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
+use Phalcon\Validation\Validator\Numericality as NumericalityValidator;
 
-class Owners extends \PhalconRest\API\BaseModel
+
+class Owners extends BaseModel
 {
 
     /**
@@ -51,28 +53,37 @@ class Owners extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
+
+        $foo = Users::class;
+
         $this->hasOne("user_id", Users::class, "id", ['alias' => 'Users']);
         $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
-        $this->hasMany("user_id", OwnerNumbers::class, "owner_id", ['alias' => 'OwnerNumbers']);
-        $this->hasOne('user_id', CustomOwnerFields::class, 'user_id', ['alias' => 'CustomOwnerFields']);
+        $this->hasMany("user_id", "PhalconRest\\Models\\OwnerNumbers", "owner_id", ['alias' => 'OwnerNumbers']);
     }
 
     /**
-     * validation owner data
+     * validate owner data
      */
     public function validation()
     {
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'relationship',
-            'domain' => array(
+        $validator = new Validation();
+
+        $validator->add(['primary_contact'], new NumericalityValidator([
+            'message' => [
+                'message' => 'Primary Contact should be true or false.',
+            ]
+        ]));
+
+        $validator->add('relationship', new InclusionInValidator([
+            'domain' => [
                 'Mother',
                 'Father',
                 'Guardian',
                 'Grand Parent',
                 'Other'
-            )
-        )));
+            ]
+        ]));
 
-        return $this->validationHasFailed() != true;
+        return $this->validate($validator);
     }
 }

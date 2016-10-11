@@ -1,6 +1,12 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class EventController extends \PhalconRest\Libraries\API\SecureController
+use PhalconRest\Libraries\API\SecureController;
+
+/**
+ * Class EventController
+ * @package PhalconRest\Controllers
+ */
+class EventController extends SecureController
 {
 }

@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test basic Owner operations like GET/POST/PUT/DELETE');
+// test basic Owner operations like GET/POST/PUT/DELETE
 
 // attempt to login as Owner first
 $user = $I->login('Owner');
@@ -41,6 +41,15 @@ $I->sendPOST('owners', json_encode($newRecord));
 $I->seeResponseIsJson();
 $I->seeResponseCodeIs(201);
 $newOwnerID = $I->grabDataFromResponseByJsonPath('$.data.id');
+
+
+// now trip validation error
+$newRecord['data']['attributes']['first_name'] = '';
+$I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
+$I->sendPUT("owners/$newOwnerID[0]", json_encode($newRecord));
+$I->seeResponseIsJson();
+$I->seeResponseCodeIs(422);
+
 
 // add a phone number since it's so closely tied to an owner
 // the base owner record on which we'll modify before attempting various saves

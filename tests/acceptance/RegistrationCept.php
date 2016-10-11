@@ -1,6 +1,6 @@
 <?php
 $I = new AcceptanceTester($scenario);
-$I->wantTo('test basic registration requests');
+// test basic registration requests');
 
 // this should be a safe user record right?
 $attendeeId = 201;
@@ -14,16 +14,6 @@ $I->haveHttpHeader('X_AUTHORIZATION', "Token: {$user->attributes->token}");
 $I->sendGet("/registrations?attendees:account_id=$accountId&with=all");
 $I->seeResponseCodeIs(200);
 $I->seeResponseIsJson();
-
-//{"data":{
-//    "attributes":{"notes":null,"created-on":null,"updated-on":null},
-//    "relationships":{
-//        "attendee":{
-//            "data":{
-//                "type":"attendees","id":"201"
-//                }
-//        },"type":"registrations"}
-//}
 
 // the base registration record which we'll modify as we attempt various saves
 $newRegistration = [
