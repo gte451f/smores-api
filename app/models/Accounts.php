@@ -2,6 +2,7 @@
 namespace PhalconRest\Models;
 
 use Phalcon\Mvc\Model\Behavior\Timestampable as Timestampable;
+use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
 
 class Accounts extends \PhalconRest\API\BaseModel
 {
@@ -16,25 +17,13 @@ class Accounts extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $user_name;
+    public $notes;
 
     /**
      *
      * @var string
      */
-    public $password;
-
-    /**
-     *
-     * @var string
-     */
-    public $active;
-
-    /**
-     *
-     * @var number
-     */
-    public $code;
+    public $name;
 
     /**
      *
@@ -49,54 +38,106 @@ class Accounts extends \PhalconRest\API\BaseModel
     public $updated_on;
 
     /**
+     * the payment processors PKID
+     *
+     * @var string
+     */
+    public $external_id;
+
+    /**
+     *
+     * 0=Inactive | 1=Active
+     *
+     * @var int
+     */
+    public $active;
+
+    /**
      */
     public function initialize()
     {
-        $this->hasMany("id", "PhalconRest\Models\Owners", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Owners", "account_id", array(
             'alias' => 'Owners'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Attendees", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Attendees", "account_id", array(
             'alias' => 'Attendees'
         ));
-        $this->hasMany("id", "PhalconRest\Models\AccountAddrs", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\AccountAddrs", "account_id", array(
             'alias' => 'AccountAddrs'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Checks", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Checks", "account_id", array(
             'alias' => 'Checks'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Cards", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Cards", "account_id", array(
             'alias' => 'Cards'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Payments", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Payments", "account_id", array(
             'alias' => 'Payments'
         ));
-        $this->hasMany("id", "PhalconRest\Models\Charges", "account_id", array(
+        $this->hasMany("id", "PhalconRest\\Models\\Charges", "account_id", array(
             'alias' => 'Charges'
         ));
+
+        $this->hasOne('id', "PhalconRest\\Models\\CustomAccountFields", 'account_id', [
+            'alias' => 'CustomAccountFields'
+        ]);
     }
 
+    /**
+     * set created_on when inserting
+     */
     public function beforeValidationOnCreate()
     {
-        $this->created_on = date('Y-m-d');
+        if (! isset($this->created_on)) {
+            $this->created_on = date('Y-m-d');
+        }
         
-        // assign a random string to the code
-        $this->code = substr(md5(rand()), 0, 45);
-        $this->active = 'Inactive';
-        
-        // encrypt password
-        $security = $this->getDI()->get('security');
-        $this->password = $security->hash($this->password);
+        // all accounts start as "Inactive" and require activation
+        $this->active = 0;
     }
 
+    /**
+     * set updated on before updating
+     */
     public function beforeValidationOnUpdate()
     {
         $this->updated_on = date('Y-m-d');
-        
-        // only update the password if a new one is provided
-        if (strlen($this->password) >= 8 and strlen($this->password) !== 60) {
-            // encrypt password
-            $security = $this->getDI()->get('security');
-            $this->password = $security->hash($this->password);
+    }
+
+    /**
+     * validate that notes isn't too long
+     */
+    public function validation()
+    {
+        $this->validate(new StringLengthValidator(array(
+            "field" => 'notes',
+            'max' => 500,
+            'min' => 0,
+            'messageMaximum' => 'Notes field is too long, please enter a value less than 500 characters in length',
+            'messageMinimum' => 'This should never display',
+            'allowEmpty' => true
+        )));
+
+        return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns($withParents = true)
+    {
+        $blockColumns = [];
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'external_id';
         }
+        $this->setBlockColumns($blockColumns, true);
     }
 }

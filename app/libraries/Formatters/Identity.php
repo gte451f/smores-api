@@ -8,9 +8,9 @@ class Identity
 {
 
     /**
-     * mask the first 5 numbers and retun only the last 4
+     * mask the first 5 numbers and return only the last 4
      *
-     * @param string $ssn            
+     * @param string $ssn
      * @param string $reveal
      *            show the full social?
      * @return string
@@ -18,6 +18,6 @@ class Identity
     function maskSSN($ssn, $reveal = false)
     {
         if ($reveal == false)
-            return '###-##-' . substr($ssn, - 4);
+            return '###-##-' . substr($ssn, -4);
     }
 }

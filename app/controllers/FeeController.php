@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class FeeController extends \PhalconRest\API\BaseController
+class FeeController extends \PhalconRest\Libraries\API\SecureController
 {
 }

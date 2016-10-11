@@ -1,6 +1,12 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class CardController extends \PhalconRest\API\BaseController
+/**
+ * extend from account specific controller
+ *
+ * @author jjenkins
+ *
+ */
+class CardController extends \PhalconRest\Libraries\API\SecureAccountController
 {
 }

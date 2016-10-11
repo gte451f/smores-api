@@ -1,11 +1,19 @@
+# zend studio files
 /.buildpath
 /.project
 /.settings/
+
+# composer
 /vendor/
-/composer.lock
+
+# zend debugger file
+/dummy.php
+
+#phpstorm
+/.idea
+
 /deployment.properties
 /deployment.xml
-
 
 # ingnore mysql schema builder bak file
 *.bak
@@ -52,8 +60,4 @@
 ehthumbs.db
 Thumbs.db
 
-# testing cruft
 tests/_output/*
-
-# for private work
-/util/

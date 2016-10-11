@@ -1,6 +1,10 @@
 <?php
 namespace PhalconRest\Models;
 
+use Phalcon\Mvc\Model\Validator;
+use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
+use Phalcon\Mvc\Model\Validator\Email as EmailValidator;
+
 class Owners extends \PhalconRest\API\BaseModel
 {
 
@@ -18,7 +22,7 @@ class Owners extends \PhalconRest\API\BaseModel
 
     /**
      * 0 | 1
-     * 
+     *
      * @var integer
      */
     public $primary_contact;
@@ -28,7 +32,14 @@ class Owners extends \PhalconRest\API\BaseModel
      *
      * @var string
      */
-    public $relation;
+    public $relationship;
+
+    /**
+     * this model's parent model
+     *
+     * @var string
+     */
+    public static $parentModel = 'Users';
 
     /**
      * define custom model relationships
@@ -40,21 +51,28 @@ class Owners extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\Models\Users", "id", array(
-            'alias' => 'Users'
-        ));
-        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
-            'alias' => 'Accounts'
-        ));
+        $this->hasOne("user_id", Users::class, "id", ['alias' => 'Users']);
+        $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
+        $this->hasMany("user_id", OwnerNumbers::class, "owner_id", ['alias' => 'OwnerNumbers']);
+        $this->hasOne('user_id', CustomOwnerFields::class, 'user_id', ['alias' => 'CustomOwnerFields']);
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\BaseModel::getParentModel()
+     * validation owner data
      */
-    public function getParentModel()
+    public function validation()
     {
-        return 'Users';
+        $this->validate(new InclusionInValidator(array(
+            'field' => 'relationship',
+            'domain' => array(
+                'Mother',
+                'Father',
+                'Guardian',
+                'Grand Parent',
+                'Other'
+            )
+        )));
+
+        return $this->validationHasFailed() != true;
     }
 }

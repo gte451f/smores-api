@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class SessionEntity extends \PhalconRest\API\Entity
+class SessionEntity extends \PhalconRest\Libraries\API\Entity
 {
 }

@@ -1,23 +1,40 @@
 <?php
 error_reporting(E_ALL);
 
-// Override production configs for staging environment
-// app/config/staging.php
-$staging = [
+// define security roles
+define("PORTAL_USER", "Portal - User");
+define("ADMIN_USER", "System - Administrator");
+
+// Override default configs for staging environment
+$environmentConfig = [
     'application' => [
-        'cacheDir' => '/tmp/cache/',
-        'publicUrl' => 'http://localhost:8080/phalcon-json-api/',
-        'debugApp' => true
+        // where to store cache related files
+        'cacheDir' => '/tmp/',
+        // FQDN
+        'publicUrl' => 'http://smores.dev:8080',
+        // probalby the same FQDN
+        'corsOrigin' => 'https://smores.dev:8080',
+        // should the api return additional meta data and enable additional server loggin?
+        'debugApp' => true,
+        // where should system temp files go?
+        'tempDir' => '/tmp/',
+        // where should app generated logs be stored?
+        'loggingDir' => '/tmp/'
     ],
-    // enable security?
-    'security' => true,
+    // enable security for controllers marked as secure?
     'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
         'username' => 'api',
         'password' => 'api',
-        'dbname' => 'smores'
+        'dbname' => 'smores',
+        'charset' => 'utf8'
     ],
+    // used as a system wide prefix to all file storage paths
+    'fileStorage' => [
+        'basePath' => '/tmp/'
+    ]
 ];
 
-return $staging;
+// load defined security rules based on current environment
+return array_merge_recursive_replace($staging, require('security_rules/staging.php'));

@@ -1,0 +1,12 @@
+# codeception
+# ignore environmental specific testing directories
+#
+
+#
+# may need to run something like...
+# php vendor/codeception/codeception/codecept build
+# ... to rebuild _support directory
+#
+
+/_output/
+/_support/_generated/

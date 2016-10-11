@@ -1,6 +1,6 @@
 <?php
 namespace PhalconRest\Entities;
 
-class CheckEntity extends \PhalconRest\API\Entity
+class CheckEntity extends \PhalconRest\Libraries\API\Entity
 {
 }

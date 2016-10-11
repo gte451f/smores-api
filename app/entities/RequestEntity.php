@@ -1,9 +1,9 @@
 <?php
 namespace PhalconRest\Entities;
 
-use \PhalconRest\Util\ValidationException;
+use \PhalconRest\Exception\ValidationException;
 
-class RequestEntity extends \PhalconRest\API\Entity
+class RequestEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
@@ -34,7 +34,7 @@ class RequestEntity extends \PhalconRest\API\Entity
     public function afterSave($object, $id)
     {
         $request = $this->model->findFirst($id);
-        
+
         $this->toggleFees($request);
     }
 
@@ -42,16 +42,16 @@ class RequestEntity extends \PhalconRest\API\Entity
      * for a given request, will toggle fees on/off depeneding on the request status
      * will take care not to duplicate fees that are already applied
      *
-     * @param \PhalconRest\Models\Request $request            
+     * @param \PhalconRest\Models\Request $request
      */
     private function toggleFees(\PhalconRest\Models\Requests $request)
     {
-        
+
         // are we on or off?
         if ($request->submit_status == self::CONFIRMED) {
-            
+
             $fees = $this->getFees($request);
-            
+
             foreach ($fees as $fee) {
                 $charge = new \PhalconRest\Models\Charges();
                 $charge->registration_id = $request->registration_id;
@@ -60,10 +60,10 @@ class RequestEntity extends \PhalconRest\API\Entity
                 $charge->amount = $fee['amount'];
                 $attendee = $request->Registrations->Attendees;
                 $charge->account_id = $attendee->account_id;
-                
-                if ($charge->create() == false) {
-                    throw new ValidationException("Internal error saving a request.  This error has been logged.", array(
-                        'internalCode' => '45623457456987986',
+
+                if (!$charge->create()) {
+                    throw new ValidationException("Internal error saving a request", array(
+                        'code' => '45623457456987986',
                         'dev' => 'Error while processing RequestEntity->toggleFee().  Could not create Charge record.'
                     ), $charge->getMessages());
                 }
@@ -71,9 +71,9 @@ class RequestEntity extends \PhalconRest\API\Entity
         } else {
             // remove fees
             foreach (\PhalconRest\Models\Charges::find("request_id=$request->id") as $charge) {
-                if ($charge->delete() == false) {
-                    throw new ValidationException("Internal error clearing out charges.  This error has been logged.", array(
-                        'internalCode' => '234546678345',
+                if (!$charge->delete()) {
+                    throw new ValidationException("Internal error clearing out charges", array(
+                        'code' => '234546678345',
                         'dev' => 'Error while attempting to delete a charge for a request that is no longer CONFIRMED.'
                     ), $charge->getMessages());
                 }
@@ -84,7 +84,7 @@ class RequestEntity extends \PhalconRest\API\Entity
     /**
      * for a given request model, load up any fees that should be applied when CONFIRMED
      *
-     * @param \PhalconRest\Models\Requests $request            
+     * @param \PhalconRest\Models\Requests $request
      * @return array
      */
     final public function getFees(\PhalconRest\Models\Requests $request)
@@ -92,23 +92,57 @@ class RequestEntity extends \PhalconRest\API\Entity
         // apply fees
         $event = $request->Events;
         $program = $event->Programs;
-        
+
         $fees = array();
-        
+
         if ($event->fee > 0) {
             $fees[] = array(
                 'amount' => $event->fee,
                 'name' => $event->fee_description
             );
         }
-        
+
         if ($program->fee > 0) {
             $fees[] = array(
                 'amount' => $program->fee,
                 'name' => $program->name . ' Fee'
             );
         }
-        
+
         return $fees;
+    }
+
+    /**
+     * custom implimentation of account filter
+     * must filter through related registration - attendee records
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\Libraries\API\Entity::applyAccountFilter()
+     */
+    public function applyAccountFilter($query)
+    {
+        // load current account
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+        // add custom filter
+        $query->andWhere("Attendees.account_id = $currentUser->accountId");
+
+        // only add needed join if it isn't already in place
+        $applyJoin = true;
+        foreach ($this->activeRelations as $alias => $relation) {
+            if ($alias == 'Registrations') {
+                $applyJoin = false;
+                break;
+            }
+        }
+        if ($applyJoin) {
+            $query->join('PhalconRest\Models\Registrations', "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
+        }
+
+        // use registration to reach attendees for the filter
+        $query->join('PhalconRest\Models\Attendees', "Registrations.attendee_id = Attendees.user_id", "Attendees");
+        return $query;
     }
 }

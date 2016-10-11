@@ -3,7 +3,7 @@ namespace PhalconRest\Libraries\Authentication;
 
 use Phalcon\DI\Injectable;
 use \PhalconRest\Libraries\Authentication\UserProfile;
-use \PhalconRest\Util\HTTPException;
+use \PhalconRest\Exception\HTTPException;
 use \PhalconRest\Models\Users;
 use \PhalconRest\Models\PhalconRest\Models;
 
@@ -12,7 +12,7 @@ use \PhalconRest\Models\PhalconRest\Models;
  * into the PhalconREST API
  *
  * @author jjenkins
- *        
+ *
  */
 final class Local extends Injectable implements \PhalconRest\Authentication\AdapterInterface
 {
@@ -23,8 +23,6 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
      * @var string
      */
     public $errorMessage;
-
-    private $params;
 
     private $di;
 
@@ -37,15 +35,15 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
     /**
      * check the username & password against the local user table source
      *
-     * @param string $user_name            
-     * @param false $password            
+     * @param string $email
+     * @param false $password
      * @return boolean
      */
-    function authenticate($userName, $password)
+    function authenticate($email, $password)
     {
-        $users = \PhalconRest\Models\Employees::find(array(
-            "user_name = '$userName'",
-            "active" => "Active"
+        $users = \PhalconRest\Models\Users::find(array(
+            "email = '$email'",
+            "active" => 1
         ));
         switch ($users->count()) {
             case 1:
@@ -59,7 +57,7 @@ final class Local extends Injectable implements \PhalconRest\Authentication\Adap
                     return false;
                 }
                 break;
-            
+
             default:
                 // to many user accounts found
                 return false;

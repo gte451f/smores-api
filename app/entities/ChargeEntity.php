@@ -1,7 +1,7 @@
 <?php
 namespace PhalconRest\Entities;
 
-class ChargeEntity extends \PhalconRest\API\Entity
+class ChargeEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
@@ -11,13 +11,23 @@ class ChargeEntity extends \PhalconRest\API\Entity
      *
      * @see \PhalconRest\API\Entity::beforeSave()
      */
-    function beforeSave($object, $id)
+    function beforeSave($object, $id = null)
     {
+        // auto populate a name if fee is specified
         if ($object->fee_id > 0 and strlen($object->name) == 0) {
             $fee = \PhalconRest\Models\Fees::findFirst($object->fee_id);
             $object->name = $fee->name;
         }
-        
+        // auto populate amount if a fee is specified
+        if ($object->fee_id > 0 and $object->amount <= 0) {
+            $fee = \PhalconRest\Models\Fees::findFirst($object->fee_id);
+            $object->amount = $fee->amount;
+        }
+        // auto connect user_id if a registration is provided
+        if ($object->registration_id > 0 and $object->user_id <= 0) {
+            $registration = \PhalconRest\Models\Registrations::findFirst($object->registration_id);
+            $object->user_id = $registration->attendee_id;
+        }
         return $object;
     }
 }

@@ -1,6 +1,11 @@
 <?php
 namespace PhalconRest\Models;
 
+use Phalcon\Mvc\Model\Validator\Uniqueness;
+use Phalcon\Mvc\Model\Validator\PresenceOf;
+use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
+use Phalcon\Mvc\Model\Validator\InclusionIn;
+
 class Cards extends \PhalconRest\API\BaseModel
 {
 
@@ -78,12 +83,71 @@ class Cards extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\Models\Accounts", "id", array(
+        $this->belongsTo("account_id", 'PhalconRest\Models\Accounts', "id", array(
             'alias' => 'Accounts'
         ));
-        
-        $this->hasMany("id", "PhalconRest\Models\Payments", "card_id", array(
+
+        $this->hasMany("id", 'PhalconRest\Models\Payments', "card_id", array(
             'alias' => 'Payments'
         ));
+    }
+
+    /**
+     * set any default values before we create a new record
+     */
+    public function beforeValidationOnCreate()
+    {
+        $this->created_on = date('Y-m-d H:i:s');
+    }
+
+    public function validation()
+    {
+        // make sure this credit card number isn't already in the table
+        // remove this since we only store the last four digits which will collide with other records
+        // $this->validate(new Uniqueness(array(
+        // "field" => 'number'
+        // )));
+        $this->validate(new StringLengthValidator(array(
+            'field' => 'name_on_card',
+            'min' => 2,
+            'max' => 45,
+            'messageMinimum' => 'Name on card is to short, it must be at least 2 characters long.',
+            'messageMaximum' => 'Name on card is to long, it must be shorter than 45 characters long'
+        )));
+
+        $this->validate(new InclusionIn(array(
+            "field" => 'vendor',
+            'message' => 'Card vendor must be one of the following: American Express, Visa or Master Card',
+            'domain' => [
+                "amex",
+                "visa",
+                "mastercard",
+                "discover",
+                'dinersclub',
+                'jcb'
+            ]
+        )));
+
+        return $this->validationHasFailed() != true;
+    }
+
+    /**
+     * dynamic toggle fields based on who is asking
+     *
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\BaseModel::loadBlockColumns()
+     */
+    public function loadBlockColumns($withParents = true)
+    {
+        $blockColumns = [];
+        $currentUser = $this->getDI()
+            ->get('auth')
+            ->getProfile();
+
+        if ($currentUser->userType != 'Employee') {
+            $blockColumns[] = 'external_id';
+        }
+        $this->setBlockColumns($blockColumns, true);
     }
 }

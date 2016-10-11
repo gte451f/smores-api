@@ -1,6 +1,12 @@
 <?php
 namespace PhalconRest\Controllers;
 
-class CheckController extends \PhalconRest\API\BaseController
+/**
+ * extend from account specific controller
+ *
+ * @author jjenkins
+ *
+ */
+class CheckController extends \PhalconRest\Libraries\API\SecureAccountController
 {
 }

@@ -1,17 +1,20 @@
 # Codeception Test Suite Configuration
-
-# suite for acceptance tests.
-# perform tests in browser using the WebDriver or PhpBrowser.
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser
-        - AcceptanceHelper
-        - REST
-    config:
-        PhpBrowser:
-            url: 'http://localhost/smores-api/'
-        REST:
-            url: 'http://localhost/smores-api/v1/'
+        - PhpBrowser:
+            url: http://localhost/myapp
+            # use this when testing OUTSIDE the container
+            # url: 'http://localhost:8080/v1/'
+            # use this when testing INSIDE the container
+            url: 'http://172.17.0.1:8080/v1/'
+        - \Helper\Acceptance
+        - REST:
+            depends: PhpBrowser
+            # url: 'http://localhost:8080/v1/'
+            url: 'http://172.17.0.1:8080/v1/'

@@ -1,51 +1,39 @@
 <?php
 namespace PhalconRest\Entities;
 
-class EmployeeEntity extends \PhalconRest\API\Entity
+class EmployeeEntity extends \PhalconRest\Libraries\API\Entity
 {
 
     /**
-     * most direct way to customize the result set
-     * add a fake ID field to the result set since an ID is required by Ember Data
+     * auto assign user_type to form
      *
-     * (non-PHPdoc)
+     * {@inheritDoc}
      *
-     * @see \PhalconRest\API\Entity::filterFields()
+     * @see \PhalconRest\API\Entity::beforeSave()
      */
-    protected function filterFields($baseArray)
+    public function beforeSave($object, $id = null)
     {
-        $baseArray['id'] = $baseArray['user_id'];
-        return parent::filterFields($baseArray);
+        // extend me in child class
+        $object->user_type = 'Employee';
+
+        return $object;
     }
 
     /**
-     * prevent some fields from appearing in the result set
-     * (non-PHPdoc)
+     * remove user record
+     * really renders the subsequent delete worthless, but this is the cleanest way to avoid partial deletes
      *
-     * @see \PhalconRest\API\Entity::configureSearchHelper()
+     * {@inheritDoc}
+     *
+     * @see \PhalconRest\API\Entity::beforeDelete()
+     * @param \PhalconRest\API\BaseModel $model
      */
-    final public function configureSearchHelper()
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
-        $this->searchHelper->entityBlockFields[] = 'password';
-        $this->searchHelper->entityBlockFields[] = 'salt';
-    }
-
-    /**
-     * protect existing password if no new password is provided
-     * never allow a new salt to be set
-     *
-     * (non-PHPdoc)
-     *
-     * @see \PhalconRest\API\Entity::simpleSave()
-     */
-    function simpleSave($model, $object)
-    {
-        $foo = 1;
-        if (strlen($object->password) == 0) {
-            $object->password = $model->password;
+        // extend me in child class
+        $user = $model->users;
+        if ($user) {
+            $user->delete();
         }
-        $object->salt = $model->salt;
-        
-        return parent::simpleSave($model, $object);
     }
 }
