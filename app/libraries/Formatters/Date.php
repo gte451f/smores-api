@@ -21,7 +21,7 @@ class Date
             case '':
             case '--':
             case '//':
-            case NULL:
+            case null:
             case '0000-00-00':
             case '0000-00-00 00:00:00':
                 return '&nbsp;';
@@ -46,7 +46,7 @@ class Date
             case '':
             case '--':
             case '//':
-            case NULL:
+            case null:
             case '0000-00-00':
             case '0000-00-00 00:00:00':
                 return '&nbsp;';

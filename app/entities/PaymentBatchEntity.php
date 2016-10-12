@@ -28,10 +28,11 @@ class PaymentBatchEntity extends \PhalconRest\Libraries\API\Entity
     {
         foreach ($model->payments as $payment) {
             if ($payment->status == 'Paid' or $payment->status == 'Refunded') {
-                throw new HTTPException("Unable to delete this Payment Batch, it has processed payments associated with it.", 500, array(
-                    'dev' => "Attempted to delete a payment batch with valid payments (Paided|Refunded)",
-                    'code' => '4648464684684864'
-                ));
+                throw new HTTPException("Unable to delete this Payment Batch, it has processed payments associated with it.",
+                    500, array(
+                        'dev' => "Attempted to delete a payment batch with valid payments (Paided|Refunded)",
+                        'code' => '4648464684684864'
+                    ));
             }
         }
 

@@ -17,7 +17,8 @@ class Identity
      */
     function maskSSN($ssn, $reveal = false)
     {
-        if ($reveal == false)
+        if ($reveal == false) {
             return '###-##-' . substr($ssn, -4);
+        }
     }
 }

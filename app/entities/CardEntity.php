@@ -94,7 +94,7 @@ class CardEntity extends \PhalconRest\Libraries\API\Entity
      * @see \PhalconRest\API\Entity::beforeDelete()
      * @param BaseModel $model
      */
-    public function beforeDelete( \PhalconRest\API\BaseModel $model)
+    public function beforeDelete(\PhalconRest\API\BaseModel $model)
     {
         $processor = $this->getDI()->get('paymentProcessor');
         $processor->deleteCard($model->external_id);

@@ -102,7 +102,7 @@ class PaymentEntity extends \PhalconRest\Libraries\API\Entity
         }
 
         // prevent delete of non-refunded credit card payment
-        if ($model->mode == 'Credit' and $model->external_id != NULL) {
+        if ($model->mode == 'Credit' and $model->external_id != null) {
             throw new \Exception('Blocked attempt to delete payment with valid charge');
         }
     }

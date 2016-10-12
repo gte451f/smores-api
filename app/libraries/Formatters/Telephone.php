@@ -110,7 +110,8 @@ class Telephone
             case 11:
 
                 // Format: x(xxx) xxx-xxxx
-                return preg_replace("/([0-9a-zA-Z]{1})([0-9a-zA-Z]{3})([0-9a-zA-Z]{3})([0-9a-zA-Z]{4})/", "$1($2) $3-$4", $phone);
+                return preg_replace("/([0-9a-zA-Z]{1})([0-9a-zA-Z]{3})([0-9a-zA-Z]{3})([0-9a-zA-Z]{4})/",
+                    "$1($2) $3-$4", $phone);
             default:
 
                 // Return original phone if not 7, 10 or 11 digits long

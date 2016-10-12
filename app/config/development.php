@@ -39,7 +39,7 @@ $environmentConfig = [
     // if security is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // demo@smores.camp
-     'securityUserId' => 595,
+    'securityUserId' => 595,
     // admin@smores.camp
     //'securityUserId' => 768,
 

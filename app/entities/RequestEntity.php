@@ -138,7 +138,8 @@ class RequestEntity extends \PhalconRest\Libraries\API\Entity
             }
         }
         if ($applyJoin) {
-            $query->join('PhalconRest\Models\Registrations', "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
+            $query->join('PhalconRest\Models\Registrations',
+                "Registrations.id = PhalconRest\\Models\\Requests.registration_id", "Registrations");
         }
 
         // use registration to reach attendees for the filter

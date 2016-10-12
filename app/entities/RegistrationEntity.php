@@ -96,7 +96,8 @@ class RegistrationEntity extends Entity
             }
         }
         if ($applyJoin) {
-            $query->join('PhalconRest\Models\Attendees', 'Attendees.user_id = PhalconRest\Models\Registrations.attendee_id', "Attendees");
+            $query->join('PhalconRest\Models\Attendees',
+                'Attendees.user_id = PhalconRest\Models\Registrations.attendee_id', "Attendees");
         }
         return $query;
     }

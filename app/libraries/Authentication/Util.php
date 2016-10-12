@@ -31,7 +31,7 @@ class Util extends Injectable
             // $account = $accounts->getFirst();
             $user->active = 1;
             $user->password = $password;
-            $user->code = NULL;
+            $user->code = null;
 
             // update record
             if ($user->save() == false) {

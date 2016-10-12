@@ -2,6 +2,7 @@
 namespace PhalconRest\Models;
 
 use PhalconRest\API\BaseModel;
+
 /**
  * backed by an ever changing view
  * see Fields controller for more
