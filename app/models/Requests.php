@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Requests extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Requests extends BaseModel
 {
 
     /**
@@ -58,13 +60,8 @@ class Requests extends \PhalconRest\API\BaseModel
     {
         parent::initialize();
 
-        $this->belongsTo('registration_id', 'PhalconRest\Models\Registrations', 'id', array(
-            'alias' => 'Registrations'
-        ));
-
-        $this->belongsTo('event_id', 'PhalconRest\Models\Events', 'id', array(
-            'alias' => 'Events'
-        ));
+        $this->belongsTo('registration_id', Registrations::class, 'id', ['alias' => 'Registrations']);
+        $this->belongsTo('event_id', Events::class, 'id', ['alias' => 'Events']);
     }
 
     public function beforeValidationOnCreate()

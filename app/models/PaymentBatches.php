@@ -56,13 +56,8 @@ class PaymentBatches extends \PhalconRest\API\BaseModel
         $this->singularTableName = 'payment_batch';
 
         parent::initialize();
-        $this->hasMany("batch_id", "PhalconRest\\Models\\Payments", "payment_batch_id", array(
-            'alias' => 'Payments'
-        ));
-
-        $this->hasOne("batch_id", "PhalconRest\\Models\\Batches", "id", array(
-            'alias' => 'Batches'
-        ));
+        $this->hasMany("batch_id", Payments::class, "payment_batch_id", ['alias' => 'Payments']);
+        $this->hasOne("batch_id", Batches::class, "id", ['alias' => 'Batches']);
     }
 
     /**

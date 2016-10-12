@@ -4,7 +4,6 @@ namespace PhalconRest\Models;
 use PhalconRest\API\BaseModel;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
-use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
 use Phalcon\Validation\Validator\Numericality as NumericalityValidator;
 
 
@@ -46,9 +45,7 @@ class Programs extends BaseModel
     {
         parent::initialize();
 
-        $this->hasMany("id", "PhalconRest\\Models\\Events", "program_id", array(
-            'alias' => 'Events'
-        ));
+        $this->hasMany("id", Events::class, "program_id", ['alias' => 'Events']);
     }
 
     public function validation()

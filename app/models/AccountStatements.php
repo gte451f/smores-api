@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class AccountStatements extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class AccountStatements extends BaseModel
 {
 
     /**
@@ -17,8 +19,7 @@ class AccountStatements extends \PhalconRest\API\BaseModel
     public $account_id;
 
     /**
-     *
-     * @var integer
+     * @var
      */
     public $statement_batch_id;
 
@@ -32,13 +33,7 @@ class AccountStatements extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->belongsTo('account_id', 'PhalconRest\Models\Accounts', 'id', array(
-            'alias' => 'Accounts'
-        ));
-
-        $this->belongsTo('statement_batch_id', 'PhalconRest\Models\StatementBatches', 'id', array(
-            'alias' => 'StatementBatches'
-        ));
+        $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
+        $this->belongsTo('statement_batch_id', StatementBatches::class, 'batch_id', ['alias' => 'StatementBatches']);
     }
 }

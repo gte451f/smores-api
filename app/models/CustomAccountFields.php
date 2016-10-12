@@ -1,6 +1,8 @@
 <?php
 namespace PhalconRest\Models;
 
+use PhalconRest\API\BaseModel;
+
 /**
  * backed by an ever changing view
  * see Fields controller for more
@@ -8,7 +10,7 @@ namespace PhalconRest\Models;
  * @author jjenkins
  *
  */
-class CustomAccountFields extends \PhalconRest\API\BaseModel
+class CustomAccountFields extends BaseModel
 {
 
     /**
@@ -25,10 +27,7 @@ class CustomAccountFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
-            'alias' => 'Accounts'
-        ));
+        $this->belongsTo("account_id", Accounts::class, "id", ['alias' => 'Accounts']);
     }
 
     /**

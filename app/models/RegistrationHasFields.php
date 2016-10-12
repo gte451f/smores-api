@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class RegistrationHasFields extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class RegistrationHasFields extends BaseModel
 {
 
     /**
@@ -38,12 +40,7 @@ class RegistrationHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("registration_id", "PhalconRest\\Models\\Registration", "id", array(
-            'alias' => 'Registrations'
-        ));
-
-        $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
-            'alias' => 'Fields'
-        ));
+        $this->hasOne("registration_id", Registration::class, "id", ['alias' => 'Registrations']);
+        $this->belongsTo('field_id', Fields::class, 'id', ['alias' => 'Fields']);
     }
 }

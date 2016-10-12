@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class AccountHasFields extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class AccountHasFields extends BaseModel
 {
 
     /**

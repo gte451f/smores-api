@@ -50,7 +50,8 @@ $newOwner = [
             'email' => 'some_unique_email@address.com',
             'relationship' => 'Father',
             'primary' => 0,
-            'gender' => 'Male'
+            'gender' => 'Male',
+            'primary_contact' => 1
         ],
         'relationships' => [
             'account' => ['data' => ['id' => $newAccountID[0], 'accounts']]

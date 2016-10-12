@@ -1,11 +1,14 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator;
-use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
 
-class OwnerNumbers extends \PhalconRest\API\BaseModel
+;
+
+class OwnerNumbers extends BaseModel
 {
 
     /**
@@ -48,39 +51,40 @@ class OwnerNumbers extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        // had some trouble with this....
-        // $this->belongsTo("owner_id", Owners::class, "user_id", ['alias' => 'Owners']);
-        $this->belongsTo("owner_id", "PhalconRest\\Models\\Owners", "user_id", array(
-            'alias' => 'Owners'
-        ));
+        $this->belongsTo("owner_id", Owners::class, "user_id", ['alias' => 'Owners']);
     }
 
     /**
      * validate number data
      */
-//    public function validation()
-//    {
-//        $this->validate(new InclusionInValidator(array(
-//            'field' => 'phone_type',
-//            'domain' => array(
-//                'Mobile',
-//                'Office',
-//                'Home',
-//                'Other'
-//            )
-//        )));
-//
-//        $this->validate(new StringLengthValidator(array(
-//            "field" => 'number',
-//            'max' => 15,
-//            'min' => 10,
-//            'messageMaximum' => 'A phone number must be less than 15',
-//            'messageMinimum' => 'A phone number must be greater than 9'
-//        )));
-//
-//        return $this->validationHasFailed() != true;
-//    }
+    public function validation()
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            'phone_type',
+            new InclusionInValidator([
+                'domain' => array(
+                    'Mobile',
+                    'Office',
+                    'Home',
+                    'Other'
+                )
+            ])
+        );
+
+        $validator->add(
+            'number',
+            new StringLengthValidator([
+                'max' => 15,
+                'min' => 10,
+                'messageMaximum' => 'A phone number must be less than 15',
+                'messageMinimum' => 'A phone number must be greater than 9'
+            ])
+        );
+
+        return $this->validate($validator);
+    }
 
     /**
      * Independent Column Mapping.

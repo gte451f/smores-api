@@ -13,7 +13,7 @@ $newRecord = [
             'last_name' => 'jane',
             'email' => 'unique@email.com',
             'relationship' => 'Mother',
-            'primary-contact' => 1,
+            'primary_contact' => 1,
             'dob' => '1911-02-10',
             'gender' => 'Female'
         ],

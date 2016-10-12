@@ -53,12 +53,9 @@ class Owners extends BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $foo = Users::class;
-
         $this->hasOne("user_id", Users::class, "id", ['alias' => 'Users']);
         $this->belongsTo('account_id', Accounts::class, 'id', ['alias' => 'Accounts']);
-        $this->hasMany("user_id", "PhalconRest\\Models\\OwnerNumbers", "owner_id", ['alias' => 'OwnerNumbers']);
+        $this->hasMany("user_id", OwnerNumbers::class, "owner_id", ['alias' => 'OwnerNumbers']);
     }
 
     /**

@@ -1,10 +1,12 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\InclusionIn;
-use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Numericality as NumericalityValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
 
-class Batches extends \PhalconRest\API\BaseModel
+class Batches extends BaseModel
 {
 
     /**
@@ -57,20 +59,14 @@ class Batches extends \PhalconRest\API\BaseModel
         $this->singularTableName = 'batch';
 
         parent::initialize();
-
-        $this->belongsTo("created_by_id", "PhalconRest\\Models\\Users", "id", array(
-            'alias' => 'Users'
-        ));
-
-        $this->hasOne('id', 'PhalconRest\Models\PaymentBatches', 'batch_id', array(
-            'alias' => 'PaymentBatches'
-        ));
-
-        $this->hasOne('id', 'PhalconRest\Models\StatementBatches', 'batch_id', array(
-            'alias' => 'StatementBatches'
-        ));
+        $this->belongsTo("created_by_id", Users::class, "id", ['alias' => 'Users']);
+        $this->hasOne('id', PaymentBatches::class, 'batch_id', ['alias' => 'PaymentBatches']);
+        $this->hasOne('id', StatementBatches::class, 'batch_id', ['alias' => 'StatementBatches']);
     }
 
+    /**
+     * pre-set a few required values
+     */
     public function beforeValidationOnCreate()
     {
         $this->created_on = date('Y-m-d H:i:s');
@@ -90,30 +86,37 @@ class Batches extends \PhalconRest\API\BaseModel
      */
     public function validation()
     {
-        $this->validate(new InclusionIn(array(
-            "field" => 'min_type',
-            'message' => 'Batch must include a minimum payment type.',
-            'domain' => [
-                "Total",
-                "Outstanding",
-                "Flat"
-            ]
-        )));
+        $validator = new Validation();
 
-        $this->validate(new NumericalityValidator(array(
-            "field" => 'min_amount'
-        )));
+        $validator->add(
+            'min_type',
+            new InclusionInValidator([
+                'message' => 'Batch must include a minimum payment type.',
+                'domain' => [
+                    "Total",
+                    "Outstanding",
+                    "Flat"
+                ]
+            ])
+        );
 
-        $this->validate(new InclusionIn(array(
-            "field" => 'status',
-            'message' => 'Status must be one of the following:',
-            'domain' => [
-                "New",
-                "In Progress",
-                "Complete"
-            ]
-        )));
+        $validator->add(
+            'min_amount',
+            new NumericalityValidator([])
+        );
 
-        return $this->validationHasFailed() != true;
+        $validator->add(
+            'status',
+            new InclusionInValidator([
+                'message' => 'Status must be one of the following:',
+                'domain' => [
+                    "New",
+                    "In Progress",
+                    "Complete"
+                ]
+            ])
+        );
+
+        return $this->validate($validator);
     }
 }

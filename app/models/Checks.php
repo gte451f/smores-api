@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Checks extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Checks extends BaseModel
 {
 
     /**
@@ -54,13 +56,8 @@ class Checks extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
-            'alias' => 'Accounts'
-        ));
-
+        $this->belongsTo("account_id", Accounts::class, "id", ['alias' => 'Accounts']);
         // written as a has one because the api wants to save the parent but that's not how ember works
-        $this->hasMany("id", "PhalconRest\\Models\\Payments", "check_id", array(
-            'alias' => 'Payments'
-        ));
+        $this->hasMany("id", Payments::class, "check_id", ['alias' => 'Payments']);
     }
 }

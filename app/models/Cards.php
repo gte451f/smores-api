@@ -1,12 +1,13 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\Uniqueness;
-use Phalcon\Mvc\Model\Validator\PresenceOf;
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
-use Phalcon\Mvc\Model\Validator\InclusionIn;
 
-class Cards extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
+
+class Cards extends BaseModel
 {
 
     /**
@@ -83,13 +84,8 @@ class Cards extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", 'PhalconRest\Models\Accounts', "id", array(
-            'alias' => 'Accounts'
-        ));
-
-        $this->hasMany("id", 'PhalconRest\Models\Payments', "card_id", array(
-            'alias' => 'Payments'
-        ));
+        $this->belongsTo("account_id", Accounts::class, "id", ['alias' => 'Accounts']);
+        $this->hasMany("id", Payments::class, "card_id", ['alias' => 'Payments']);
     }
 
     /**
@@ -100,33 +96,40 @@ class Cards extends \PhalconRest\API\BaseModel
         $this->created_on = date('Y-m-d H:i:s');
     }
 
+
+    /**
+     * validate fields
+     *
+     * @return bool
+     */
     public function validation()
     {
-        // make sure this credit card number isn't already in the table
-        // remove this since we only store the last four digits which will collide with other records
-        // $this->validate(new Uniqueness(array(
-        // "field" => 'number'
-        // )));
-        $this->validate(new StringLengthValidator(array(
-            'field' => 'name_on_card',
-            'min' => 2,
-            'max' => 45,
-            'messageMinimum' => 'Name on card is to short, it must be at least 2 characters long.',
-            'messageMaximum' => 'Name on card is to long, it must be shorter than 45 characters long'
-        )));
+        $validator = new Validation();
 
-        $this->validate(new InclusionIn(array(
-            "field" => 'vendor',
-            'message' => 'Card vendor must be one of the following: American Express, Visa or Master Card',
-            'domain' => [
-                "amex",
-                "visa",
-                "mastercard",
-                "discover",
-                'dinersclub',
-                'jcb'
-            ]
-        )));
+        $validator->add(
+            'name_on_card',
+            new StringLengthValidator([
+                'min' => 2,
+                'max' => 45,
+                'messageMinimum' => 'Name on card is to short, it must be at least 2 characters long.',
+                'messageMaximum' => 'Name on card is to long, it must be shorter than 45 characters long'
+            ])
+        );
+
+        $validator->add(
+            'vendor',
+            new InclusionInValidator([
+                'message' => 'Card vendor must be one of the following: American Express, Visa or Master Card',
+                'domain' => [
+                    "amex",
+                    "visa",
+                    "mastercard",
+                    "discover",
+                    'dinersclub',
+                    'jcb'
+                ]
+            ])
+        );
 
         return $this->validationHasFailed() != true;
     }

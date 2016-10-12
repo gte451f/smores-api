@@ -1,12 +1,13 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator;
-use Phalcon\Mvc\Model\Validator\InclusionIn as InclusionInValidator;
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
-use Phalcon\Mvc\Model\Validator\Uniqueness;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
 
-class Fields extends \PhalconRest\API\BaseModel
+class Fields extends BaseModel
 {
 
     /**
@@ -65,10 +66,7 @@ class Fields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->belongsTo("registration_id", "PhalconRest\\Models\\Registrations", "id", array(
-            'alias' => 'Registrations'
-        ));
+        $this->belongsTo("registration_id", Registrations::class, "id", ['alias' => 'Registrations']);
     }
 
     /**
@@ -87,6 +85,10 @@ class Fields extends \PhalconRest\API\BaseModel
         $this->detectName();
     }
 
+
+    /**
+     *
+     */
     private function detectName()
     {
         // change space to underscore
@@ -108,64 +110,81 @@ class Fields extends \PhalconRest\API\BaseModel
     }
 
     /**
-     * validation owener data
+     * validate field data
      */
     public function validation()
     {
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'table',
-            'domain' => array(
-                'registrations',
-                'accounts',
-                'attendees',
-                'owners'
-            )
-        )));
+        $validator = new Validation();
 
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'allowed_data',
-            'domain' => array(
-                'string',
-                'number',
-                'utcdate',
-                'boolean'
-            )
-        )));
+        $validator->add(
+            'table',
+            new InclusionInValidator([
+                'domain' => [
+                    'registrations',
+                    'accounts',
+                    'attendees',
+                    'owners'
+                ]
+            ])
+        );
 
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'input',
-            'domain' => array(
-                'text',
-                'textarea',
-                'select',
-                'radio',
-                'single-check',
-                'multi-check',
-                'date'
-            )
-        )));
+        $validator->add(
+            'allowed_data',
+            new InclusionInValidator([
+                'domain' => [
+                    'string',
+                    'number',
+                    'utcdate',
+                    'boolean'
+                ]
+            ])
+        );
 
-        $this->validate(new InclusionInValidator(array(
-            'field' => 'private',
-            'domain' => array(
-                1,
-                0
-            )
-        )));
+        $validator->add(
+            'input',
+            new InclusionInValidator([
+                'domain' => [
+                    'text',
+                    'textarea',
+                    'select',
+                    'radio',
+                    'single-check',
+                    'multi-check',
+                    'date'
+                ]
+            ])
+        );
 
-        $this->validate(new Uniqueness(array(
-            "field" => "name",
-            "message" => "Display Name must be unique from all other custom fields"
-        )));
 
-        $this->validate(new StringLengthValidator(array(
-            "field" => 'display',
-            'max' => 35,
-            'min' => 4,
-            'messageMaximum' => 'Display name is too long, please enter a value less than 35 characters in length',
-            'messageMinimum' => 'Display name is too short, please enter a value 4 characters or greater in length'
-        )));
+        $validator->add(
+            'private',
+            new InclusionInValidator([
+                'domain' => [
+                    1,
+                    0
+                ]
+            ])
+        );
 
-        return $this->validationHasFailed() != true;
+
+        $validator->add(
+            'name',
+            new UniquenessValidator([
+                "message" => "Display Name must be unique from all other custom fields"
+            ])
+        );
+
+
+        $validator->add(
+            'display',
+            new StringLengthValidator([
+                'max' => 35,
+                'min' => 4,
+                'messageMaximum' => 'Display name is too long, please enter a value less than 35 characters in length',
+                'messageMinimum' => 'Display name is too short, please enter a value 4 characters or greater in length'
+            ])
+        );
+
+        return $this->validate($validator);
     }
 }

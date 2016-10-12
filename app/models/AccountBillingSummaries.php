@@ -83,8 +83,6 @@ class AccountBillingSummaries extends \PhalconRest\API\BaseModel
         $this->singularTableName = 'account_billing_summary';
 
         parent::initialize();
-        $this->belongsTo("id", "PhalconRest\\Models\\Accounts", "id", array(
-            'alias' => 'Accounts'
-        ));
+        $this->belongsTo("id", Accounts::class, "id", ['alias' => 'Accounts']);
     }
 }

@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class OwnerHasFields extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class OwnerHasFields extends BaseModel
 {
 
     /**
@@ -38,16 +40,8 @@ class OwnerHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("user_id", "PhalconRest\\Models\\Users", "id", array(
-            'alias' => 'Users'
-        ));
-
-        $this->belongsTo('owner_id', 'PhalconRest\Models\Owners', 'id', array(
-            'alias' => 'Owners'
-        ));
-
-        $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
-            'alias' => 'Fields'
-        ));
+        $this->belongsTo("user_id", Users::class, "id", ['alias' => 'Users']);
+        $this->belongsTo('owner_id', Owners::class, 'id', ['alias' => 'Owners']);
+        $this->belongsTo('field_id', Fields::class, 'id', ['alias' => 'Fields']);
     }
 }

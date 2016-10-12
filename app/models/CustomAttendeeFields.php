@@ -1,6 +1,8 @@
 <?php
 namespace PhalconRest\Models;
 
+use PhalconRest\API\BaseModel;
+
 /**
  * backed by an ever changing view
  * see Fields controller for more
@@ -8,7 +10,7 @@ namespace PhalconRest\Models;
  * @author jjenkins
  *
  */
-class CustomAttendeeFields extends \PhalconRest\API\BaseModel
+class CustomAttendeeFields extends BaseModel
 {
 
     /**
@@ -25,10 +27,7 @@ class CustomAttendeeFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->belongsTo("user_id", "PhalconRest\\Models\\Attendees", "id", array(
-            'alias' => 'Attendees'
-        ));
+        $this->belongsTo("user_id", Attendees::class, "id", ['alias' => 'Attendees']);
     }
 
     /**

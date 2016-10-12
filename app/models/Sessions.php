@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Sessions extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Sessions extends BaseModel
 {
 
     /**
@@ -38,9 +40,6 @@ class Sessions extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->hasMany("id", "PhalconRest\\Models\\Events", "program_id", array(
-            'alias' => 'Events'
-        ));
+        $this->hasMany("id", Events::class, "program_id", ['alias' => 'Events']);
     }
 }

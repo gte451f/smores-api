@@ -1,10 +1,11 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\Uniqueness;
-use Phalcon\Mvc\Model\Validator\Numericality as NumericalityValidator;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
+use Phalcon\Validation\Validator\Numericality as NumericalityValidator;
 
-class Fees extends \PhalconRest\API\BaseModel
+class Fees extends BaseModel
 {
 
     /**
@@ -45,17 +46,20 @@ class Fees extends \PhalconRest\API\BaseModel
 
     public function validation()
     {
-        $this->validate(new NumericalityValidator(array(
-            'field' => 'amount'
-        )));
+        $validator = new Validation();
 
-        $this->validate(new Uniqueness(array(
-            "field" => "name",
-            "message" => "The fee name must be unique"
-        )));
+        $validator->add(
+            'amount',
+            new NumericalityValidator([])
+        );
 
-        if ($this->validationHasFailed() == true) {
-            return false;
-        }
+        $validator->add(
+            'name',
+            new UniquenessValidator([
+                "message" => "The fee name must be unique"
+            ])
+        );
+
+        return $this->validate($validator);
     }
 }

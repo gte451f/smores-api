@@ -1,6 +1,7 @@
 <?php
 namespace PhalconRest\Models;
 
+use PhalconRest\API\BaseModel;
 /**
  * backed by an ever changing view
  * see Fields controller for more
@@ -8,7 +9,7 @@ namespace PhalconRest\Models;
  * @author jjenkins
  *
  */
-class CustomRegistrationFields extends \PhalconRest\API\BaseModel
+class CustomRegistrationFields extends BaseModel
 {
 
     /**
@@ -25,10 +26,7 @@ class CustomRegistrationFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-
-        $this->belongsTo("registration_id", "PhalconRest\\Models\\Registrations", "id", array(
-            'alias' => 'Registrations'
-        ));
+        $this->belongsTo("registration_id", Registrations::class, "id", ['alias' => 'Registrations']);
     }
 
     /**

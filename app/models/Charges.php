@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Charges extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Charges extends BaseModel
 {
 
     /**
@@ -66,20 +68,15 @@ class Charges extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
-            'alias' => 'Accounts'
-        ));
-
-        $this->belongsTo("fee_id", "PhalconRest\\Models\\Fees", "id", array(
-            'alias' => 'Fees'
-        ));
+        $this->belongsTo("account_id", Accounts::class, "id", ['alias' => 'Accounts']);
+        $this->belongsTo("fee_id", Fees::class, "id", ['alias' => 'Fees']);
     }
 
     public function beforeValidationOnCreate()
-    {       
-        if (! isset($this->created_on)) {
+    {
+        if (!isset($this->created_on)) {
             $this->created_on = date('Y-m-d H:i:s');
         }
-	return $this->validationHasFailed() != true;
+        return $this->validationHasFailed() != true;
     }
 }

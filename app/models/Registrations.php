@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Registrations extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Registrations extends BaseModel
 {
 
     /**

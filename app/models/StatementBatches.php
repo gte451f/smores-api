@@ -32,10 +32,7 @@ class StatementBatches extends \PhalconRest\API\BaseModel
         $this->singularTableName = 'statements_batch';
 
         parent::initialize();
-
-        $this->hasOne("batch_id", "PhalconRest\\Models\\Batches", "id", array(
-            'alias' => 'Batches'
-        ));
+        $this->hasOne("batch_id", Batches::class, "id", ['alias' => 'Batches']);
     }
 
     /**
@@ -49,17 +46,5 @@ class StatementBatches extends \PhalconRest\API\BaseModel
         $this->setBlockColumns([
             'batch_id'
         ], true);
-    }
-
-    /**
-     * point to parent id
-     *
-     * {@inheritDoc}
-     *
-     * @see \PhalconRest\API\BaseModel::getPrimaryKeyName()
-     */
-    public function getPrimaryKeyName()
-    {
-        return "id";
     }
 }

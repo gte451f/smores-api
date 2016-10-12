@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Employees extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Employees extends BaseModel
 {
 
     /**
@@ -33,9 +35,7 @@ class Employees extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->hasOne("user_id", "PhalconRest\\Models\\Users", "id", array(
-            'alias' => 'Users'
-        ));
+        $this->hasOne("user_id", Users::class, "id", ['alias' => 'Users']);
     }
 
     /**

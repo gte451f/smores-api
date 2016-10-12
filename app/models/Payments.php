@@ -1,11 +1,14 @@
 <?php
 namespace PhalconRest\Models;
 
-use Phalcon\Mvc\Model\Validator\StringLength as StringLengthValidator;
-use Phalcon\Mvc\Model\Validator\InclusionIn;
+use PhalconRest\API\BaseModel;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\StringLength as StringLengthValidator;
+use Phalcon\Validation\Validator\InclusionIn as InclusionInValidator;
+
 use Phalcon\Mvc\Model\Message as Message;
 
-class Payments extends \PhalconRest\API\BaseModel
+class Payments extends BaseModel
 {
 
     /**
@@ -95,21 +98,10 @@ class Payments extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("account_id", "PhalconRest\\Models\\Accounts", "id", array(
-            'alias' => 'Accounts'
-        ));
-
-        $this->belongsTo("check_id", "PhalconRest\\Models\\Checks", "id", array(
-            'alias' => 'Checks'
-        ));
-
-        $this->belongsTo("card_id", "PhalconRest\\Models\\Cards", "id", array(
-            'alias' => 'Cards'
-        ));
-
-        $this->belongsTo('payment_batch_id', 'PhalconRest\Models\PaymentBatches', 'batch_id', array(
-            'alias' => 'PaymenttBatches'
-        ));
+        $this->belongsTo("account_id", Accounts::class, "id", ['alias' => 'Accounts']);
+        $this->belongsTo("check_id", Checks::class, "id", ['alias' => 'Checks']);
+        $this->belongsTo("card_id", Cards::class, "id", ['alias' => 'Cards']);
+        $this->belongsTo('payment_batch_id', PaymentBatches::class, 'batch_id', ['alias' => 'PaymentBatches']);
     }
 
     /**
@@ -118,12 +110,12 @@ class Payments extends \PhalconRest\API\BaseModel
     public function beforeValidationOnCreate()
     {
         // assign a few default values if they aren't provided
-        if (! isset($this->created_on)) {
+        if (!isset($this->created_on)) {
             $this->created_on = date('Y-m-d H:i:s');
         }
-        
+
         // set a default status if not defined
-        if (! isset($this->status)) {
+        if (!isset($this->status)) {
             $this->status = 'Paid';
         }
     }
@@ -135,27 +127,34 @@ class Payments extends \PhalconRest\API\BaseModel
      */
     public function validation()
     {
-        $this->validate(new InclusionIn(array(
-            "field" => 'mode',
-            'message' => 'Payment Mode must be a specific value from the list.',
-            'domain' => [
-                "Credit",
-                "Check",
-                "Cash",
-                'Discount',
-                'Refund'
-            ]
-        )));
+        $validator = new Validation();
 
-        $this->validate(new InclusionIn(array(
-            "field" => 'status',
-            'message' => 'Payment Status must be a specific value from the list.',
-            'domain' => [
-                "Paid",
-                "Failed",
-                "Refunded"
-            ]
-        )));
+        $validator->add(
+            'mode',
+            new InclusionInValidator([
+                'message' => 'Payment Mode must be a specific value from the list.',
+                'domain' => [
+                    "Credit",
+                    "Check",
+                    "Cash",
+                    'Discount',
+                    'Refund'
+                ]
+            ])
+        );
+
+        $validator->add(
+            'status',
+            new InclusionInValidator([
+                'message' => 'Payment Status must be a specific value from the list.',
+                'domain' => [
+                    "Paid",
+                    "Failed",
+                    "Refunded"
+                ]
+            ])
+        );
+
 
         if ($this->amount < 1 or $this->amount > 5000) {
             $message = new Message("Payment amount must be between 1 and 5,000", "amount", "InvalidValue");
@@ -164,12 +163,13 @@ class Payments extends \PhalconRest\API\BaseModel
         }
 
         if ($this->mode == 'check' and $this->check_id <= 0) {
-            $message = new Message("A check payment must be accompanied by a valid check number.", "check_id", "InvalidValue");
+            $message = new Message("A check payment must be accompanied by a valid check number.", "check_id",
+                "InvalidValue");
             $this->appendMessage($message);
             return false;
         }
 
-        return $this->validationHasFailed() != true;
+        return $this->validate($validator);
     }
 
     /**

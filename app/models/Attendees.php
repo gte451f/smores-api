@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class Attendees extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class Attendees extends BaseModel
 {
 
     /**

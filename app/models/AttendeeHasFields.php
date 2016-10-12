@@ -1,7 +1,9 @@
 <?php
 namespace PhalconRest\Models;
 
-class AttendeeHasFields extends \PhalconRest\API\BaseModel
+use PhalconRest\API\BaseModel;
+
+class AttendeeHasFields extends BaseModel
 {
 
     /**
@@ -38,16 +40,8 @@ class AttendeeHasFields extends \PhalconRest\API\BaseModel
     public function initialize()
     {
         parent::initialize();
-        $this->belongsTo("user_id", "PhalconRest\\Models\\Users", "id", array(
-            'alias' => 'Users'
-        ));
-
-        $this->belongsTo('attendee_id', 'PhalconRest\Models\Attendees', 'id', array(
-            'alias' => 'Attendees'
-        ));
-
-        $this->belongsTo('field_id', 'PhalconRest\Models\Fields', 'id', array(
-            'alias' => 'Fields'
-        ));
+        $this->belongsTo('user_id', Users::class, 'id', ['alias' => 'Users']);
+        $this->belongsTo('attendee_id', Attendees::class, 'id', ['alias' => 'Attendees']);
+        $this->belongsTo('field_id', Fields::class, 'id', ['alias' => 'Fields']);
     }
 }
