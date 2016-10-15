@@ -15,9 +15,9 @@ server {
         access_log off;
     }
 
-    # block access to hiden files and folders like .git .svn .htaccess
+    # block access to hidden files and folders like .git .svn .htaccess
     location ~ /\. {
-        access_log off; log_not_found off; deny all;  
+        access_log off; log_not_found off; deny all;
     }
 
     location @phalcon {
@@ -39,7 +39,7 @@ server {
         try_files $uri =404;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
         fastcgi_pass php:9000;
-        fastcgi_index index.php;        
+        fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;

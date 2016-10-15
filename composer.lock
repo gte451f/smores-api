@@ -472,12 +472,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "9bc56e4d56d4f77c66ee5c6b3438f0c5e57c3984"
+                "reference": "cf375cdc6ed417097cbccbfb1c9ac77faea6d0c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/9bc56e4d56d4f77c66ee5c6b3438f0c5e57c3984",
-                "reference": "9bc56e4d56d4f77c66ee5c6b3438f0c5e57c3984",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/cf375cdc6ed417097cbccbfb1c9ac77faea6d0c3",
+                "reference": "cf375cdc6ed417097cbccbfb1c9ac77faea6d0c3",
                 "shasum": ""
             },
             "require": {
@@ -510,7 +510,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2016-10-07 04:04:54"
+            "time": "2016-10-12 01:11:45"
         },
         {
             "name": "inacho/php-credit-card-validator",
@@ -866,16 +866,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -909,7 +909,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "stripe/stripe-php",
@@ -2286,16 +2286,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "3.3.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "03500345483e1e17b52e2e4d34a89c9408ab2902"
+                "reference": "238d7a2723bce689c79eeac9c7d5e1d623bb9dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/03500345483e1e17b52e2e4d34a89c9408ab2902",
-                "reference": "03500345483e1e17b52e2e4d34a89c9408ab2902",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/238d7a2723bce689c79eeac9c7d5e1d623bb9dc2",
+                "reference": "238d7a2723bce689c79eeac9c7d5e1d623bb9dc2",
                 "shasum": ""
             },
             "require": {
@@ -2341,7 +2341,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2016-10-04 11:03:26"
+            "time": "2016-10-09 07:01:45"
         },
         {
             "name": "psr/http-message",
