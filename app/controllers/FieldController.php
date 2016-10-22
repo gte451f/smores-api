@@ -61,9 +61,7 @@ class FieldController extends SecureController
                     // attempt to rebuild a view ... where to store the code?
                     Util::rebuildView($post->view);
                     return $this->respond([
-                        [
-                            'result' => true
-                        ]
+                        ['result' => true]
                     ]);
                     break;
 

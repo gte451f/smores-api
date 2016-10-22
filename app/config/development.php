@@ -46,11 +46,6 @@ $environmentConfig = [
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [
         'basePath' => '/file_storage/'
-    ],
-    // a series of experimental features
-    'feature_flags' => [
-        'fastBelongsTo' => true,
-        'fastHasMany' => true,
     ]
 ];
 
