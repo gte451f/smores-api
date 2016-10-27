@@ -39,9 +39,9 @@ $environmentConfig = [
     // if security is false, which user id to impersonate?
     // set to a user account with access to most routes for automated testing
     // demo@smores.camp
-    'securityUserId' => 595,
+    // 'securityUserId' => 1,
     // admin@smores.camp
-    //'securityUserId' => 768,
+    'securityUserId' => 3,
 
     // used as a system wide prefix to all file storage paths
     'fileStorage' => [

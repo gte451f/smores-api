@@ -4,7 +4,6 @@ namespace PhalconRest\Libraries\API;
 /**
  * This class extends the PhalconRest\API\Entity class and adds app specific logic *
  *
- * @author jking
  *
  */
 class Entity extends \PhalconRest\API\Entity
@@ -13,7 +12,7 @@ class Entity extends \PhalconRest\API\Entity
     /**
      * This is a method that hooks into the PhalconRest\API\Entity::queryBuilder method right before it returns the query
      * object.
-     * This gives us an oportunity to alter the object however we choose before it is returned to be processed.
+     * This gives us an opportunity to alter the object however we choose before it is returned to be processed.
      *
      * (non-PHPdoc)
      *

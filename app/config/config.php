@@ -6,6 +6,13 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', __DIR__ . '/../');
 // your main application config file
 // place values common to all installs here, but it can be over written by environmental specific arrays
 $appConfig = [
+
+    // location to various code sources
+    'namespaces' => [
+        // what is the default entity to be loaded when no other is specified?
+        'defaultEntity' => '\PhalconRest\Libraries\API\Entity'
+    ],
+
     // enable security for controllers marked as secure?
     'security' => false,
 ];

@@ -167,8 +167,7 @@ class AuthController extends Controller
                         // roll back owner
                         $owner->delete();
                     } else {
-
-                        $result = $this->getDI()->get('result');
+                        $result = $this->getDI()->get('result', []);
                         $result->addMeta('result', 'success');
                         return $result;
 
