@@ -472,12 +472,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "07c373cc9c129308e6327b362144d0e94014b4f4"
+                "reference": "c8ed14627340898c7b2a136f5233cbd7b6823e6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/07c373cc9c129308e6327b362144d0e94014b4f4",
-                "reference": "07c373cc9c129308e6327b362144d0e94014b4f4",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/c8ed14627340898c7b2a136f5233cbd7b6823e6d",
+                "reference": "c8ed14627340898c7b2a136f5233cbd7b6823e6d",
                 "shasum": ""
             },
             "require": {
@@ -510,7 +510,7 @@
                 "rest",
                 "restful"
             ],
-            "time": "2016-10-27 04:19:04"
+            "time": "2016-10-27 12:58:18"
         },
         {
             "name": "inacho/php-credit-card-validator",

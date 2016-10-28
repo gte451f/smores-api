@@ -19,6 +19,7 @@ php:
         - ./docker/php7/cli/php.ini:/etc/php/7.0/cli/php.ini
         - ./docker/php7/php-fpm.conf:/etc/php/7.0/fpm/php-fpm.conf
         - ./docker/php7/fpm/pool.d:/etc/php/7.0/fpm/pool.d
+        - ./docker/scripts:/root/scripts
   links:
     - db
 db:
