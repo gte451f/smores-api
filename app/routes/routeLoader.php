@@ -47,28 +47,25 @@ return call_user_func(function () use ($genericRoutes) {
     }
 
     // process generic routes here
-    $genericPath = dirname(__FILE__) . '/collections/generic_route.php';
-    if (file_exists($genericPath)) {
-        foreach ($genericRoutes as $endPoint => $controllerName) {
+    foreach ($genericRoutes as $endPoint => $controllerName) {
 
-            // define the generic routes here
-            $routes = new \Phalcon\Mvc\Micro\Collection();
-            $routes->setPrefix('/v1/' . $endPoint)
-                ->setHandler('\\PhalconRest\\Controllers\\' . $controllerName)
-                ->setLazy(true);
+        // define the generic routes here
+        $routes = new \Phalcon\Mvc\Micro\Collection();
+        $routes->setPrefix('/v1/' . $endPoint)
+            ->setHandler('\\PhalconRest\\Controllers\\' . $controllerName)
+            ->setLazy(true);
 
-            $routes->options('/', 'optionsBase');
-            $routes->options('/{id}', 'optionsOne');
-            $routes->get('/', 'get');
-            $routes->head('/', 'get');
-            $routes->post('/', 'post');
-            $routes->get('/{id:[0-9]+}', 'getOne');
-            $routes->head('/{id:[0-9]+}', 'getOne');
-            $routes->delete('/{id:[0-9]+}', 'delete');
-            $routes->put('/{id:[0-9]+}', 'put');
-            $routes->patch('/{id:[0-9]+}', 'patch');
-            $collections[] = $routes;
-        }
+        $routes->options('/', 'optionsBase');
+        $routes->options('/{id}', 'optionsOne');
+        $routes->get('/', 'get');
+        $routes->head('/', 'get');
+        $routes->post('/', 'post');
+        $routes->get('/{id:[0-9]+}', 'getOne');
+        $routes->head('/{id:[0-9]+}', 'getOne');
+        $routes->delete('/{id:[0-9]+}', 'delete');
+        $routes->put('/{id:[0-9]+}', 'put');
+        $routes->patch('/{id:[0-9]+}', 'patch');
+        $collections[] = $routes;
     }
 
     return $collections;
