@@ -59,6 +59,17 @@ class Owners extends BaseModel
     }
 
     /**
+     * set primary_created to a default value
+     */
+    public function beforeValidationOnCreate()
+    {
+        if (!isset($this->primary_contact)) {
+            $this->primary_contact = 0;
+        }
+    }
+
+
+    /**
      * validate owner data
      */
     public function validation()
