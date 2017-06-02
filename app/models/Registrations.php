@@ -47,6 +47,7 @@ class Registrations extends BaseModel
         $this->hasMany("id", Requests::class, "registration_id", ['alias' => 'Requests']);
         $this->hasMany("id", Charges::class, "registration_id", ['alias' => 'Charges']);
         $this->belongsTo("attendee_id", Attendees::class, "user_id", ['alias' => 'Attendees']);
+        $this->belongsTo("attendee_id", Users::class, "id", ['alias' => 'Users']);
         $this->hasOne('id', CustomRegistrationFields::class, 'registration_id',
             ['alias' => 'CustomRegistrationFields']);
         $this->hasManyToMany("attendee_id", Attendees::class, "user_id", "account_id", Accounts::class, "id",

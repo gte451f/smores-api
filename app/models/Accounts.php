@@ -141,4 +141,36 @@ class Accounts extends BaseModel
         }
         $this->setBlockColumns($blockColumns, true);
     }
+
+
+    /**
+     * clean up related owner & attendee records when removing an account
+     *
+     * @return bool
+     */
+    public function beforeDelete()
+    {
+        $owners = \PhalconRest\Models\Owners::find("account_id = $this->id");
+        foreach ($owners as $owner) {
+            if ($owner->delete() === false) {
+                throw new HTTPException("Error deleting Account -> Owner", 401, array(
+                    'dev' => 'Attempting to delete an account failed when we tried to remove child owners',
+                    'code' => '8468496494894864'
+                ));
+            }
+        }
+
+        $attendees = \PhalconRest\Models\Attendees::find("account_id = $this->id");
+        foreach ($attendees as $attendee) {
+            if ($attendees->delete() === false) {
+                throw new HTTPException("Error deleting Account -> Attendee", 401, array(
+                    'dev' => 'Attempting to delete an account failed when we tried to remove child attendee',
+                    'code' => '4684684864864'
+                ));
+            }
+        }
+
+        return true;
+    }
+
 }

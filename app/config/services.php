@@ -36,7 +36,6 @@ $di->setShared('messageBag', function () {
  * called "auth" since the API expects a service of this name for subsequent token checks
  */
 $di->setShared('auth', function ($type = 'Employee') use ($config) {
-
     $adapter = new \PhalconRest\Libraries\Authentication\Local();
     $profile = new \PhalconRest\Libraries\Authentication\UserProfile();
     $auth = new \PhalconRest\Authentication\Authenticator($adapter, $profile);
@@ -67,7 +66,7 @@ $di->setShared('security', function () {
     return $security;
 });
 
-// one way to do reversable encryption
+// one way to do reversible encryption
 $di->setShared('paymentProcessor', function () {
     // TODO swap out a dummy adapter if no valid key is found
     $setting = \PhalconRest\Models\Settings::findFirst("name = 'Stripe API Key'");

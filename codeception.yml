@@ -15,7 +15,10 @@ extensions:
 modules:
     config:
         Db:
-            dsn: ''
-            user: ''
-            password: ''
-            dump: tests/_data/dump.sql
+            dsn: 'mysql:host=172.17.0.1;dbname=smores'
+            user: 'api'
+            password: 'api'
+            dump: 'tests/_data/dump.sql'
+            populate: true
+            cleanup: false
+            reconnect: true

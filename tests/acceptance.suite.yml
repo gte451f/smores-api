@@ -18,3 +18,5 @@ modules:
             depends: PhpBrowser
             # url: 'http://localhost:8080/v1/'
             url: 'http://172.17.0.1:8080/v1/'
+        - Db:
+            populate: true

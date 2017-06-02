@@ -29,6 +29,12 @@ class UserProfile extends \PhalconRest\Authentication\UserProfile
      *
      * @var string
      */
+    public $gender;
+
+    /**
+     *
+     * @var string
+     */
     public $lastName;
 
     /**

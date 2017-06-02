@@ -19,7 +19,7 @@ class SecureController extends APISecureController
      */
     protected function securityCheck($securityService)
     {
-        // run the security service's checkUserPermissions method and thow an error if it returns false
+        // run the security service's checkUserPermissions method and throw an error if it returns false
         if (!$securityService->checkUserPermissions()) {
             // This is bad. Throw a 500. Responses should always be objects.
             throw new HTTPException("Resource not available.", 404, array(

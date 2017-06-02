@@ -74,6 +74,9 @@ class AuthController extends Controller
      * attempt to create a new account based on supplied values
      * roll back records if the new action fails
      * rely on underlying models to validate data...for the most part
+     *
+     * @return mixed
+     * @throws ValidationException
      */
     public function create()
     {
@@ -97,10 +100,10 @@ class AuthController extends Controller
         // verify that all the required fields are present before continuing
         foreach ($fieldList as $field) {
             if (!isset($post[$field])) {
-                throw new ValidationException("Incomplete account data submitted.", 400, array(
+                throw new ValidationException("Incomplete account data submitted.", [
                     'dev' => "Not all required data fields were supplied.  Missing: $field",
                     'code' => '891316819464749684'
-                ), [
+                ], [
                     $field => "$field is required, please enter a value for this field."
                 ]);
             }
@@ -168,9 +171,10 @@ class AuthController extends Controller
                         $owner->delete();
                     } else {
                         $result = $this->getDI()->get('result', []);
-                        $result->addMeta('result', 'success');
+                        $result->outputMode = 'other';
+                        $result->addPlain('result', 'success');
+                        $result->addPlain('account_id', $account->id);
                         return $result;
-
                     }
                 }
             }
@@ -178,7 +182,7 @@ class AuthController extends Controller
     }
 
     /**
-     * wipe the token and retun an empty response
+     * wipe the token and return an empty response
      *
      * @return boolean
      * @throws HTTPException
@@ -415,16 +419,21 @@ class AuthController extends Controller
      */
     public function scratch1()
     {
-        $processor = $this->getDI()->get('paymentProcessor');
-        $account = \PhalconRest\Models\Accounts::findFirst(103);
-        $accountExternalId = $processor->createCustomer($account);
 
-        $card = \PhalconRest\Models\Cards::findFirst(4);
-        $cardExternalId = $processor->createCard($accountExternalId, $card, '4242424242424242', '123');
+        // trigger_error("You goin' down!", E_USER_ERROR);
 
-        return [
-            'accountExternalId' => $accountExternalId,
-            'cardExternalId' => $cardExternalId
-        ];
+        // trigger_error("Number cannot be larger than 10");
+
+//        throw new ValidationException("Passwords do not match.", array(
+//            'dev' => "Confirm & Password values did not match.",
+//            'code' => '9498498946846'
+//        ), [
+//            'password' => "Password and Confirmation do not match"
+//        ]);
+//         throw new \Exception('general exception');
+
+
+        $result = $this->getDI()->get('result', []);
+        return $result;
     }
 }
