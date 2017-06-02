@@ -472,12 +472,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/gte451f/phalcon-json-api-package.git",
-                "reference": "02cb34d0dba5fad3dbba78554a624545004fd040"
+                "reference": "b5b548897ef140b915b2f77ff6aa13c603db371f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/02cb34d0dba5fad3dbba78554a624545004fd040",
-                "reference": "02cb34d0dba5fad3dbba78554a624545004fd040",
+                "url": "https://api.github.com/repos/gte451f/phalcon-json-api-package/zipball/b5b548897ef140b915b2f77ff6aa13c603db371f",
+                "reference": "b5b548897ef140b915b2f77ff6aa13c603db371f",
                 "shasum": ""
             },
             "require": {
